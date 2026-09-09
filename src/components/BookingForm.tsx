@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CONTACTS } from "@/lib/contacts";
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
@@ -98,6 +98,16 @@ async function notificarAgendamento(form: FormState) {
 export function BookingForm() {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
 
+  useEffect(() => {
+    let active = true;
+    const supabase = getSupabaseBrowserClient();
+    supabase?.auth.getUser().then(({data}) => {
+      if (!active || !data.user) return;
+      const user = data.user;
+      setForm(current => ({...current, email: current.email || user.email || "", whatsapp: current.whatsapp || user.user_metadata.telefone || "", aceitaLembretes: Boolean(user.user_metadata.aceita_lembretes_email)}));
+    });
+    return () => { active = false; };
+  }, []);
   function atualizar<K extends keyof FormState>(campo: K, valor: FormState[K]) {
     setForm((atual) => ({ ...atual, [campo]: valor }));
   }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { isAdminSession } from "@/lib/isAdminSession";
 import { Logo } from "@/components/Logo";
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 
@@ -16,6 +17,9 @@ const TITULOS: Record<Modo, string> = {
 
 export function LoginForm() {
   const [modo, setModo] = useState<Modo>("entrar");
+  const [telefone, setTelefone] = useState("");
+  const [lembretesEmail, setLembretesEmail] = useState(false);
+  const [lembretesTelefone, setLembretesTelefone] = useState(false);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [carregando, setCarregando] = useState(false);
@@ -40,14 +44,14 @@ export function LoginForm() {
     setCarregando(true);
     try {
       if (modo === "entrar") {
-        const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
         if (error) throw error;
-        router.push("/inicio");
+        router.push(isAdminSession(data.session) ? "/painel" : "/inicio");
         return;
       }
 
       if (modo === "criar") {
-        const { error } = await supabase.auth.signUp({ email, password: senha });
+        const { error } = await supabase.auth.signUp({ email, password: senha, options: { data: { telefone, aceita_lembretes_email: lembretesEmail, aceita_lembretes_telefone: Boolean(telefone.trim()) && lembretesTelefone } } });
         if (error) throw error;
         setMensagem("Conta criada! Verifique seu e-mail para confirmar o cadastro.");
         return;
@@ -111,6 +115,13 @@ export function LoginForm() {
             </div>
           )}
 
+          {modo === "criar" && <fieldset className="space-y-3 rounded-xl bg-blush-50 p-4">
+            <legend className="text-sm font-medium text-wine">Contato e preferências opcionais</legend>
+            <label className="block text-sm">Telefone / WhatsApp<input type="tel" autoComplete="tel" value={telefone} onChange={e=>setTelefone(e.target.value)} maxLength={25} className="mt-1 w-full rounded-xl border border-blush-300 p-3" placeholder="(31) 9XXXX-XXXX" /></label>
+            <label className="flex items-start gap-2 text-sm"><input type="checkbox" checked={lembretesEmail} onChange={e=>setLembretesEmail(e.target.checked)} />Quero receber cuidados e lembretes no e-mail do cadastro.</label>
+            <label className="flex items-start gap-2 text-sm"><input type="checkbox" disabled={!telefone.trim()} checked={lembretesTelefone && Boolean(telefone.trim())} onChange={e=>setLembretesTelefone(e.target.checked)} />Autorizo contato para lembretes pelo telefone informado.</label>
+            <p className="text-xs leading-6">A preferência por telefone fica registrada. Mensagens automáticas por WhatsApp/SMS ainda não estão ativas. Você pode solicitar mudança das preferências à Isadora.</p>
+          </fieldset>}
           {erro && (
             <p role="alert" className="text-sm text-red-700">
               {erro}
