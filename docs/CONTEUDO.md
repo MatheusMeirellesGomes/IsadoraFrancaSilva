@@ -20,12 +20,8 @@ Legenda dos marcadores usados neste arquivo:
 
 - **Nome completo:** Isadora França Silva
 - **Localização:** Contagem/MG
-- **Instagram profissional:** `PENDENTE DE CONFIRMAÇÃO PARA USO PÚBLICO`
-  (anotado internamente: [@isaa.franca](https://instagram.com/isaa.franca) —
-  aguardando confirmação da Isadora antes de publicar no site)
-- **WhatsApp profissional:** `PENDENTE DE CONFIRMAÇÃO PARA USO PÚBLICO`
-  (anotado internamente: +55 31 99526-2194 / `5531995262194` — aguardando
-  confirmação da Isadora antes de publicar no site)
+- **Instagram profissional:** [@isaa.franca](https://instagram.com/isaa.franca) — confirmado para uso público.
+- **WhatsApp profissional:** +55 31 99526-2194 (`5531995262194`) — confirmado para uso público.
 - **CRBM (registro profissional):** `PENDENTE`
 
 ## Formação acadêmica
@@ -71,9 +67,7 @@ acompanhamento em ambiente clínico durante a experiência na clínica.
 
 ## Botox — dados comerciais
 
-- **Valor atual:** `PENDENTE DE CONFIRMAÇÃO PARA USO PÚBLICO` (anotado
-  internamente: R$ 750, mas a Isadora pretende reajustar — **não pode
-  aparecer na interface** até uma nova confirmação dela).
+- **Valor atual do botox:** R$ 750 — confirmado para uso público.
 - **Regiões de aplicação oferecidas:** `PENDENTE`
 - **Taxa de deslocamento:** `PENDENTE`
 - **Cidades e bairros atendidos:** `PENDENTE` (sede: Contagem/MG)
