@@ -111,3 +111,32 @@ continuam **totalmente acessíveis sem login** em qualquer momento do fluxo.
 - Endereço e dados da cliente nunca ficam visíveis publicamente — só
   acessíveis à própria cliente e à Isadora no painel administrativo.
 - Nenhum prontuário médico é implementado nesta primeira versão.
+
+## Helena — integração preparada (Etapa 16 antecipada por solicitação)
+
+Mascote e chat disponíveis em todas as páginas. Atalhos de Botox, WhatsApp
+ e Instagram funcionam sem IA. Para ativar respostas, defina no `.env.local`:
+
+```dotenv
+OPENAI_API_KEY=sua_chave_privada
+OPENAI_MODEL=id_do_modelo_compativel_com_responses
+```
+
+Reinicie `npm run dev`. Nunca use `NEXT_PUBLIC_` na chave nem a envie ao Git.
+Sem configuração, o chat explica a indisponibilidade, sem simular IA.
+A integração usa POST `/api/helena` e a Responses API, com `store: false`.
+O navegador guarda apenas a conversa em memória; não há banco ou logs de
+mensagens na aplicação. Isso não equivale a retenção zero no provedor.
+O consentimento é obrigatório antes de enviar mensagens à OpenAI.
+
+Base pública: `src/lib/helena.ts`, revisada a partir de `docs/CONTEUDO.md`.
+Atualize ambas quando dados ou disponibilidade das páginas mudarem. Não
+copie o documento interno integral para o prompt. A Helena não executa
+agendamentos, não possui ferramentas e não faz avaliação clínica.
+
+Validação: `node scripts/test-helena.cjs`, `npm run lint`, `npm run build`.
+Os testes da API usam resposta simulada; teste real depende da chave/modelo.
+Antes de publicar com IA: validar respostas reais, configurar limites de
+uso/custo no provedor e proteção distribuída no gateway. O limite atual é
+local por processo (20 requisições/minuto, 3 simultâneas), não global entre
+réplicas. Revisar a política de privacidade na etapa correspondente.

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Poppins } from "next/font/google";
 import "./globals.css";
+import { HelenaChat } from "@/components/HelenaChat";
 import { Footer } from "@/components/Footer";
 
 const playfairDisplay = Playfair_Display({
@@ -33,6 +34,7 @@ export default function RootLayout({
       >
         {children}
         <Footer />
+        <HelenaChat />
       </body>
     </html>
   );

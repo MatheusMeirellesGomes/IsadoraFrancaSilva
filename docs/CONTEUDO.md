@@ -179,3 +179,14 @@ remoções fora do escopo. A página Sobre continua reservada para a Etapa 4.
   atendimento: a bula informa uso hospitalar ou clínica médica sob prescrição,
   enquanto a modalidade domiciliar consta do briefing. A página educativa
   não atesta adequação dessa modalidade. Registro e habilitação seguem pendentes.
+
+## Helena — implementação inicial
+
+Etapa 16 antecipada por pedido explícito do usuário em 09/09/2026.
+Mascote rosa gerada para o projeto, botão flutuante, chat com consentimento,
+atalhos reais e integração de IA no servidor preparados. Ativação depende
+ de chave e modelo no ambiente; sem eles, não há respostas de IA.
+A base pública em src/lib/helena.ts exclui informações internas e deve ser
+mantida junto deste documento. Próximas páginas continuam nas etapas
+originais; a Helena não confirma agendamentos e não presta aconselhamento
+clínico individual. A ativação e validação ao vivo continuam pendentes.

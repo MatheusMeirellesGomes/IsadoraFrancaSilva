@@ -41,3 +41,30 @@
 .contact-link:hover { color: #8e485d; }
 .contact-link:focus-visible, .botox-faq summary:focus-visible { outline: 2px solid #5b1a2b; outline-offset: 4px; }
 .botox-faq[open] summary { font-weight: 600; }
+
+.helena-widget { position: fixed; right: max(18px, env(safe-area-inset-right)); bottom: max(18px, env(safe-area-inset-bottom)); z-index: 50; }
+.helena-launch { display: flex; align-items: center; gap: 12px; margin-left: auto; color: #5b1a2b; border-radius: 50%; }
+.helena-launch img { border-radius: 50%; border: 3px solid white; box-shadow: 0 5px 22px #5b1a2b30; }
+.helena-invite { background: white; border: 1px solid #efd1db; border-radius: 16px 16px 2px 16px; padding: 10px 16px; font-size: 14px; box-shadow: 0 4px 18px #5b1a2b12; text-align: left; }
+.helena-invite small { display: block; font-size: 12px; margin-top: 3px; }
+.helena-panel { width: min(390px, calc(100vw - 28px)); max-height: calc(100dvh - 125px); height: 590px; display: flex; flex-direction: column; background: #fffafb; border: 1px solid #edd1da; border-radius: 24px; box-shadow: 0 16px 70px #41122230; overflow: hidden; margin-bottom: 12px; }
+.helena-header { display: flex; gap: 12px; align-items: center; padding: 16px; background: #f9e6ed; flex-shrink: 0; }
+.helena-header h2 { font-family: var(--font-display),serif; font-size: 22px; color: #5b1a2b; }
+.helena-header p { font-size: 12px; color: #794354; }
+.helena-close { margin-left: auto; font-size: 28px; width: 44px; height: 44px; color: #5b1a2b; }
+.helena-scroll { overflow-y: auto; flex: 1; min-height: 60px; padding: 16px; overscroll-behavior: contain; }
+.helena-bubble { white-space: pre-wrap; overflow-wrap: anywhere; background: #f5e7ed; border-radius: 16px 16px 16px 3px; padding: 12px 14px; font-size: 14px; line-height: 1.7; margin-bottom: 12px; margin-right: 16px; }
+.helena-user { margin-left: 20px; margin-right: 0; background: #5b1a2b; color: white; border-radius: 16px 16px 3px 16px; }
+.helena-shortcuts { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 16px; border-top: 1px solid #efdbe2; }
+.helena-shortcuts a { font-size: 12px; padding: 8px 10px; border: 1px solid #d5b4c0; border-radius: 20px; color: #5b1a2b; }
+.helena-form { padding: 10px 16px 16px; background: white; overflow-y: auto; max-height: 55%; flex-shrink: 0; }
+.helena-consent { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; line-height: 1.5; }
+.helena-consent input { margin-top: 3px; accent-color: #5b1a2b; }
+.helena-note { font-size: 11px; line-height: 1.5; color: #65565c; margin: 8px 0; }
+.helena-error { font-size: 12px; line-height: 1.5; color: #822442; margin: 8px 0; }
+.helena-input-row { display: flex; gap: 8px; }
+.helena-input-row input { min-width: 0; flex: 1; border: 1px solid #d9bcc6; border-radius: 24px; padding: 10px 14px; font-size: 16px; }
+.helena-input-row button { width: 44px; height: 44px; border-radius: 50%; background: #5b1a2b; color: white; font-size: 24px; }
+.helena-input-row button:disabled { opacity: .45; cursor: not-allowed; }
+.helena-widget button:focus-visible, .helena-widget a:focus-visible, .helena-widget input:focus-visible { outline: 2px solid #8e485d; outline-offset: 3px; }
+@media (max-width: 420px) { .helena-widget { right: 14px; bottom: max(12px, env(safe-area-inset-bottom)); } .helena-launch img { width: 64px; height: 64px; } .helena-panel { max-height: calc(100dvh - 105px); } }
