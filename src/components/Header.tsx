@@ -8,6 +8,7 @@ import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 import { isAdminSession } from "@/lib/isAdminSession";
 
 const NAV_LINKS = [
+  { href: "/inicio", label: "Início" },
   { href: "/sobre", label: "Sobre" },
   { href: "/botox", label: "Botox" },
   { href: "/atendimento-domiciliar", label: "Atendimento domiciliar" },
