@@ -16,10 +16,36 @@ const poppins = Poppins({
   variable: "--font-body",
 });
 
+const TITULO = "Isadora França Silva | Biomedicina Estética";
+const DESCRICAO =
+  "Aplicação de botox com técnica, segurança e cuidado, no conforto da sua casa, em Contagem/MG. Agende sem precisar criar conta.";
+
 export const metadata: Metadata = {
-  title: "Isadora França Silva | Biomedicina Estética",
-  description:
-    "Site profissional de Isadora França Silva, biomédica esteta em Contagem/MG. Em construção.",
+  metadataBase: new URL("https://isadorafrancasilva.com.br"),
+  title: TITULO,
+  description: DESCRICAO,
+  openGraph: {
+    title: TITULO,
+    description: DESCRICAO,
+    url: "/",
+    siteName: "Isadora França Silva",
+    locale: "pt_BR",
+    type: "website",
+    images: [
+      {
+        url: "/images/isadora-franca.jpeg",
+        width: 1320,
+        height: 1371,
+        alt: "Isadora França Silva sorrindo, usando jaleco branco.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITULO,
+    description: DESCRICAO,
+    images: ["/images/isadora-franca.jpeg"],
+  },
 };
 
 export default function RootLayout({

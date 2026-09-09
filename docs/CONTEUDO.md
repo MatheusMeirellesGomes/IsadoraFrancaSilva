@@ -524,3 +524,21 @@ sem quebrar o layout normal.
 Conferido no navegador em 375px (mobile): política de privacidade, meus
 atendimentos (estado deslogada) e a 404 — todas renderizando
 corretamente, rodapé com os links legais visível.
+
+## Etapa 15 — pronto para hospedagem
+
+`src/app/layout.tsx` ganhou Open Graph e Twitter Card completos (usando
+a foto real da Isadora de jaleco como imagem de compartilhamento —
+`public/images/isadora-franca.jpeg`, 1320×1371) e `metadataBase` apontando
+para `https://isadorafrancasilva.com.br` (domínio pretendido desde o
+início do projeto). `src/app/sitemap.ts` lista só as páginas públicas
+que fazem sentido em buscadores; `src/app/robots.ts` bloqueia
+`/meus-atendimentos`, `/painel` e `/api/` de indexação — são dados
+privados de clientes ou área administrativa, nunca deveriam aparecer no
+Google. Testado em `/robots.txt` e `/sitemap.xml` no navegador.
+
+README ganhou o passo a passo completo de deploy na Vercel (com a lista
+exata de variáveis de ambiente a configurar lá) e de conectar o domínio
+`.com.br` via Registro.br. Isso é a última peça de código da Etapa 15 —
+o deploy em si e a compra/apontamento do domínio são ações de
+Matheus/Isadora, não algo que eu possa fazer.

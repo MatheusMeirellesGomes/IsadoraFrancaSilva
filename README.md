@@ -95,7 +95,11 @@ antes de avançar para a próxima.
       arquivos + dependências @react-three/three, -55 pacotes); nav do
       cabeçalho preparada para não estourar com todos os itens da conta
       admin; conferido em mobile (375px) nas páginas novas.
-- [ ] 15. Preparação para hospedagem e domínio (IsadoraFrancaSilva.com.br)
+- [x] **15. Preparação para hospedagem e domínio** — metadados para
+      compartilhamento (Open Graph/Twitter, com a foto real da Isadora),
+      `sitemap.xml` e `robots.txt` (área da cliente e painel fora de
+      buscadores), e o passo a passo de deploy abaixo. Falta só o deploy
+      em si e apontar o domínio de verdade — ação de vocês, não código.
 - [x] **16. Assistente virtual "Helena"** — mascote, chat com respostas
       rápidas e atalhos, integração de IA preparada no servidor
       (ativação real ainda pendente de chave/modelo configurados).
@@ -357,3 +361,44 @@ e-mail perguntando como ficou o resultado.
 
 Validação: `node scripts/test-lembretes.cjs` (Supabase e Resend mockados,
 nenhuma chamada real).
+
+## Hospedagem e domínio (Etapa 15)
+
+### Deploy na Vercel
+
+1. Crie uma conta grátis em [vercel.com](https://vercel.com/) (dá para
+   entrar direto com a conta do GitHub).
+2. **"Add New" → "Project"** → selecione o repositório
+   `MatheusMeirellesGomes/IsadoraFrancaSilva`.
+3. A Vercel detecta que é um projeto Next.js sozinha — não precisa mudar
+   nenhuma configuração de build.
+4. Antes de clicar em "Deploy", adicione as variáveis de ambiente (aba
+   **Environment Variables**) com os mesmos nomes e valores do seu
+   `.env.local`: `NEXT_PUBLIC_SUPABASE_URL`,
+   `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
+   `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `ISADORA_NOTIFICATION_EMAIL`,
+   `CRON_SECRET` (gere um valor novo, não precisa ser o mesmo de
+   desenvolvimento) e, se a Helena com IA estiver ativa,
+   `OPENAI_API_KEY`/`OPENAI_MODEL`. `HELENA_PROVIDER=ollama` **não**
+   funciona em produção — o Ollama só roda localmente; sem
+   `OPENAI_API_KEY`, a Helena simplesmente oferece as respostas prontas,
+   sem IA (comportamento já esperado, não quebra nada).
+5. Clique em **Deploy**. Em poucos minutos o site fica no ar num endereço
+   `algo.vercel.app`.
+
+### Domínio próprio (IsadoraFrancaSilva.com.br)
+
+1. Registre o domínio num registrador (Registro.br é o oficial para
+   `.com.br`).
+2. No projeto da Vercel: **Settings → Domains** → adicione
+   `isadorafrancasilva.com.br` (e, se quiser, `www.isadorafrancasilva.com.br`
+   redirecionando para o principal).
+3. A Vercel mostra exatamente quais registros DNS configurar
+   (normalmente um registro `A` ou `CNAME`) — copie e cadastre no painel
+   do Registro.br. A propagação costuma levar de alguns minutos a
+   algumas horas.
+4. Depois do domínio ativo, atualize `metadataBase` em
+   `src/app/layout.tsx` e as URLs em `src/app/sitemap.ts` e
+   `src/app/robots.ts` **só se o domínio final for diferente** do que já
+   está configurado (`https://isadorafrancasilva.com.br`) — se for esse
+   mesmo, não precisa mudar nada.
