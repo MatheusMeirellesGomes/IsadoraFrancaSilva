@@ -53,7 +53,9 @@ antes de avançar para a próxima.
 - [x] **5. Página de botox** — feita fora de ordem, a pedido da Isadora:
       produto (Dysport), filosofia de atendimento (naturalidade, segurança,
       sem exagero) e valor (a partir de R$750, inicial).
-- [ ] 6. Atendimento domiciliar
+- [x] **6. Atendimento domiciliar** — como funciona, privacidade do
+      endereço, CTA pelo WhatsApp (região/taxa combinadas diretamente,
+      ainda `PENDENTE` para publicação).
 - [ ] **7. Formulário de agendamento** — agora inclui campo opcional de
       e-mail e checkbox de consentimento para lembretes de cuidado
       (ver "Lembretes automáticos" abaixo).

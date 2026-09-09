@@ -10,6 +10,7 @@ const QUICK_ANSWERS = [
   { question: "Qual é o valor?", answer: "O valor atual do botox é R$ 750, inicial e sujeito a alteração futura. Confirme as condições diretamente com Isadora pelo WhatsApp." },
   { question: "Qual produto ela utiliza?", answer: "Isadora utiliza Dysport, uma toxina botulínica tipo A. A página Sobre o botox explica o procedimento e reúne dúvidas frequentes. A avaliação individual deve ser feita com a profissional." },
   { question: "Como falar com Isadora?", answer: "Use o botão Falar com Isadora para abrir o WhatsApp (31) 99526-2194. Você pode tirar dúvidas sobre atendimento e disponibilidade. Esse contato não confirma automaticamente um agendamento." },
+  { question: "Ela atende na minha casa?", answer: "Sim, o atendimento é domiciliar — Isadora vai até você. Região atendida e uma eventual taxa de deslocamento são combinadas diretamente pelo WhatsApp. Veja mais em Atendimento domiciliar." },
   { question: "Qual é a formação dela?", answer: "Isadora é formada em Biomedicina pela UNA (2021–2025). Teve experiência assistida na Clínica Dra. Ana Lemos, de julho de 2023 a abril de 2026. Conheça sua trajetória em Conhecer Isadora." },
 ];
 export function HelenaChat() {
@@ -97,6 +98,7 @@ export function HelenaChat() {
         </div>
         <nav aria-label="Atalhos da Helena" className="helena-shortcuts">
           <Link href="/botox" onClick={close}>Sobre o botox</Link>
+          <Link href="/atendimento-domiciliar" onClick={close}>Atendimento domiciliar</Link>
           <Link href="/sobre" onClick={close}>Conhecer Isadora</Link>
           <a href={CONTACTS.whatsapp} target="_blank" rel="noopener noreferrer">Falar com Isadora ↗<span className="sr-only"> (nova aba)</span></a>
           <a href={CONTACTS.instagram} target="_blank" rel="noopener noreferrer">Instagram ↗<span className="sr-only"> (nova aba)</span></a>

@@ -175,10 +175,13 @@ remoções fora do escopo. A página Sobre continua reservada para a Etapa 4.
 - Valor público: R$ 750, inicial e sujeito a alteração, sem “a partir de”.
 - Rodapé global com WhatsApp, Instagram e copyright de ano automático.
 - Links de contato abrem o canal; não confirmam nem enviam agendamentos.
-- Antes da publicação, validar com Isadora o conteúdo clínico e o local de
-  atendimento: a bula informa uso hospitalar ou clínica médica sob prescrição,
-  enquanto a modalidade domiciliar consta do briefing. A página educativa
-  não atesta adequação dessa modalidade. Registro e habilitação seguem pendentes.
+- **Decisão do Matheus (09/09/2026):** não publicar no site nenhuma menção
+  a "ambiente hospitalar" ou "clínica médica" — Isadora ainda não tem
+  clínica própria, e trazer isso à tona geraria uma dúvida que não ajuda
+  a apresentação do atendimento domiciliar. O link da bula continua
+  disponível na página (fonte acima) para quem quiser ler o documento
+  completo por conta própria; a página em si nunca resume ou cita esse
+  trecho específico. Registro e habilitação seguem pendentes.
 
 ## Helena — implementação inicial
 
@@ -237,3 +240,14 @@ ainda não recebeu o lembrete, envia via Resend e registra
 `lembrete_enviado_em` para nunca duplicar o envio.
 
 Ainda não implementado — depende das Etapas 7, 8 e 12 existirem primeiro.
+
+## Etapa 6 — Atendimento domiciliar concluída
+
+Página /atendimento-domiciliar publicada: como funciona (leva os materiais,
+mesma técnica e avaliação de um atendimento comum), privacidade do
+endereço (uso só para combinar o atendimento, nunca público) e CTA pelo
+WhatsApp. Região atendida e taxa de deslocamento seguem `PENDENTE` — a
+página deixa explícito que isso é combinado diretamente pelo WhatsApp, sem
+listar cidades/bairros/valores. Nenhuma menção a ambiente hospitalar ou
+clínico, conforme decisão registrada acima. Helena atualizada para
+reconhecer a página como publicada e oferecer o atalho.
