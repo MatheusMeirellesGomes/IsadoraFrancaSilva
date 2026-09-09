@@ -60,9 +60,13 @@ antes de avançar para a próxima.
       observações, com e-mail opcional e consentimento para lembretes de
       cuidado (ver "Lembretes automáticos" abaixo). Envio abre o WhatsApp
       com tudo preenchido; sem persistência em banco ainda (Etapa 8).
-- [ ] **8. Banco de dados (Supabase)** — o schema de agendamentos precisa
-      de `procedimento_realizado_em` e `lembrete_enviado_em` para
-      sustentar os lembretes de pós-procedimento.
+- [ ] **8. Banco de dados (Supabase)** — schema pronto
+      (`supabase/migrations/0001_init.sql`) com `clientes` e
+      `agendamentos` (inclui `procedimento_realizado_em` e
+      `lembrete_enviado_em` para os lembretes da Etapa 17), RLS habilitada
+      sem policy pública, e o formulário de agendamento já persiste nele.
+      Falta criar o projeto Supabase de verdade e rodar a migração — só
+      então esta etapa fica de fato concluída.
 - [ ] 9. Integração com WhatsApp
 - [ ] 10. Cadastro e login (opcional para a cliente)
 - [ ] 11. Área da cliente
@@ -178,6 +182,36 @@ Para parar o serviço: `brew services stop ollama`; para voltar:
 
 Esta configuração atende o desenvolvimento local. Hospedagem não tem acesso
 ao localhost deste Mac; exige infraestrutura de inferência própria ou provedor.
+
+## Banco de dados (Etapa 8)
+
+O formulário de agendamento já tenta salvar cliente + agendamento no
+Supabase (`status: aguardando_confirmacao`), em paralelo aos e-mails —
+uma capacidade não depende da outra, e nenhuma delas afeta o
+redirecionamento ao WhatsApp, que continua sendo o canal garantido.
+
+### Como ativar
+
+1. Crie um projeto gratuito em [supabase.com](https://supabase.com/).
+2. No SQL Editor do projeto, rode `supabase/migrations/0001_init.sql`.
+3. Copie a URL do projeto e a **chave de serviço** (não a `anon`, que não
+   tem permissão nenhuma nas tabelas — de propósito, ver o comentário na
+   migração) para `.env.local`:
+
+```dotenv
+NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=sua_chave_de_servico
+```
+
+4. Reinicie `npm run dev`.
+
+Sem essas variáveis, a rota responde normalmente (200) com
+`salvoNoBanco: false` — o formulário e o WhatsApp continuam funcionando.
+A chave de serviço nunca deve ser exposta ao navegador (por isso não leva
+o prefixo `NEXT_PUBLIC_`) nem commitada.
+
+Validação: `node scripts/test-agendamento.cjs` (Supabase mockado, nenhuma
+chamada real).
 
 ## E-mails automáticos do agendamento (parte da Etapa 17, já implementada)
 

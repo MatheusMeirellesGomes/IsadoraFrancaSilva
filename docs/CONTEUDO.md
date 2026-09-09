@@ -322,7 +322,19 @@ lembrete_enviado_em). RLS habilitada nas duas, sem nenhuma policy pública
 login de cliente ainda). Endereço nunca é exposto publicamente, conforme
 a regra já registrada em "Atendimento".
 
+Ligado: `/api/agendamento` agora também tenta salvar cliente + agendamento
+no Supabase (`status: aguardando_confirmacao`), em paralelo ao e-mail —
+uma capacidade não depende da outra, e nenhuma delas afeta o WhatsApp, que
+continua sendo o canal garantido. Sem `NEXT_PUBLIC_SUPABASE_URL`/
+`SUPABASE_SERVICE_ROLE_KEY` configuradas, a rota responde normalmente
+(200) só que com `salvoNoBanco: false`.
+
+Simplificação atual: cada envio do formulário cria uma nova linha em
+`clientes` (não há deduplicação por WhatsApp/e-mail ainda) — perfis de
+cliente de verdade e o vínculo com login chegam nas Etapas 10/11.
+
 Ainda falta: criar o projeto Supabase de verdade (conta e credenciais são
-do Matheus/Isadora, não consigo criar por vocês), rodar esta migração
-nele, e ligar o formulário de agendamento para persistir os dados aqui de
-verdade (próximo commit).
+do Matheus/Isadora, não consigo criar por vocês) e rodar a migração nele.
+
+Testes automatizados: `node scripts/test-agendamento.cjs` (agora também
+cobre e-mail/banco configurados independentemente, com Supabase mockado).

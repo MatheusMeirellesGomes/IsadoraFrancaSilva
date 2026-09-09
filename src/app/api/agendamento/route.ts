@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { emailCuidadosCliente, emailNotificacaoIsadora, type DadosAgendamento } from "@/lib/agendamentoEmails";
+import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 
 export const runtime = "nodejs";
 // Proteção local por processo. Antes de publicar, usar limite distribuído no gateway (ver src/app/api/helena/route.ts).
 let windowStart = Date.now();
 let requests = 0;
 const reply = (error: string, status: number) => NextResponse.json({ error }, { status });
-const configured = () => Boolean(process.env.RESEND_API_KEY && process.env.RESEND_FROM_EMAIL);
+const emailConfigurado = () => Boolean(process.env.RESEND_API_KEY && process.env.RESEND_FROM_EMAIL);
 
 function validDados(value: unknown): value is DadosAgendamento {
   if (!value || typeof value !== "object") return false;
@@ -15,6 +16,7 @@ function validDados(value: unknown): value is DadosAgendamento {
   return (
     typeof v.nome === "string" && v.nome.trim().length > 0 && v.nome.length <= 200 &&
     typeof v.whatsapp === "string" && v.whatsapp.trim().length > 0 && v.whatsapp.length <= 40 &&
+    typeof v.data === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v.data) &&
     typeof v.dataFormatada === "string" && v.dataFormatada.length <= 100 &&
     typeof v.horario === "string" && v.horario.length <= 20 &&
     (v.observacoes === undefined || (typeof v.observacoes === "string" && v.observacoes.length <= 1000)) &&
@@ -23,11 +25,63 @@ function validDados(value: unknown): value is DadosAgendamento {
   );
 }
 
+// Envia os e-mails do agendamento (Isadora + cliente, se aplicável). Nunca
+// lança — uma falha aqui não pode derrubar a resposta nem o resto da rota.
+async function enviarEmails(dados: DadosAgendamento): Promise<string[]> {
+  if (!emailConfigurado()) return [];
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const from = process.env.RESEND_FROM_EMAIL!;
+  const enviados: string[] = [];
+  try {
+    if (process.env.ISADORA_NOTIFICATION_EMAIL) {
+      const { assunto, texto } = emailNotificacaoIsadora(dados);
+      await resend.emails.send({ from, to: process.env.ISADORA_NOTIFICATION_EMAIL, subject: assunto, text: texto });
+      enviados.push("isadora");
+    }
+    if (dados.aceitaLembretes && dados.email?.trim()) {
+      const { assunto, texto } = emailCuidadosCliente(dados);
+      await resend.emails.send({ from, to: dados.email.trim(), subject: assunto, text: texto });
+      enviados.push("cliente");
+    }
+  } catch {
+    // Falha no e-mail nunca deve travar o agendamento — o WhatsApp é o canal garantido.
+  }
+  return enviados;
+}
+
+// Persiste cliente + agendamento no Supabase. Nunca lança, mesma lógica.
+async function salvarNoBanco(dados: DadosAgendamento): Promise<boolean> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return false;
+  try {
+    const { data: cliente, error: erroCliente } = await supabase
+      .from("clientes")
+      .insert({
+        nome: dados.nome,
+        whatsapp: dados.whatsapp,
+        email: dados.email?.trim() || null,
+        aceita_lembretes: dados.aceitaLembretes,
+      })
+      .select("id")
+      .single();
+    if (erroCliente || !cliente) return false;
+
+    const { error: erroAgendamento } = await supabase.from("agendamentos").insert({
+      cliente_id: cliente.id,
+      data: dados.data,
+      horario: dados.horario,
+      observacoes: dados.observacoes?.trim() || null,
+      status: "aguardando_confirmacao",
+    });
+    return !erroAgendamento;
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(request: NextRequest) {
   if (request.headers.get("origin") !== request.nextUrl.origin) return reply("Origem inválida.", 403);
   if (!request.headers.get("content-type")?.includes("application/json")) return reply("Formato inválido.", 415);
-  // Sem chave configurada: não é erro do cliente, só não há o que enviar ainda.
-  if (!configured()) return NextResponse.json({ enviado: false, motivo: "não configurado" }, { status: 202 });
   if (Date.now() - windowStart > 60_000) { windowStart = Date.now(); requests = 0; }
   if (requests >= 20) return reply("Muitas solicitações. Tente novamente em instantes.", 429);
 
@@ -37,36 +91,10 @@ export async function POST(request: NextRequest) {
   requests++;
 
   const dados = body;
-  const resend = new Resend(process.env.RESEND_API_KEY);
-  const from = process.env.RESEND_FROM_EMAIL!;
-  const enviados: string[] = [];
+  const [destinatariosEmail, salvoNoBanco] = await Promise.all([
+    enviarEmails(dados),
+    salvarNoBanco(dados),
+  ]);
 
-  try {
-    if (process.env.ISADORA_NOTIFICATION_EMAIL) {
-      const { assunto, texto } = emailNotificacaoIsadora(dados);
-      await resend.emails.send({
-        from,
-        to: process.env.ISADORA_NOTIFICATION_EMAIL,
-        subject: assunto,
-        text: texto,
-      });
-      enviados.push("isadora");
-    }
-
-    if (dados.aceitaLembretes && dados.email?.trim()) {
-      const { assunto, texto } = emailCuidadosCliente(dados);
-      await resend.emails.send({
-        from,
-        to: dados.email.trim(),
-        subject: assunto,
-        text: texto,
-      });
-      enviados.push("cliente");
-    }
-  } catch {
-    // Falha no envio de e-mail nunca deve travar o agendamento — o WhatsApp já é o canal principal e garantido.
-    return NextResponse.json({ enviado: false, motivo: "falha no envio" }, { status: 502 });
-  }
-
-  return NextResponse.json({ enviado: true, destinatarios: enviados });
+  return NextResponse.json({ destinatariosEmail, salvoNoBanco });
 }

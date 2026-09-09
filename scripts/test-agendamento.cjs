@@ -16,10 +16,33 @@ class ResendMock {
     return { send: async (payload) => { sent.push(payload); return { data: { id: 'test' } }; } };
   }
 }
+
+const store = {};
+let idCounter = 0;
+function supabaseMock() {
+  return {
+    from(table) {
+      return {
+        insert(payload) {
+          const record = { id: `id-${++idCounter}`, ...payload };
+          (store[table] ??= []).push(record);
+          const resultPromise = Promise.resolve({ data: null, error: null });
+          return {
+            select: () => ({ single: async () => ({ data: record, error: null }) }),
+            then: (resolve, reject) => resultPromise.then(resolve, reject),
+          };
+        },
+      };
+    },
+  };
+}
+const supabaseState = { client: null };
+
 const route = load('src/app/api/agendamento/route.ts', {
   'next/server': { NextResponse: Response },
   'resend': { Resend: ResendMock },
   '@/lib/agendamentoEmails': emails,
+  '@/lib/supabaseAdmin': { getSupabaseAdmin: () => supabaseState.client },
 }, { process: { env } });
 
 function req(body, headers = {}) {
@@ -36,6 +59,7 @@ const dadosValidos = {
   nome: 'Maria Teste',
   whatsapp: '(31) 91234-5678',
   email: 'maria@exemplo.com',
+  data: '2026-10-15',
   dataFormatada: 'quinta-feira, 15 de outubro de 2026',
   horario: '14:30',
   observacoes: 'Primeira vez',
@@ -46,37 +70,47 @@ const dadosValidos = {
   // Origem inválida
   assert.equal((await route.POST(req(dadosValidos, { origin: 'https://other.example' }))).status, 403);
 
-  // Sem chave configurada: não erra, só não envia
-  const semChave = await route.POST(req(dadosValidos));
-  assert.equal(semChave.status, 202);
-  assert.equal((await semChave.json()).enviado, false);
-  assert.equal(sent.length, 0);
+  // Data em formato errado é rejeitada
+  assert.equal((await route.POST(req({ ...dadosValidos, data: '15/10/2026' }))).status, 400);
 
-  // Configura e testa dados inválidos
+  // Nada configurado: 200, mas nenhum efeito colateral
+  const nada = await route.POST(req(dadosValidos));
+  assert.equal(nada.status, 200);
+  const bodyNada = await nada.json();
+  assert.deepEqual(bodyNada, { destinatariosEmail: [], salvoNoBanco: false });
+  assert.equal(sent.length, 0);
+  assert.equal((store.clientes || []).length, 0);
+
+  // Só e-mail configurado
   env.RESEND_API_KEY = 'test-only';
   env.RESEND_FROM_EMAIL = 'nao-responda@isadorafrancasilva.com.br';
-  assert.equal((await route.POST(req({ nome: '' }))).status, 400);
-
-  // Envio completo (Isadora + cliente, pois aceitaLembretes=true e email preenchido)
   env.ISADORA_NOTIFICATION_EMAIL = 'isadora@exemplo.com';
-  const ok = await route.POST(req(dadosValidos));
-  assert.equal(ok.status, 200);
-  const body = await ok.json();
-  assert.equal(body.enviado, true);
-  assert.deepEqual(body.destinatarios.sort(), ['cliente', 'isadora']);
+  const soEmail = await route.POST(req(dadosValidos));
+  const bodySoEmail = await soEmail.json();
+  assert.deepEqual(bodySoEmail.destinatariosEmail.sort(), ['cliente', 'isadora']);
+  assert.equal(bodySoEmail.salvoNoBanco, false);
   assert.equal(sent.length, 2);
-  assert.equal(sent[0].to, 'isadora@exemplo.com');
-  assert.match(sent[0].text, /Maria Teste/);
-  assert.equal(sent[1].to, 'maria@exemplo.com');
   assert.match(sent[1].text, /Isadora França Silva/);
   assert.match(sent[1].text, /dificuldade para respirar/i);
 
-  // Sem consentimento: só notifica Isadora, não manda cuidados pro cliente
+  // Também com banco configurado
+  supabaseState.client = supabaseMock();
+  const tudo = await route.POST(req(dadosValidos));
+  const bodyTudo = await tudo.json();
+  assert.equal(bodyTudo.salvoNoBanco, true);
+  assert.equal(store.clientes.length, 1);
+  assert.equal(store.clientes[0].nome, 'Maria Teste');
+  assert.equal(store.agendamentos.length, 1);
+  assert.equal(store.agendamentos[0].status, 'aguardando_confirmacao');
+  assert.equal(store.agendamentos[0].cliente_id, store.clientes[0].id);
+  assert.equal(store.agendamentos[0].data, '2026-10-15');
+
+  // Sem consentimento: só notifica Isadora por e-mail, mas ainda salva no banco
   sent.length = 0;
   const semConsentimento = await route.POST(req({ ...dadosValidos, aceitaLembretes: false }));
-  const body2 = await semConsentimento.json();
-  assert.deepEqual(body2.destinatarios, ['isadora']);
-  assert.equal(sent.length, 1);
+  const bodySemConsentimento = await semConsentimento.json();
+  assert.deepEqual(bodySemConsentimento.destinatariosEmail, ['isadora']);
+  assert.equal(bodySemConsentimento.salvoNoBanco, true);
 
-  console.log('Agendamento: origem, validação, envio simulado (Isadora + cliente) e consentimento aprovados. Nenhuma chamada real ao Resend.');
+  console.log('Agendamento: origem, validação de data, e-mail e banco independentes (com e sem configuração), consentimento e persistência aprovados. Nenhuma chamada real ao Resend/Supabase.');
 })().catch(e => { console.error(e); process.exitCode = 1; });

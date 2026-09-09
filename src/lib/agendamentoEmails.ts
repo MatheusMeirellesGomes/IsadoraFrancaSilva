@@ -6,6 +6,8 @@ export type DadosAgendamento = {
   nome: string;
   whatsapp: string;
   email?: string;
+  /** Data em formato ISO (YYYY-MM-DD), usada para persistir no banco. */
+  data: string;
   dataFormatada: string;
   horario: string;
   observacoes?: string;

@@ -85,6 +85,7 @@ export function BookingForm() {
         nome: form.nome,
         whatsapp: form.whatsapp,
         email: form.email || undefined,
+        data: form.data,
         dataFormatada: formatDataParaMensagem(form.data),
         horario: form.horario,
         observacoes: form.observacoes || undefined,
