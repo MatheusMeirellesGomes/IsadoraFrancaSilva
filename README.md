@@ -11,6 +11,7 @@ clientes e agenda.
 
 - [Next.js](https://nextjs.org/) (App Router) + TypeScript
 - [Tailwind CSS](https://tailwindcss.com/)
+- [React Three Fiber](https://r3f.docs.pmnd.rs/) + [drei](https://github.com/pmndrs/drei) (cena 3D do hero)
 - [Supabase](https://supabase.com/) (PostgreSQL + Auth + Row Level Security)
 - Integração com WhatsApp para confirmação de agendamentos
 
@@ -43,7 +44,10 @@ antes de avançar para a próxima.
       Tailwind, documentação base e controle de conteúdo.
 - [x] **2. Identidade visual e logo** — paleta blush/rosé-gold/vinho,
       tipografia Playfair Display + Poppins, monograma "IF" e favicon.
-- [ ] 3. Cabeçalho, navegação e página inicial
+- [x] **3. Cabeçalho, navegação e página inicial** — hero com cena 3D
+      interativa (React Three Fiber) em tom blush-300, diferenciais e
+      teasers de botox/atendimento domiciliar; páginas provisórias para
+      as rotas do menu ainda não construídas.
 - [ ] 4. Página sobre a Isadora
 - [ ] 5. Página de botox
 - [ ] 6. Atendimento domiciliar

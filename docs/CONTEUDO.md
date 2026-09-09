@@ -100,6 +100,15 @@ acompanhamento em ambiente clínico durante a experiência na clínica.
   `next/font/google` em `src/app/layout.tsx`.
 - **Tom:** feminino, moderno, elegante, profissional — nunca infantil ou
   genérico.
+- **Tom dominante (a partir da Etapa 3):** `blush-300` é a cor de destaque
+  preferida da Isadora — usada como base do gradiente do hero da página
+  inicial. `blush-500` fica reservado para o anel/gema da cena 3D e
+  detalhes pontuais, não como fundo grande.
+- **Direção "moderno/estilizado/3D":** Isadora pediu algo com cena 3D
+  interativa de verdade (não só efeito de profundidade em CSS). Implementado
+  com React Three Fiber + drei — um anel "IF" rosé-gold com uma gema blush
+  girando no hero, reagindo sutilmente ao ponteiro, com fallback estático
+  para quem não tiver WebGL e respeito a `prefers-reduced-motion`.
 - **Logo:** monograma "IF" em anel rosé-gold sobre fundo blush, com a
   assinatura "Isadora França | Biomedicina Estética" — componente em
   `src/components/Logo.tsx`, favicon em `src/app/icon.svg`.
