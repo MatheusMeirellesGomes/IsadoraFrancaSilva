@@ -141,3 +141,7 @@ Antes de publicar com IA: validar respostas reais, configurar limites de
 uso/custo no provedor e proteção distribuída no gateway. O limite atual é
 local por processo (20 requisições/minuto, 3 simultâneas), não global entre
 réplicas. Revisar a política de privacidade na etapa correspondente.
+
+Helena verifica a configuração ao abrir. Sem chave/modelo, oferece respostas
+prontas identificadas e atalhos; não exibe formulário nem pede consentimento
+para OpenAI. Respostas prontas rodam no navegador, sem enviar mensagens.

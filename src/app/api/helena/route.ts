@@ -7,6 +7,9 @@ let windowStart = Date.now();
 let requests = 0;
 let active = 0;
 const reply = (error: string, status: number) => NextResponse.json({ error }, { status });
+export async function GET() {
+  return NextResponse.json({ configured: Boolean(process.env.OPENAI_API_KEY && process.env.OPENAI_MODEL) }, { headers: { "Cache-Control": "no-store" } });
+}
 export async function POST(request: NextRequest) {
   if (request.headers.get("origin") !== request.nextUrl.origin) return reply("Origem inválida.", 403);
   if (!request.headers.get("content-type")?.includes("application/json")) return reply("Formato inválido.", 415);

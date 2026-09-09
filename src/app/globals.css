@@ -72,3 +72,7 @@
 .helena-panel, .helena-scroll, .helena-form { overscroll-behavior: none; }
 .helena-scroll, .helena-form { touch-action: pan-y; }
 .helena-scroll:focus-visible { outline: 2px solid #8e485d; outline-offset: -3px; }
+
+.helena-quick { margin-bottom: 16px; }
+.helena-quick button { display: inline-block; border: 1px solid #d5b4c0; border-radius: 14px; padding: 8px 10px; margin: 6px 5px 0 0; font-size: 13px; color: #5b1a2b; background: white; }
+.helena-quick button[aria-pressed="true"] { background: #5b1a2b; color: white; }
