@@ -15,39 +15,20 @@ export function Logo({ withSignature = true, className = "" }: LogoProps) {
     <div className={`flex items-center gap-3 ${className}`}>
       <svg
         viewBox="0 0 100 100"
-        width="48"
-        height="48"
+        className="shrink-0"
+        width="52"
+        height="52"
         role="img"
         aria-label="Monograma Isadora França"
       >
-        <circle cx="50" cy="50" r="47" fill="#FDEEF1" />
-        <circle cx="50" cy="50" r="47" fill="none" stroke="#C9A66B" strokeWidth="1.4" />
-        <circle cx="50" cy="50" r="41" fill="none" stroke="#D9BD8D" strokeWidth="0.6" opacity="0.55" />
-
-        <g fill="#5B1A2B">
-          <rect x="32" y="30" width="16" height="4.5" rx="1.5" />
-          <rect x="37.5" y="34" width="5" height="26" rx="1" />
-          <rect x="32" y="59.5" width="16" height="4.5" rx="1.5" />
-
-          <rect x="49" y="30" width="5.5" height="34" rx="1" />
-          <rect x="49" y="30" width="21" height="5" rx="1.5" />
-          <rect x="49" y="43" width="16" height="5" rx="1.5" />
-          <rect x="46" y="59.5" width="11" height="4" rx="1.5" />
-        </g>
-
-        <path d="M 26 70 Q 50 80 74 70" fill="none" stroke="#C9A66B" strokeWidth="1.3" strokeLinecap="round" />
-        <g fill="#D9BD8D">
-          <ellipse cx="50" cy="76" rx="2" ry="4" />
-          <ellipse cx="45" cy="78" rx="1.6" ry="3.2" transform="rotate(-35 45 78)" />
-          <ellipse cx="55" cy="78" rx="1.6" ry="3.2" transform="rotate(35 55 78)" />
-        </g>
+<path d="M31 23h23v2c-7 0-8 2-8 8v35c0 6 1 8 8 8v2H31v-2c7 0 8-2 8-8V33c0-6-1-8-8-8z" fill="#5B1A2B"/><path d="M49 23h31l1 15h-2c-2-10-6-12-16-12h-4v23h5c7 0 9-2 10-8h2v20h-2c-1-7-3-9-10-9h-5v17c0 5 2 7 9 7v2H49v-2c4-1 4-3 4-8V33c0-5 0-7-4-8z" fill="#5B1A2B"/><path d="M20 60c-2-18 5-36 22-45M59 86c15-4 25-16 27-30" fill="none" stroke="#B08A4E" stroke-width="1.2"/><path d="m77 18 2 4 4 2-4 2-2 4-2-4-4-2 4-2z" fill="#B08A4E"/>
       </svg>
       {withSignature && (
         <div className="leading-tight">
           <p className="font-display text-lg font-semibold text-wine">
             Isadora França
           </p>
-          <p className="text-xs uppercase tracking-[0.15em] text-rosegold-600">
+          <p className="text-xs uppercase tracking-[0.15em] text-[#794354]">
             Biomedicina Estética
           </p>
         </div>

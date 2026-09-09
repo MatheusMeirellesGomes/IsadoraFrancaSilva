@@ -1,3 +1,4 @@
+import { BrandPanel } from "@/components/BrandPanel";
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { CONTACTS } from "@/lib/contacts";
@@ -21,12 +22,12 @@ export default function BotoxPage() {
       <Header />
       <main>
         <section className="bg-gradient-to-br from-white via-blush-100 to-blush-200 px-6 py-14 sm:py-20">
-          <div className="mx-auto max-w-5xl">
+          <div className="mx-auto grid max-w-5xl items-center gap-12 md:grid-cols-[1.4fr_1fr]"><div>
             <p className="text-sm uppercase tracking-[.18em] text-[#794354]">Conhecer o procedimento</p>
             <h1 className="mt-4 font-display text-4xl leading-tight text-wine sm:text-6xl">Botox, com cuidado<br /><span className="italic text-[#8e485d]">e informação.</span></h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-graphite">Meu foco é valorizar a sua naturalidade. Aqui, explico o produto que utilizo e o que considerar antes de decidir pelo procedimento.</p>
             <a href="#duvidas" className="contact-link mt-6 inline-block">Veja as dúvidas frequentes ↓</a>
-          </div>
+          </div><BrandPanel title="Sua expressão, seu cuidado." text="Informação clara e atenção à sua individualidade." /></div>
         </section>
 
         <section className="mx-auto grid max-w-5xl gap-10 px-6 py-14 md:grid-cols-2 md:gap-16">

@@ -1,3 +1,4 @@
+import { BrandPanel } from "@/components/BrandPanel";
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { CONTACTS } from "@/lib/contacts";
@@ -14,7 +15,7 @@ export default function AtendimentoDomiciliarPage() {
       <Header />
       <main>
         <section className="bg-gradient-to-br from-white via-blush-100 to-blush-200 px-6 py-14 sm:py-20">
-          <div className="mx-auto max-w-5xl">
+          <div className="mx-auto grid max-w-5xl items-center gap-12 md:grid-cols-[1.4fr_1fr]"><div>
             <p className="text-sm uppercase tracking-[.18em] text-[#794354]">
               Como eu atendo
             </p>
@@ -28,7 +29,7 @@ export default function AtendimentoDomiciliarPage() {
               ofereceria em qualquer atendimento — sem você precisar sair de
               casa.
             </p>
-          </div>
+          </div><BrandPanel title="Um cuidado perto de você." text="Converse comigo para combinar a região, a data e os detalhes do atendimento." /></div>
         </section>
 
         <section className="mx-auto grid max-w-5xl gap-10 px-6 py-14 md:grid-cols-2 md:gap-16">
