@@ -170,7 +170,12 @@ export function LoginForm() {
       </Link>
       <p className="mt-3 max-w-sm text-center text-xs text-graphite/60">
         Não é preciso criar conta para navegar ou agendar. A conta é só
-        para você acompanhar seus próprios agendamentos depois.
+        para você acompanhar seus próprios agendamentos depois. Ao criar
+        conta, você concorda com a{" "}
+        <Link href="/politica-de-privacidade" className="underline underline-offset-4 hover:text-wine">
+          Política de Privacidade
+        </Link>
+        .
       </p>
     </div>
   );

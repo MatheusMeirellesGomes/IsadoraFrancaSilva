@@ -84,7 +84,12 @@ antes de avançar para a próxima.
       Agendamentos (todas as clientes, muda status, marca "realizado" —
       isso preenche `procedimento_realizado_em` automaticamente) e
       Pacientes (lista completa).
-- [ ] 13. Privacidade e consentimento (LGPD)
+- [x] **13. Privacidade e consentimento (LGPD)** —
+      "/politica-de-privacidade" (dados coletados, para que servem,
+      terceiros envolvidos — Supabase/Resend/OpenAI/WhatsApp, cookies,
+      direitos da titular) e "/politica-de-cancelamento" (honesta sobre
+      não haver prazo/taxa formal ainda definidos). Linkadas no rodapé,
+      no formulário de agendamento e na tela de login/cadastro.
 - [ ] 14. Responsividade, acessibilidade e testes
 - [ ] 15. Preparação para hospedagem e domínio (IsadoraFrancaSilva.com.br)
 - [x] **16. Assistente virtual "Helena"** — mascote, chat com respostas

@@ -465,3 +465,26 @@ própria conta pelo site — combinado que Matheus faz isso pessoalmente
 com ela. Depois disso, falta rodar o comando SQL de uma linha (já
 documentado no README, seção "Painel administrativo") para promover a
 conta dela a admin.
+
+## Etapa 13 — Política de Privacidade e de Cancelamento
+
+A pedido de Matheus ("termina o site, veja o que falta"): duas páginas
+que já eram do escopo original (itens 9 e 10 do briefing) e nunca tinham
+sido construídas.
+
+- `/politica-de-privacidade`: baseada exatamente no que o código faz de
+  verdade — dados coletados no agendamento e no cadastro, os terceiros
+  envolvidos (Supabase, Resend, OpenAI/Ollama só com consentimento da
+  conversa, WhatsApp), armazenamento local da sessão (não é cookie de
+  rastreamento), e os direitos da titular sob a LGPD. Nenhum prazo de
+  retenção de dados foi inventado — o texto é honesto que isso ainda não
+  foi formalizado.
+- `/politica-de-cancelamento`: como "Política de cancelamento" segue
+  `PENDENTE` neste documento (nunca foi confirmado prazo de aviso nem
+  taxa), a página **não inventa** essas regras — explica que
+  cancelamento/remarcação são combinados diretamente pelo WhatsApp, e diz
+  abertamente que a página será atualizada quando esses termos existirem.
+
+Linkadas no rodapé (todas as páginas), no formulário de agendamento e na
+tela de login/cadastro, perto de onde os dados são efetivamente
+coletados.

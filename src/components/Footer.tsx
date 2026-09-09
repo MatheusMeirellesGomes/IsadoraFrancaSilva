@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CONTACTS } from "@/lib/contacts";
 
 export function Footer() {
@@ -18,7 +19,13 @@ export function Footer() {
           </div>
         </nav>
       </div>
-      <div className="border-t border-blush-200 px-6 py-5 text-center text-xs leading-relaxed text-[#794354]">© {new Date().getFullYear()} Isadora França Silva. Todos os direitos reservados.</div>
+      <div className="border-t border-blush-200 px-6 py-5 text-center text-xs leading-relaxed text-[#794354]">
+        <nav aria-label="Políticas" className="mb-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+          <Link href="/politica-de-privacidade" className="underline underline-offset-4 hover:text-wine">Política de Privacidade</Link>
+          <Link href="/politica-de-cancelamento" className="underline underline-offset-4 hover:text-wine">Política de Cancelamento</Link>
+        </nav>
+        © {new Date().getFullYear()} Isadora França Silva. Todos os direitos reservados.
+      </div>
     </footer>
   );
 }

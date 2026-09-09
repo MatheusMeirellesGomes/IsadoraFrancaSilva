@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { CONTACTS } from "@/lib/contacts";
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 
@@ -223,7 +224,15 @@ export function BookingForm() {
       <p className="text-sm text-graphite/70">
         Não é preciso criar conta. Ao confirmar, você será direcionada ao
         WhatsApp com esses dados já preenchidos — Isadora confirma, remarca
-        ou cancela diretamente com você por lá.
+        ou cancela diretamente com você por lá. Veja a{" "}
+        <Link href="/politica-de-privacidade" className="underline underline-offset-4 hover:text-wine">
+          Política de Privacidade
+        </Link>{" "}
+        e a{" "}
+        <Link href="/politica-de-cancelamento" className="underline underline-offset-4 hover:text-wine">
+          Política de Cancelamento
+        </Link>
+        .
       </p>
 
       <button
