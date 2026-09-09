@@ -378,3 +378,13 @@ Ainda faltam (próximos commits): ligar o agendamento à conta quando a
 cliente estiver logada (hoje toda submissão cria uma linha nova e solta
 em `clientes`, sem `user_id`) e a página `/meus-atendimentos` que lista
 os dados usando essas policies.
+
+Parte 2: agendamento agora liga à conta quando a cliente está logada.
+`BookingForm` busca o token da sessão atual (se houver) e manda no
+header `Authorization`; `/api/agendamento` valida esse token
+(`supabase.auth.getUser`) e, se válido, **reaproveita** o registro de
+`clientes` já ligado àquela conta (por `user_id`) em vez de criar um
+novo a cada envio — assim "Meus atendimentos" mostra um histórico
+coerente, não clientes duplicados. Token ausente ou inválido é tratado
+como visitante normal, sem quebrar nada. Testes atualizados em
+`scripts/test-agendamento.cjs` cobrem sessão válida, inválida e ausente.

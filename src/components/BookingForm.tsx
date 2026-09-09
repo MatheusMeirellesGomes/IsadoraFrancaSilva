@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CONTACTS } from "@/lib/contacts";
+import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 
 type FormState = {
   nome: string;
@@ -62,6 +63,37 @@ function montarMensagem(form: FormState) {
   return linhas.join("\n");
 }
 
+// Canal auxiliar (e-mail + banco) — nunca bloqueia nem afeta o WhatsApp,
+// que é o canal garantido. Se a cliente estiver logada, manda o token da
+// sessão para o agendamento ficar ligado à conta dela ("Meus
+// atendimentos"); sem Supabase configurado, segue sem token normalmente.
+async function notificarAgendamento(form: FormState) {
+  const supabase = getSupabaseBrowserClient();
+  let accessToken: string | undefined;
+  if (supabase) {
+    const { data } = await supabase.auth.getSession();
+    accessToken = data.session?.access_token;
+  }
+
+  await fetch("/api/agendamento", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+    },
+    body: JSON.stringify({
+      nome: form.nome,
+      whatsapp: form.whatsapp,
+      email: form.email || undefined,
+      data: form.data,
+      dataFormatada: formatDataParaMensagem(form.data),
+      horario: form.horario,
+      observacoes: form.observacoes || undefined,
+      aceitaLembretes: form.aceitaLembretes,
+    }),
+  });
+}
+
 export function BookingForm() {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
 
@@ -73,25 +105,10 @@ export function BookingForm() {
     event.preventDefault();
     const mensagem = montarMensagem(form);
     const url = `${CONTACTS.whatsapp}?text=${encodeURIComponent(mensagem)}`;
+    // window.open precisa ficar aqui, síncrono no clique — se entrasse
+    // depois de um await, navegadores podem bloquear como pop-up.
     window.open(url, "_blank", "noopener,noreferrer");
-
-    // Canal auxiliar por e-mail — nunca bloqueia nem afeta o WhatsApp, que
-    // é o canal garantido. Sem RESEND_API_KEY configurada, a rota apenas
-    // responde 202 sem enviar nada.
-    fetch("/api/agendamento", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        nome: form.nome,
-        whatsapp: form.whatsapp,
-        email: form.email || undefined,
-        data: form.data,
-        dataFormatada: formatDataParaMensagem(form.data),
-        horario: form.horario,
-        observacoes: form.observacoes || undefined,
-        aceitaLembretes: form.aceitaLembretes,
-      }),
-    }).catch(() => {});
+    notificarAgendamento(form).catch(() => {});
   }
 
   return (

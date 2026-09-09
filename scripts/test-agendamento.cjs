@@ -21,6 +21,12 @@ const store = {};
 let idCounter = 0;
 function supabaseMock() {
   return {
+    auth: {
+      getUser: async (token) => {
+        if (token === 'valid-token') return { data: { user: { id: 'user-1' } }, error: null };
+        return { data: { user: null }, error: { message: 'invalid token' } };
+      },
+    },
     from(table) {
       return {
         insert(payload) {
@@ -30,6 +36,25 @@ function supabaseMock() {
           return {
             select: () => ({ single: async () => ({ data: record, error: null }) }),
             then: (resolve, reject) => resultPromise.then(resolve, reject),
+          };
+        },
+        select() {
+          return {
+            eq: (field, value) => ({
+              maybeSingle: async () => {
+                const found = (store[table] || []).find((r) => r[field] === value);
+                return { data: found || null, error: null };
+              },
+            }),
+          };
+        },
+        update(payload) {
+          return {
+            eq: async (field, value) => {
+              const found = (store[table] || []).find((r) => r[field] === value);
+              if (found) Object.assign(found, payload);
+              return { data: null, error: null };
+            },
           };
         },
       };
@@ -93,17 +118,35 @@ const dadosValidos = {
   assert.match(sent[1].text, /Isadora França Silva/);
   assert.match(sent[1].text, /dificuldade para respirar/i);
 
-  // Também com banco configurado
+  // Também com banco configurado, sem login: cria cliente solto (sem user_id)
   supabaseState.client = supabaseMock();
-  const tudo = await route.POST(req(dadosValidos));
-  const bodyTudo = await tudo.json();
-  assert.equal(bodyTudo.salvoNoBanco, true);
+  const semLogin = await route.POST(req(dadosValidos));
+  const bodySemLogin = await semLogin.json();
+  assert.equal(bodySemLogin.salvoNoBanco, true);
   assert.equal(store.clientes.length, 1);
-  assert.equal(store.clientes[0].nome, 'Maria Teste');
+  assert.equal(store.clientes[0].user_id, undefined);
   assert.equal(store.agendamentos.length, 1);
   assert.equal(store.agendamentos[0].status, 'aguardando_confirmacao');
   assert.equal(store.agendamentos[0].cliente_id, store.clientes[0].id);
   assert.equal(store.agendamentos[0].data, '2026-10-15');
+
+  // Logada (token válido): primeiro agendamento cria o cliente já ligado à conta
+  const logada1 = await route.POST(req(dadosValidos, { authorization: 'Bearer valid-token' }));
+  assert.equal((await logada1.json()).salvoNoBanco, true);
+  assert.equal(store.clientes.length, 2);
+  const clienteLogado = store.clientes.find((c) => c.user_id === 'user-1');
+  assert.ok(clienteLogado, 'deveria ter criado um cliente com user_id');
+
+  // Segundo agendamento da mesma conta reaproveita o mesmo cliente (não duplica)
+  const logada2 = await route.POST(req({ ...dadosValidos, horario: '16:00' }, { authorization: 'Bearer valid-token' }));
+  assert.equal((await logada2.json()).salvoNoBanco, true);
+  assert.equal(store.clientes.length, 2, 'não deveria criar um segundo cliente para a mesma conta');
+  assert.equal(store.agendamentos.filter((a) => a.cliente_id === clienteLogado.id).length, 2);
+
+  // Token inválido é tratado como visitante (não quebra, não vincula)
+  const tokenInvalido = await route.POST(req(dadosValidos, { authorization: 'Bearer lixo' }));
+  assert.equal((await tokenInvalido.json()).salvoNoBanco, true);
+  assert.equal(store.clientes.length, 3);
 
   // Sem consentimento: só notifica Isadora por e-mail, mas ainda salva no banco
   sent.length = 0;
@@ -112,5 +155,5 @@ const dadosValidos = {
   assert.deepEqual(bodySemConsentimento.destinatariosEmail, ['isadora']);
   assert.equal(bodySemConsentimento.salvoNoBanco, true);
 
-  console.log('Agendamento: origem, validação de data, e-mail e banco independentes (com e sem configuração), consentimento e persistência aprovados. Nenhuma chamada real ao Resend/Supabase.');
+  console.log('Agendamento: origem, validação de data, e-mail e banco independentes, vínculo de conta (sessão válida/inválida/ausente, sem duplicar cliente) e consentimento aprovados. Nenhuma chamada real ao Resend/Supabase.');
 })().catch(e => { console.error(e); process.exitCode = 1; });

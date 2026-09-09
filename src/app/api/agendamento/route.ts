@@ -49,25 +49,69 @@ async function enviarEmails(dados: DadosAgendamento): Promise<string[]> {
   return enviados;
 }
 
+// Se o pedido trouxer um token de sessão válido, resolve o id do usuário
+// logado — usado para ligar o agendamento à conta dele. Nunca lança.
+async function getUserIdDoToken(request: NextRequest): Promise<string | null> {
+  const auth = request.headers.get("authorization");
+  if (!auth?.startsWith("Bearer ")) return null;
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return null;
+  try {
+    const { data, error } = await supabase.auth.getUser(auth.slice("Bearer ".length));
+    if (error || !data.user) return null;
+    return data.user.id;
+  } catch {
+    return null;
+  }
+}
+
 // Persiste cliente + agendamento no Supabase. Nunca lança, mesma lógica.
-async function salvarNoBanco(dados: DadosAgendamento): Promise<boolean> {
+// Quando userId está presente, reaproveita (ou cria e liga) um único
+// registro de cliente por conta, em vez de uma linha nova a cada envio.
+async function salvarNoBanco(dados: DadosAgendamento, userId: string | null): Promise<boolean> {
   const supabase = getSupabaseAdmin();
   if (!supabase) return false;
   try {
-    const { data: cliente, error: erroCliente } = await supabase
-      .from("clientes")
-      .insert({
-        nome: dados.nome,
-        whatsapp: dados.whatsapp,
-        email: dados.email?.trim() || null,
-        aceita_lembretes: dados.aceitaLembretes,
-      })
-      .select("id")
-      .single();
-    if (erroCliente || !cliente) return false;
+    const dadosCliente = {
+      nome: dados.nome,
+      whatsapp: dados.whatsapp,
+      email: dados.email?.trim() || null,
+      aceita_lembretes: dados.aceitaLembretes,
+    };
+
+    let clienteId: string;
+
+    if (userId) {
+      const { data: existente } = await supabase
+        .from("clientes")
+        .select("id")
+        .eq("user_id", userId)
+        .maybeSingle();
+
+      if (existente) {
+        clienteId = existente.id;
+        await supabase.from("clientes").update(dadosCliente).eq("id", clienteId);
+      } else {
+        const { data: novo, error } = await supabase
+          .from("clientes")
+          .insert({ ...dadosCliente, user_id: userId })
+          .select("id")
+          .single();
+        if (error || !novo) return false;
+        clienteId = novo.id;
+      }
+    } else {
+      const { data: novo, error } = await supabase
+        .from("clientes")
+        .insert(dadosCliente)
+        .select("id")
+        .single();
+      if (error || !novo) return false;
+      clienteId = novo.id;
+    }
 
     const { error: erroAgendamento } = await supabase.from("agendamentos").insert({
-      cliente_id: cliente.id,
+      cliente_id: clienteId,
       data: dados.data,
       horario: dados.horario,
       observacoes: dados.observacoes?.trim() || null,
@@ -91,9 +135,10 @@ export async function POST(request: NextRequest) {
   requests++;
 
   const dados = body;
+  const userId = await getUserIdDoToken(request);
   const [destinatariosEmail, salvoNoBanco] = await Promise.all([
     enviarEmails(dados),
-    salvarNoBanco(dados),
+    salvarNoBanco(dados, userId),
   ]);
 
   return NextResponse.json({ destinatariosEmail, salvoNoBanco });
