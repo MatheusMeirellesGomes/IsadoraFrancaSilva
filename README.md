@@ -49,7 +49,9 @@ antes de avançar para a próxima.
       teasers de botox/atendimento domiciliar; páginas provisórias para
       as rotas do menu ainda não construídas.
 - [ ] 4. Página sobre a Isadora
-- [ ] 5. Página de botox
+- [x] **5. Página de botox** — feita fora de ordem, a pedido da Isadora:
+      produto (Dysport), filosofia de atendimento (naturalidade, segurança,
+      sem exagero) e valor (a partir de R$750, inicial).
 - [ ] 6. Atendimento domiciliar
 - [ ] 7. Formulário de agendamento
 - [ ] 8. Banco de dados (Supabase)

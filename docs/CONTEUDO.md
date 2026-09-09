@@ -65,6 +65,20 @@ bichectomia, rinomodelação) **nunca devem ser apresentados como serviço
 dela** — apenas, se fizer sentido no texto de "Sobre", como vivência de
 acompanhamento em ambiente clínico durante a experiência na clínica.
 
+## Botox — produto e abordagem
+
+- **Produto utilizado:** Dysport (toxina botulínica tipo A). Apresentar como
+  um produto de alta qualidade e reconhecido no mercado — **evitar
+  superlativos absolutos** como "o melhor botox do mercado", pois
+  profissionais de biomedicina estão sujeitos ao código de ética do CFBio,
+  que restringe publicidade comparativa/superlativa. A mensagem real por
+  trás do pedido (produto de confiança, escolha técnica consciente) é
+  comunicada sem a alegação absoluta.
+- **Filosofia de atendimento:** prioriza a naturalidade do resultado da
+  cliente, zela pela segurança acima de tudo e evita o exagero — o
+  objetivo é devolver autoestima, não alterar a aparência de forma
+  artificial ou chamativa.
+
 ## Botox — dados comerciais
 
 - **Valor atual do botox:** R$ 750 — valor inicial enquanto Isadora está
@@ -106,9 +120,12 @@ acompanhamento em ambiente clínico durante a experiência na clínica.
   detalhes pontuais, não como fundo grande.
 - **Direção "moderno/estilizado/3D":** Isadora pediu algo com cena 3D
   interativa de verdade (não só efeito de profundidade em CSS). Implementado
-  com React Three Fiber + drei — um anel "IF" rosé-gold com uma gema blush
-  girando no hero, reagindo sutilmente ao ponteiro, com fallback estático
-  para quem não tiver WebGL e respeito a `prefers-reduced-motion`.
+  com React Three Fiber + drei. Primeira versão (anel + gema) foi trocada
+  por não ficar clara ("parecia um planeta") — versão atual é um medalhão
+  rosé-gold com as letras "IF" montadas em volume 3D dentro do anel,
+  girando devagar como um pingente, reagindo sutilmente ao ponteiro, com
+  fallback estático para quem não tiver WebGL e respeito a
+  `prefers-reduced-motion`.
 - **Logo:** monograma "IF" em anel rosé-gold sobre fundo blush, com a
   assinatura "Isadora França | Biomedicina Estética" — componente em
   `src/components/Logo.tsx`, favicon em `src/app/icon.svg`.
