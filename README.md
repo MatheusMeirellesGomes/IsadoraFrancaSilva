@@ -1,2 +1,70 @@
-# IsadoraFrancaSilva
-Site profissional da biomédica esteta Isadora França, criado para apresentar sua trajetória, procedimentos e valores, além de facilitar o agendamento de atendimentos domiciliares. Conta com cadastro de clientes, organização da agenda, área administrativa e integração direta com o WhatsApp.
+# Isadora França Silva — site profissional
+
+Site institucional e de agendamentos para Isadora França Silva, biomédica
+esteta em Contagem/MG, formada pelo Centro Universitário UNA. Apresenta sua
+formação e experiência, informações sobre botox e atendimento domiciliar, e
+permite agendamento (com ou sem conta) com redirecionamento para WhatsApp.
+Conta com área da cliente e painel administrativo para Isadora gerenciar
+clientes e agenda.
+
+## Stack
+
+- [Next.js](https://nextjs.org/) (App Router) + TypeScript
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Supabase](https://supabase.com/) (PostgreSQL + Auth + Row Level Security)
+- Integração com WhatsApp para confirmação de agendamentos
+
+## Como rodar localmente
+
+```bash
+npm install
+npm run dev
+```
+
+Acesse `http://localhost:3000`.
+
+Copie `.env.example` para `.env.local` e preencha com as credenciais reais
+quando a integração com Supabase estiver disponível (Etapa 8).
+
+## Conteúdo do site
+
+Todo dado real do negócio (formação, experiência, valores, contatos, etc.)
+está centralizado em [`docs/CONTEUDO.md`](./docs/CONTEUDO.md), a fonte única
+da verdade. Nenhuma página deve apresentar informação que não esteja
+documentada ali — campos ainda não confirmados aparecem como pendentes até
+serem validados por Isadora.
+
+## Roadmap de desenvolvimento
+
+O projeto é construído em etapas pequenas, uma por commit, com aprovação
+antes de avançar para a próxima.
+
+- [x] **1. Estrutura inicial e README** — scaffold Next.js + TypeScript +
+      Tailwind, documentação base e controle de conteúdo.
+- [ ] 2. Identidade visual e logo
+- [ ] 3. Cabeçalho, navegação e página inicial
+- [ ] 4. Página sobre a Isadora
+- [ ] 5. Página de botox
+- [ ] 6. Atendimento domiciliar
+- [ ] 7. Formulário de agendamento
+- [ ] 8. Banco de dados (Supabase)
+- [ ] 9. Integração com WhatsApp
+- [ ] 10. Cadastro e login (opcional para a cliente)
+- [ ] 11. Área da cliente
+- [ ] 12. Painel administrativo
+- [ ] 13. Privacidade e consentimento (LGPD)
+- [ ] 14. Responsividade, acessibilidade e testes
+- [ ] 15. Preparação para hospedagem e domínio (IsadoraFrancaSilva.com.br)
+
+## Segurança e privacidade
+
+- Autenticação via Supabase Auth; painel administrativo protegido por rota.
+- Row Level Security no banco de dados para isolar dados por cliente.
+- Nenhuma chave privada exposta no frontend — apenas variáveis `NEXT_PUBLIC_*`
+  chegam ao navegador; o restante fica só no servidor.
+- `.env.example` nunca contém credenciais reais.
+- Coleta apenas os dados necessários para o agendamento (nome, telefone,
+  endereço, data/horário, observações), com consentimento explícito.
+- Endereço e dados da cliente nunca ficam visíveis publicamente — só
+  acessíveis à própria cliente e à Isadora no painel administrativo.
+- Nenhum prontuário médico é implementado nesta primeira versão.
