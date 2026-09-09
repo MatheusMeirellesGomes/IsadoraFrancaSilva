@@ -400,3 +400,36 @@ cobertos: carregando, Supabase não configurado, deslogada (com CTA para
 "Entrar" (→ "/") para quem não está logada, e "Meus atendimentos" (→
 "/meus-atendimentos") + "Sair" para quem está — em desktop e no menu
 mobile.
+
+## Etapa 12 — Painel administrativo (em andamento)
+
+Pedido de Matheus em 09/09/2026: o site funciona como a agenda de
+verdade da Isadora — uma conta administradora, dela, com acesso à lista
+de pacientes e a quem ela está atendendo.
+
+Parte 1: `supabase/migrations/0004_painel_admin_rls.sql` — policies de
+RLS (select + update) para uma conta marcada como admin ver e gerenciar
+**todas** as clientes e agendamentos, não só os próprios. O que marca a
+conta como admin é o claim `app_metadata.role = "admin"` no usuário do
+Supabase Auth — **não** uma coluna numa tabela nossa, de propósito:
+`app_metadata` só pode ser alterado com a chave de serviço, nunca pela
+própria pessoa logada, então ninguém consegue virar admin sozinha
+criando conta pelo site.
+
+**Passo manual necessário (só a Isadora/Matheus podem fazer):** depois
+que a Isadora criar a conta dela pelo site normalmente, rodar uma vez no
+SQL Editor do Supabase (comando exato no comentário da migração,
+trocando o e-mail):
+
+```sql
+update auth.users
+set raw_app_meta_data = raw_app_meta_data || '{"role":"admin"}'::jsonb
+where email = 'email-da-isadora@exemplo.com';
+```
+
+Ela precisa sair e entrar de novo depois disso pra sessão pegar o claim
+novo. `src/lib/isAdminSession.ts` lê esse claim no navegador só para
+decidir o que mostrar na interface — a proteção de verdade dos dados é a
+policy de RLS, que faz a mesma checagem no banco.
+
+Ainda falta: a própria página do painel (`/painel`, próximo commit).
