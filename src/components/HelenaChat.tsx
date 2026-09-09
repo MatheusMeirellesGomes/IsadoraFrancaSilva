@@ -13,6 +13,7 @@ const QUICK_ANSWERS = [
   { question: "Qual é a formação dela?", answer: "Isadora é formada em Biomedicina pela UNA (2021–2025). Teve experiência assistida na Clínica Dra. Ana Lemos, de julho de 2023 a abril de 2026. Conheça sua trajetória em Conhecer Isadora." },
 ];
 export function HelenaChat() {
+  const [provider, setProvider] = useState("openai");
   const [status, setStatus] = useState<"loading" | "configured" | "offline">("loading");
   const [quickAnswer, setQuickAnswer] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
@@ -52,7 +53,7 @@ export function HelenaChat() {
     const controller = new AbortController();
     fetch("/api/helena", { signal: controller.signal, cache: "no-store" })
       .then(response => { if (!response.ok) throw new Error(); return response.json(); })
-      .then(data => setStatus(data.configured ? "configured" : "offline"))
+      .then(data => { setProvider(data.provider); setStatus(data.configured ? "configured" : "offline"); })
       .catch(() => { if (!controller.signal.aborted) setStatus("offline"); });
     return () => controller.abort();
   }, [open]);
@@ -65,7 +66,7 @@ export function HelenaChat() {
     const history = [...messages.slice(-10), message];
     setMessages(history); setDraft("");
     const controller = new AbortController(); pending.current = controller;
-    const timeout = setTimeout(() => controller.abort(), 30_000);
+    const timeout = setTimeout(() => controller.abort(), 95_000);
     try {
       const response = await fetch("/api/helena", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: history, consent: true }), signal: controller.signal });
       const data = await response.json();
@@ -101,7 +102,7 @@ export function HelenaChat() {
           <a href={CONTACTS.instagram} target="_blank" rel="noopener noreferrer">Instagram ↗<span className="sr-only"> (nova aba)</span></a>
         </nav>
         {status !== "configured" ? <div className="helena-form"><p className="text-sm leading-6 text-[#794354]" role="status">{status === "loading" ? "Verificando a conversa por IA…" : "Por enquanto, posso ajudar com as respostas rápidas acima. A conversa livre por IA ainda não está ativa."}</p></div> : <form onSubmit={send} className="helena-form">
-          <label className="helena-consent"><input type="checkbox" checked={consent} onChange={e => setConsent(e.target.checked)} disabled={busy} />Aceito enviar minhas mensagens à OpenAI para receber respostas de IA.</label>
+          <label className="helena-consent"><input type="checkbox" checked={consent} onChange={e => setConsent(e.target.checked)} disabled={busy} />{provider === "local" ? "Aceito processar minhas mensagens pela IA local deste site." : "Aceito enviar minhas mensagens à OpenAI para receber respostas de IA."}</label>
           <p className="helena-note">Não envie dados de saúde ou documentos. A Helena pode errar e não substitui avaliação profissional. Conversa mantida só enquanto esta página estiver aberta.</p>
           {error && <p role="alert" className="helena-error">{error}</p>}
           <div className="helena-input-row"><label htmlFor="helena-message" className="sr-only">Sua mensagem</label><input id="helena-message" value={draft} onChange={e => setDraft(e.target.value)} maxLength={1000} placeholder="Escreva sua dúvida…" disabled={busy} autoComplete="off" /><button type="submit" disabled={!consent || busy || !draft.trim()} aria-label="Enviar mensagem">↑</button></div>

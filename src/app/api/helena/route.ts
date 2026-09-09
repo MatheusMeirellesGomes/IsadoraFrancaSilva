@@ -7,13 +7,23 @@ let windowStart = Date.now();
 let requests = 0;
 let active = 0;
 const reply = (error: string, status: number) => NextResponse.json({ error }, { status });
+const local = () => process.env.HELENA_PROVIDER === "ollama";
+const localModel = () => process.env.OLLAMA_MODEL || "qwen3:4b-instruct";
 export async function GET() {
-  return NextResponse.json({ configured: Boolean(process.env.OPENAI_API_KEY && process.env.OPENAI_MODEL) }, { headers: { "Cache-Control": "no-store" } });
+  let configured = Boolean(process.env.OPENAI_API_KEY && process.env.OPENAI_MODEL);
+  if (local()) {
+    try {
+      const result = await fetch("http://127.0.0.1:11434/api/tags", { signal: AbortSignal.timeout(2000), cache: "no-store" });
+      const data = await result.json();
+      configured = result.ok && data.models?.some((m: {name: string}) => m.name === localModel());
+    } catch { configured = false; }
+  }
+  return NextResponse.json({ configured: Boolean(configured), provider: local() ? "local" : "openai" }, { headers: { "Cache-Control": "no-store" } });
 }
 export async function POST(request: NextRequest) {
   if (request.headers.get("origin") !== request.nextUrl.origin) return reply("Origem inválida.", 403);
   if (!request.headers.get("content-type")?.includes("application/json")) return reply("Formato inválido.", 415);
-  if (!process.env.OPENAI_API_KEY || !process.env.OPENAI_MODEL) return reply("A conversa por IA ainda não está disponível. Use os atalhos abaixo ou fale com Isadora pelo WhatsApp.", 503);
+  if (!local() && (!process.env.OPENAI_API_KEY || !process.env.OPENAI_MODEL)) return reply("A conversa por IA ainda não está disponível. Use os atalhos abaixo ou fale com Isadora pelo WhatsApp.", 503);
   if (Date.now() - windowStart > 60_000) { windowStart = Date.now(); requests = 0; }
   if (requests >= 20 || active >= 3) return reply("Estou recebendo muitas mensagens. Tente novamente em um minuto.", 429);
   // Limite real de leitura, inclusive para requisições sem Content-Length.
@@ -37,6 +47,18 @@ export async function POST(request: NextRequest) {
   if (!body || body.consent !== true || !validMessages(body.messages)) return reply("Confira a mensagem e o consentimento.", 400);
   requests++; active++;
   try {
+    if (local()) {
+      const result = await fetch("http://127.0.0.1:11434/api/chat", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ model: localModel(), messages: [{role: "system", content: HELENA_CONTEXT}, ...body.messages], stream: false, options: { num_predict: 350, num_ctx: 4096, temperature: 0.3 }, keep_alive: "10m" }),
+        signal: AbortSignal.timeout(90_000),
+      });
+      if (!result.ok) return reply("A IA local não respondeu. Confira se o Ollama está aberto e tente novamente.", 502);
+      const data = await result.json();
+      const text = data.message?.content?.trim();
+      if (!text) return reply("Não consegui responder agora. Tente novamente.", 502);
+      return NextResponse.json({message: text.slice(0, 1500)});
+    }
     const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: { "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`, "Content-Type": "application/json" },

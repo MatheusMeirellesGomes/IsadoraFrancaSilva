@@ -205,3 +205,9 @@ Helena atualizada para reconhecer a nova página e oferecer atalho.
 Foto de jaleco exclusiva da inicial: public/images/isadora-franca.jpeg.
 Sobre mim usa o novo retrato pessoal enviado e autorizado pelo usuário:
 public/images/isadora-sobre.jpeg. Aparência preservada, enquadramento por CSS.
+
+## Helena local sem chave
+
+Integração alternativa com Ollama preparada para desenvolvimento no Mac.
+O consentimento distingue IA local de OpenAI. Nenhuma mensagem do modo
+local é enviada à OpenAI. Uso hospedado exige infraestrutura separada.

@@ -145,3 +145,23 @@ réplicas. Revisar a política de privacidade na etapa correspondente.
 Helena verifica a configuração ao abrir. Sem chave/modelo, oferece respostas
 prontas identificadas e atalhos; não exibe formulário nem pede consentimento
 para OpenAI. Respostas prontas rodam no navegador, sem enviar mensagens.
+
+### Helena sem chave — IA local com Ollama
+
+Neste Mac, Ollama foi instalado e iniciado como serviço local. Modelo:
+`qwen3:4b-instruct`. Configuração privada em `.env.local`:
+
+```dotenv
+HELENA_PROVIDER=ollama
+OLLAMA_MODEL=qwen3:4b-instruct
+```
+
+Reinicie o Next após alterar o ambiente. O status consulta o modelo instalado;
+mensagens são processadas pelo Ollama em 127.0.0.1:11434, sem envio à OpenAI.
+O primeiro pedido pode demorar enquanto o modelo carrega na memória.
+Para parar o serviço: `brew services stop ollama`; para voltar:
+`brew services start ollama`. Em outro computador: instalar Ollama e executar
+`ollama pull qwen3:4b-instruct`. O modelo fica fora do Git.
+
+Esta configuração atende o desenvolvimento local. Hospedagem não tem acesso
+ao localhost deste Mac; exige infraestrutura de inferência própria ou provedor.

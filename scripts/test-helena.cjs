@@ -20,6 +20,11 @@ const route = load('src/app/api/helena/route.ts', {
 }, {process:{env}, fetch:async (_url, options) => {
   calls++;
   const payload = JSON.parse(options.body);
+  if (_url === 'http://127.0.0.1:11434/api/chat') {
+    assert.equal(payload.messages[0].role, 'system');
+    assert.equal(payload.stream, false);
+    return Response.json({message:{content:'Resposta local'}});
+  }
   assert.equal(payload.store, false);
   assert.equal(payload.instructions, base.HELENA_CONTEXT);
   return Response.json({output:[{content:[{type:'output_text',text:'Olá!'}]}]});
@@ -42,5 +47,11 @@ function req(body, origin = 'http://localhost:3000') {
   assert.equal(result.status,200);
   assert.equal((await result.json()).message,'Olá!');
   assert.equal(calls,1);
+  env.HELENA_PROVIDER='ollama';
+  delete env.OPENAI_API_KEY; delete env.OPENAI_MODEL;
+  const localResult = await route.POST(req(body));
+  assert.equal(localResult.status,200);
+  assert.equal((await localResult.json()).message,'Resposta local');
+  assert.equal(calls,2);
   console.log('Helena: validação, origem, consentimento, limite de corpo, ausência de chave e resposta simulada aprovados. Nenhuma chamada real à API.');
 })().catch(e=>{console.error(e);process.exitCode=1});
