@@ -111,8 +111,10 @@ acompanhamento em ambiente clínico durante a experiência na clínica.
 - O endereço residencial informado não é um local de atendimento ao público.
   Não publicar endereço residencial, mapa ou indicação de atendimento no local.
   O endereço completo não é armazenado neste repositório.
-- Fotografias profissionais: `PENDENTE` — não usar banco de imagens fingindo
-  ser a Isadora; preparar espaços reservados no layout até haver fotos reais.
+- Foto de apresentação: retrato real enviado pelo usuário em 09/09/2026,
+  autorizado para a página inicial, em `public/images/isadora-franca.jpeg`.
+  Preservar a aparência original; enquadramento feito por CSS. Não usar
+  imagens de banco fingindo ser a Isadora.
 
 ## Identidade visual (definida na Etapa 2)
 
@@ -160,3 +162,10 @@ acompanhamento em ambiente clínico durante a experiência na clínica.
 Sempre que uma informação `PENDENTE` for confirmada, atualizar este arquivo
 **no mesmo commit** que passa a usá-la na interface, e atualizar a data no
 topo. Isso mantém o conteúdo do site sempre rastreável a uma decisão real.
+
+## Revisão da apresentação — 09/09/2026
+
+A página inicial usa o retrato real como destaque, com moldura blush e
+monograma IF estático em relevo. A cena WebGL anterior não é mais carregada
+na inicial. Seus componentes e dependências foram preservados para evitar
+remoções fora do escopo. A página Sobre continua reservada para a Etapa 4.

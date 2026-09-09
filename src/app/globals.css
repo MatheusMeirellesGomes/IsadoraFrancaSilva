@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Apresentação editorial: retrato real e monograma estático em relevo. */
+.portrait-hero { background: linear-gradient(115deg, #fff 0%, #fff7f9 48%, #f5d4dd 100%); overflow: hidden; }
+.portrait-layout { max-width: 1160px; margin: auto; padding: 48px 32px 56px; display: grid; grid-template-columns: 1.08fr 1fr; align-items: center; gap: 64px; }
+.portrait-eyebrow { color: #794354; font-size: .75rem; line-height: 1.8; letter-spacing: .13em; text-transform: uppercase; margin-bottom: 24px; }
+.portrait-heading { font-family: var(--font-display), serif; color: #5b1a2b; font-size: clamp(2.5rem, 4.2vw, 3.65rem); line-height: 1.15; letter-spacing: -.045em; }
+.portrait-heading span { font-style: italic; font-weight: 500; color: #8e485d; }
+.portrait-intro { font-size: 1.05rem; line-height: 1.85; margin-top: 26px; max-width: 440px; }
+.portrait-description { font-size: 1rem; line-height: 1.8; color: #625459; margin-top: 12px; max-width: 425px; }
+.portrait-actions { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; margin-top: 30px; }
+.portrait-primary { display: inline-flex; gap: 24px; align-items: center; border-radius: 999px; padding: 16px 25px; color: white; background: #5b1a2b; font-size: .875rem; box-shadow: 0 8px 20px #5b1a2b18; }
+.portrait-primary:hover { background: #783047; }
+.portrait-secondary { color: #5b1a2b; font-size: .875rem; padding: 12px 0; border-bottom: 1px solid #b38792; }
+.portrait-primary:focus-visible, .portrait-secondary:focus-visible { outline: 3px solid #8e485d; outline-offset: 5px; }
+.portrait-credentials { display: flex; flex-wrap: wrap; gap: 8px 20px; border-top: 1px solid #e6cbd3; margin-top: 32px; padding-top: 18px; font-size: .75rem; line-height: 1.8; color: #705660; }
+.portrait-composition { position: relative; margin: 8px 16px 0 0; padding-bottom: 24px; min-width: 0; }
+.portrait-outline { position: absolute; inset: -12px -14px 44px 16px; border: 1px solid #b08a4e85; border-radius: 180px 180px 24px 24px; }
+.portrait-photo { position: relative; aspect-ratio: 4 / 4.6; overflow: hidden; border-radius: 180px 180px 24px 24px; background: #393c3c; box-shadow: 0 24px 45px #5b1a2b20; }
+.portrait-image { object-fit: cover; object-position: 50% 22%; transform: scale(1.14); }
+.portrait-seal { position: absolute; top: 36px; left: -28px; width: 88px; height: 88px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(140deg, #fff8ef, #e9c3b1 48%, #c48e78); border: 4px solid #f7e2d5; box-shadow: 0 10px 24px #48202b24, inset 0 0 0 1px #b17c65, inset 2px 3px 8px #fff9; }
+.portrait-seal span { font-family: var(--font-display), serif; font-size: 2rem; color: #754637; text-shadow: 0 1px 0 #fff2df; letter-spacing: -.08em; padding-right: 3px; }
+.portrait-caption { position: relative; margin: -26px 24px 0; padding: 16px 22px; background: #fff8f5; border: 1px solid #e7cdd0; box-shadow: 0 10px 25px #5b1a2b0c; border-radius: 12px; text-align: center; display: grid; gap: 3px; }
+.portrait-caption > span:first-child { color: #5b1a2b; font-size: 1.4rem; }
+.portrait-caption > span:last-child { font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: #725449; }
+@media (max-width: 767px) {
+  .portrait-layout { grid-template-columns: 1fr; gap: 34px; padding: 30px 24px 24px; }
+  .portrait-eyebrow { margin-bottom: 16px; font-size: .7rem; }
+  .portrait-heading { font-size: clamp(2.3rem, 8.5vw, 3.5rem); }
+  .portrait-intro { margin-top: 20px; }
+  .portrait-credentials { margin-top: 24px; }
+  .portrait-composition { width: min(100%, 420px); margin: 0 auto; padding: 0 10px 24px; }
+  .portrait-outline { right: 0; left: 24px; }
+  .portrait-seal { width: 70px; height: 70px; left: -4px; top: 32px; }
+  .portrait-seal span { font-size: 1.7rem; }
+}

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Header } from "@/components/Header";
-import { Hero3DLoader } from "@/components/Hero3DLoader";
+import Image from "next/image";
 
 const DIFERENCIAIS = [
   "Atendimento humanizado e acolhedor",
@@ -14,38 +14,51 @@ export default function Home() {
     <>
       <Header />
       <main className="bg-white">
-        <section className="relative overflow-hidden bg-gradient-to-b from-blush-300 via-blush-100 to-white">
-          <div className="mx-auto grid max-w-5xl items-center gap-8 px-6 py-16 sm:py-24 md:grid-cols-2">
-            <div className="text-center md:text-left">
-              <p className="mb-3 font-display text-sm uppercase tracking-[0.25em] text-rosegold-600">
-                Biomedicina Estética
-              </p>
-              <h1 className="font-display text-4xl font-semibold leading-tight text-wine sm:text-5xl">
-                Isadora França Silva
+        <section className="portrait-hero">
+          <div className="portrait-layout">
+            <div className="portrait-copy">
+              <p className="portrait-eyebrow">Isadora França Silva · Biomedicina Estética</p>
+              <h1 className="portrait-heading">
+                Cuidado que acolhe.<br />
+                <span>Beleza que é sua.</span>
               </h1>
-              <p className="mx-auto mt-4 max-w-md font-body text-base text-graphite/80 md:mx-0">
-                Aplico botox com técnica, segurança e cuidado — no conforto
-                da sua casa, em Contagem/MG.
+              <p className="portrait-intro">
+                Sou Isadora França. Meu atendimento une atenção aos detalhes,
+                acolhimento e respeito à sua naturalidade.
               </p>
-              <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row md:justify-start">
-                <Link
-                  href="/agendamento"
-                  className="rounded-full bg-wine px-8 py-3 font-body text-sm font-semibold text-white shadow-lg shadow-wine/30 transition-transform hover:scale-105"
-                >
-                  Agendar atendimento
-                </Link>
-                <Link
-                  href="/botox"
-                  className="rounded-full border border-rosegold-500 px-8 py-3 font-body text-sm font-semibold text-wine transition-colors hover:bg-blush-100"
-                >
-                  Conhecer o botox
-                </Link>
+              <p className="portrait-description">
+                Levo esse cuidado até você, com atendimento domiciliar
+                e aplicação de toxina botulínica.
+              </p>
+              <div className="portrait-actions">
+                <Link href="/botox" className="portrait-primary">Conhecer o botox <span aria-hidden="true">↗</span></Link>
+                <Link href="/sobre" className="portrait-secondary">Sobre mim <span aria-hidden="true">→</span></Link>
+              </div>
+              <div className="portrait-credentials">
+                <span>Formada em Biomedicina pela UNA</span>
+                <span>Contagem · MG</span>
               </div>
             </div>
-
-            <div className="mx-auto h-64 w-64 sm:h-80 sm:w-80">
-              <Hero3DLoader />
-            </div>
+            <figure className="portrait-composition">
+              <div className="portrait-outline" aria-hidden="true" />
+              <div className="portrait-photo">
+                <Image
+                  src="/images/isadora-franca.jpeg"
+                  alt="Isadora França Silva sorrindo, usando jaleco branco."
+                  fill
+                  priority
+                  sizes="(max-width: 767px) 90vw, 480px"
+                  className="portrait-image"
+                />
+              </div>
+              <div className="portrait-seal" aria-hidden="true">
+                <span>IF</span>
+              </div>
+              <figcaption className="portrait-caption">
+                <span className="font-display">Isadora França</span>
+                <span>Biomedicina Estética</span>
+              </figcaption>
+            </figure>
           </div>
         </section>
 
