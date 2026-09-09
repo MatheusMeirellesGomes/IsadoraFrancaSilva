@@ -136,9 +136,15 @@ acompanhamento em ambiente clínico durante a experiência na clínica.
   girando devagar como um pingente, reagindo sutilmente ao ponteiro, com
   fallback estático para quem não tiver WebGL e respeito a
   `prefers-reduced-motion`.
-- **Logo:** monograma "IF" em anel rosé-gold sobre fundo blush, com a
-  assinatura "Isadora França | Biomedicina Estética" — componente em
-  `src/components/Logo.tsx`, favicon em `src/app/icon.svg`.
+- **Logo (redesenhada em 09/09/2026):** monograma "IF" com as letras
+  desenhadas em vetor (não é mais texto tipografado) — anel duplo
+  rosé-gold sobre fundo blush, com um pequeno detalhe botânico (um
+  raminho de três folhas) sob o monograma. Componente em
+  `src/components/Logo.tsx`, favicon idêntico em `src/app/icon.svg` — os
+  dois usam o mesmo desenho, então a marca não muda de aparência entre a
+  aba do navegador e o site. Antes disso, o monograma era texto simples
+  na fonte de exibição, o que também dependia da fonte estar carregada;
+  o novo desenho não tem essa dependência.
 
 ## Assistente virtual "Helena" (Etapa 16)
 
