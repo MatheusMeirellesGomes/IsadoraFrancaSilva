@@ -23,7 +23,7 @@ export default function SobrePage() {
             </div>
             <figure className="portrait-composition mx-auto w-full max-w-md">
               <div className="portrait-outline" aria-hidden="true" />
-              <div className="portrait-photo"><Image src="/images/isadora-franca.jpeg" alt="Isadora França Silva sorrindo, de jaleco branco." fill priority sizes="(max-width: 767px) 90vw, 448px" className="portrait-image" /></div>
+              <div className="portrait-photo"><Image src="/images/isadora-sobre.jpeg" alt="Isadora França Silva em um retrato pessoal, apoiando o rosto na mão." fill priority sizes="(max-width: 767px) 90vw, 448px" className="object-cover object-[50%_38%]" /></div>
               <figcaption className="portrait-caption"><span className="font-display">Isadora França</span><span>Biomedicina Estética</span></figcaption>
             </figure>
           </div>

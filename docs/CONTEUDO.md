@@ -199,3 +199,9 @@ UNA (2021–2025), experiência assistida na Clínica Dra. Ana Lemos
 A vivência clínica e os cursos não são apresentados como serviços atuais.
 Não foram inventados histórias pessoais, títulos ou registros profissionais.
 Helena atualizada para reconhecer a nova página e oferecer atalho.
+
+## Fotos por página — atualização
+
+Foto de jaleco exclusiva da inicial: public/images/isadora-franca.jpeg.
+Sobre mim usa o novo retrato pessoal enviado e autorizado pelo usuário:
+public/images/isadora-sobre.jpeg. Aparência preservada, enquadramento por CSS.
