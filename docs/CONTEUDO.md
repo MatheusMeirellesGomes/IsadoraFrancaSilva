@@ -67,7 +67,10 @@ acompanhamento em ambiente clínico durante a experiência na clínica.
 
 ## Botox — dados comerciais
 
-- **Valor atual do botox:** R$ 750 — confirmado para uso público.
+- **Valor atual do botox:** R$ 750 — valor inicial enquanto Isadora está
+  começando, confirmado para uso público e sujeito a alteração futura.
+  Não apresentar como preço permanente nem como promoção com prazo definido.
+  Atualizar este documento quando o novo valor for confirmado.
 - **Regiões de aplicação oferecidas:** `PENDENTE`
 - **Taxa de deslocamento:** `PENDENTE`
 - **Cidades e bairros atendidos:** `PENDENTE` (sede: Contagem/MG)
@@ -77,7 +80,10 @@ acompanhamento em ambiente clínico durante a experiência na clínica.
 
 ## Atendimento
 
-- Modalidade: atendimento domiciliar (a profissional vai até a cliente).
+- Modalidade atual: atendimento domiciliar (a profissional vai até a cliente).
+- O endereço residencial informado não é um local de atendimento ao público.
+  Não publicar endereço residencial, mapa ou indicação de atendimento no local.
+  O endereço completo não é armazenado neste repositório.
 - Fotografias profissionais: `PENDENTE` — não usar banco de imagens fingindo
   ser a Isadora; preparar espaços reservados no layout até haver fotos reais.
 
