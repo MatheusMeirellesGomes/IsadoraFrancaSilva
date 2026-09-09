@@ -311,3 +311,18 @@ não foi implementado agora.
 
 Testes automatizados: `node scripts/test-agendamento.cjs` (origem,
 validação, envio simulado com Resend mockado — nenhuma chamada real).
+
+## Etapa 8 — Banco de dados (em andamento)
+
+Schema inicial em `supabase/migrations/0001_init.sql`: tabelas `clientes`
+(nome, whatsapp, email, endereço, aceita_lembretes) e `agendamentos`
+(cliente_id, data, horário, observações, status, procedimento_realizado_em,
+lembrete_enviado_em). RLS habilitada nas duas, sem nenhuma policy pública
+— por enquanto só o servidor acessa via chave de serviço (não existe
+login de cliente ainda). Endereço nunca é exposto publicamente, conforme
+a regra já registrada em "Atendimento".
+
+Ainda falta: criar o projeto Supabase de verdade (conta e credenciais são
+do Matheus/Isadora, não consigo criar por vocês), rodar esta migração
+nele, e ligar o formulário de agendamento para persistir os dados aqui de
+verdade (próximo commit).
