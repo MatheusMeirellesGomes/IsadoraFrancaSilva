@@ -17,7 +17,7 @@ export function PlaceholderPage({ title, etapa }: PlaceholderPageProps) {
           Esta página está em construção — chega na {etapa} do roadmap.
         </p>
         <Link
-          href="/"
+          href="/inicio"
           className="font-body text-sm font-medium text-rosegold-600 hover:underline"
         >
           ← Voltar para a página inicial

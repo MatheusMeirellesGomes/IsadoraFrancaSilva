@@ -70,7 +70,11 @@ antes de avançar para a próxima.
 - [x] **9. Integração com WhatsApp** — entregue como parte da Etapa 7: o
       agendamento redireciona para o WhatsApp da Isadora com a mensagem
       já preenchida (nome, data, horário, observações, e-mail).
-- [ ] 10. Cadastro e login (opcional para a cliente)
+- [x] **10. Cadastro e login** — tela de boas-vindas na raiz ("/"): entrar,
+      criar conta, esqueci minha senha e "continuar sem conta" (via
+      Supabase Auth). A página inicial de conteúdo mudou para `/inicio`.
+      Falta a Área da cliente (Etapa 11) para o login ter o que mostrar
+      depois de entrar.
 - [ ] 11. Área da cliente
 - [ ] 12. Painel administrativo
 - [ ] 13. Privacidade e consentimento (LGPD)
@@ -85,12 +89,22 @@ antes de avançar para a próxima.
       lembrete de 14 dias em si, que depende das Etapas 8 e 12 e de um
       job agendado (cron).
 
-## Fluxo de autenticação (detalhamento da Etapa 10)
+## Fluxo de autenticação (Etapa 10 — implementada)
 
 A conta é sempre **opcional**. Ninguém precisa fazer login para conhecer o
-site, ler sobre botox ou solicitar um agendamento.
+site, ler sobre botox ou solicitar um agendamento — só precisa ver a tela
+de boas-vindas primeiro (decisão de 09/09/2026) e apertar "Continuar sem
+conta", um clique.
 
-### Tela de acesso (login / cadastro)
+### Rotas
+
+- **`/`** — tela de boas-vindas (entrar / criar conta / continuar sem
+  conta). Primeira coisa que qualquer visitante vê.
+- **`/inicio`** — a página inicial de conteúdo (hero, diferenciais,
+  teasers). Para onde "Continuar sem conta" e o login bem-sucedido levam,
+  e para onde a logo do cabeçalho aponta em todas as páginas.
+
+### Tela de acesso (login / cadastro) — `src/components/LoginForm.tsx`
 
 - Logomarca "IF" e assinatura "Isadora França | Biomedicina Estética".
 - Campo de e-mail.
@@ -101,6 +115,11 @@ site, ler sobre botox ou solicitar um agendamento.
 - Botão destacado "Continuar sem conta".
 - Identidade visual rosa blush, branca e elegante.
 - Layout responsivo, com prioridade para uso no celular.
+
+Usa Supabase Auth (`src/lib/supabaseClient.ts`, chave anônima). Sem
+`NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_ANON_KEY` configuradas, o
+formulário avisa que o login ainda não está disponível — "continuar sem
+conta" segue funcionando normalmente (é só um link, não depende disso).
 
 ### Fluxo como visitante (sem conta)
 

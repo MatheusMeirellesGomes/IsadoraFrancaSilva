@@ -338,3 +338,27 @@ do Matheus/Isadora, não consigo criar por vocês) e rodar a migração nele.
 
 Testes automatizados: `node scripts/test-agendamento.cjs` (agora também
 cobre e-mail/banco configurados independentemente, com Supabase mockado).
+
+## Etapa 10 — Cadastro e login (em andamento)
+
+Decisão de Matheus em 09/09/2026: a **raiz do site ("/") passou a ser a
+tela de boas-vindas** (entrar / criar conta / continuar sem conta) — não
+a página inicial de conteúdo, que se mudou para `/inicio`. Quem clica
+"Continuar sem conta" cai direto em `/inicio`; ninguém é bloqueado, é só
+a primeira tela que aparece. Isso não contradiz a regra de "agendamento
+sem login" já registrada — ela continua valendo, só muda o que aparece
+primeiro.
+
+Implementado: `src/components/LoginForm.tsx` (entrar, criar conta,
+esqueci minha senha, continuar sem conta — via Supabase Auth) na raiz;
+conteúdo da home antiga movido para `/inicio`; todos os links internos
+que apontavam para "/" foram atualizados para "/inicio" (logo do
+cabeçalho, botão "voltar" das páginas provisórias). A rota `/login`
+separada foi removida — "/" cumpre esse papel agora.
+
+Sem `NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_ANON_KEY`
+configuradas, o formulário mostra um aviso e não quebra — "continuar sem
+conta" sempre funciona independente disso.
+
+Falta: página do painel/área da cliente (Etapas 11/12) e policies de RLS
+para a cliente logada acessar os próprios dados.
