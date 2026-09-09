@@ -67,7 +67,9 @@ antes de avançar para a próxima.
       sem policy pública, e o formulário de agendamento já persiste nele.
       Falta criar o projeto Supabase de verdade e rodar a migração — só
       então esta etapa fica de fato concluída.
-- [ ] 9. Integração com WhatsApp
+- [x] **9. Integração com WhatsApp** — entregue como parte da Etapa 7: o
+      agendamento redireciona para o WhatsApp da Isadora com a mensagem
+      já preenchida (nome, data, horário, observações, e-mail).
 - [ ] 10. Cadastro e login (opcional para a cliente)
 - [ ] 11. Área da cliente
 - [ ] 12. Painel administrativo
