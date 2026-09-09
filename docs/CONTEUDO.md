@@ -2,18 +2,30 @@
 
 Este arquivo é a referência oficial dos dados reais de Isadora França Silva.
 **Nenhuma página do site deve apresentar informação que não esteja aqui.**
-Enquanto um dado estiver marcado como `PENDENTE`, o campo correspondente na
-interface deve mostrar um placeholder neutro (ex: "em breve", "a confirmar")
-em vez de valor inventado.
 
-Última atualização: 2026-09-08.
+Legenda dos marcadores usados neste arquivo:
+
+- **`PENDENTE`** — informação ainda não fornecida. A interface pública deve
+  **omitir completamente** o campo correspondente (sem rótulos como "em
+  breve" ou "a confirmar") até que o dado seja fornecido e confirmado.
+- **`PENDENTE DE CONFIRMAÇÃO PARA USO PÚBLICO`** — informação já registrada
+  internamente para referência da equipe, mas ainda **não autorizada por
+  Isadora** para aparecer no site. Também deve ser omitida da interface
+  pública até a confirmação — o valor já anotado fica guardado aqui apenas
+  como referência interna, nunca é publicado antecipadamente.
+
+Última atualização: 2026-09-09.
 
 ## Identificação
 
 - **Nome completo:** Isadora França Silva
 - **Localização:** Contagem/MG
-- **Instagram profissional:** [@isaa.franca](https://instagram.com/isaa.franca)
-- **WhatsApp profissional:** +55 31 99526-2194 (`5531995262194`)
+- **Instagram profissional:** `PENDENTE DE CONFIRMAÇÃO PARA USO PÚBLICO`
+  (anotado internamente: [@isaa.franca](https://instagram.com/isaa.franca) —
+  aguardando confirmação da Isadora antes de publicar no site)
+- **WhatsApp profissional:** `PENDENTE DE CONFIRMAÇÃO PARA USO PÚBLICO`
+  (anotado internamente: +55 31 99526-2194 / `5531995262194` — aguardando
+  confirmação da Isadora antes de publicar no site)
 - **CRBM (registro profissional):** `PENDENTE`
 
 ## Formação acadêmica
@@ -59,9 +71,9 @@ acompanhamento em ambiente clínico durante a experiência na clínica.
 
 ## Botox — dados comerciais
 
-- **Valor atual:** R$ 750 — **provisório**, a Isadora pretende reajustar.
-  Tratar sempre como "a partir de R$ 750, sujeito a atualização" e nunca
-  como preço fixo definitivo até segunda confirmação.
+- **Valor atual:** `PENDENTE DE CONFIRMAÇÃO PARA USO PÚBLICO` (anotado
+  internamente: R$ 750, mas a Isadora pretende reajustar — **não pode
+  aparecer na interface** até uma nova confirmação dela).
 - **Regiões de aplicação oferecidas:** `PENDENTE`
 - **Taxa de deslocamento:** `PENDENTE`
 - **Cidades e bairros atendidos:** `PENDENTE` (sede: Contagem/MG)

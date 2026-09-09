@@ -58,6 +58,40 @@ antes de avançar para a próxima.
 - [ ] 16. Assistente virtual "Helena" (chatbox com tira-dúvidas e
       redirecionamentos)
 
+## Fluxo de autenticação (detalhamento da Etapa 10)
+
+A conta é sempre **opcional**. Ninguém precisa fazer login para conhecer o
+site, ler sobre botox ou solicitar um agendamento.
+
+### Tela de acesso (login / cadastro)
+
+- Logomarca "IF" e assinatura "Isadora França | Biomedicina Estética".
+- Campo de e-mail.
+- Campo de senha.
+- Botão "Entrar".
+- Opção "Criar minha conta".
+- Opção "Esqueci minha senha".
+- Botão destacado "Continuar sem conta".
+- Identidade visual rosa blush, branca e elegante.
+- Layout responsivo, com prioridade para uso no celular.
+
+### Fluxo como visitante (sem conta)
+
+Ao agendar sem conta, a cliente informa apenas o necessário para o
+atendimento — **nome e WhatsApp** — sem exigir e-mail nem senha.
+
+### Fluxo com conta (opcional)
+
+Criar conta é opcional e serve para a cliente acompanhar o status dos
+próprios agendamentos ao longo do tempo. Não existe cadastro público de
+conta administrativa: o painel administrativo é de acesso exclusivo da
+Isadora.
+
+### O que permanece acessível sem login
+
+O site institucional, a página de botox e o formulário de agendamento
+continuam **totalmente acessíveis sem login** em qualquer momento do fluxo.
+
 ## Segurança e privacidade
 
 - Autenticação via Supabase Auth; painel administrativo protegido por rota.
