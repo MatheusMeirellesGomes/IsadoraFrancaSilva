@@ -48,7 +48,8 @@ antes de avançar para a próxima.
       interativa (React Three Fiber) em tom blush-300, diferenciais e
       teasers de botox/atendimento domiciliar; páginas provisórias para
       as rotas do menu ainda não construídas.
-- [ ] 4. Página sobre a Isadora
+- [x] **4. Página sobre a Isadora** — retrato, apresentação em primeira pessoa,
+      formação, experiência assistida, cursos e contato.
 - [x] **5. Página de botox** — feita fora de ordem, a pedido da Isadora:
       produto (Dysport), filosofia de atendimento (naturalidade, segurança,
       sem exagero) e valor (a partir de R$750, inicial).

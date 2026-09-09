@@ -190,3 +190,12 @@ A base pública em src/lib/helena.ts exclui informações internas e deve ser
 mantida junto deste documento. Próximas páginas continuam nas etapas
 originais; a Helena não confirma agendamentos e não presta aconselhamento
 clínico individual. A ativação e validação ao vivo continuam pendentes.
+
+## Etapa 4 — Sobre mim concluída
+
+Página /sobre apresenta retrato autorizado também nesta página, graduação
+UNA (2021–2025), experiência assistida na Clínica Dra. Ana Lemos
+(julho/2023–abril/2026), cursos confirmados e valores de atendimento.
+A vivência clínica e os cursos não são apresentados como serviços atuais.
+Não foram inventados histórias pessoais, títulos ou registros profissionais.
+Helena atualizada para reconhecer a nova página e oferecer atalho.

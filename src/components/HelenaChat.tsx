@@ -74,6 +74,7 @@ export function HelenaChat() {
         </div>
         <nav aria-label="Atalhos da Helena" className="helena-shortcuts">
           <Link href="/botox" onClick={close}>Sobre o botox</Link>
+          <Link href="/sobre" onClick={close}>Conhecer Isadora</Link>
           <a href={CONTACTS.whatsapp} target="_blank" rel="noopener noreferrer">Falar com Isadora ↗<span className="sr-only"> (nova aba)</span></a>
           <a href={CONTACTS.instagram} target="_blank" rel="noopener noreferrer">Instagram ↗<span className="sr-only"> (nova aba)</span></a>
         </nav>
