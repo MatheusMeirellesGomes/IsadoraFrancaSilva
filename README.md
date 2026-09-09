@@ -95,11 +95,11 @@ antes de avançar para a próxima.
 - [x] **16. Assistente virtual "Helena"** — mascote, chat com respostas
       rápidas e atalhos, integração de IA preparada no servidor
       (ativação real ainda pendente de chave/modelo configurados).
-- [ ] **17. Lembretes de pós-procedimento** — *parcialmente adiantada*:
-      notificação para Isadora e e-mail de cuidados para a cliente já
-      disparam no envio do agendamento (ver seção abaixo). Falta o
-      lembrete de 14 dias em si, que depende das Etapas 8 e 12 e de um
-      job agendado (cron).
+- [x] **17. Lembretes de pós-procedimento** — completa: notificação para
+      Isadora e e-mail de cuidados para a cliente disparam no envio do
+      agendamento; `/api/cron/lembretes` roda 1x por dia (Vercel Cron,
+      grátis no plano Hobby) e envia o e-mail de acompanhamento 14 dias
+      após `procedimento_realizado_em`, sem duplicar (ver seção abaixo).
 
 ## Fluxo de autenticação (Etapa 10 — implementada)
 
@@ -318,27 +318,38 @@ WhatsApp automático de verdade (a máquina mandar mensagem sozinha, sem a
 cliente clicar) continua fora do escopo por enquanto — exige a API oficial
 do WhatsApp Business (Meta), com aprovação e custo por mensagem.
 
-## Lembretes automáticos de pós-procedimento (Etapa 17 — restante planejado)
+## Lembretes automáticos de pós-procedimento (Etapa 17 — completa)
 
-Decisão registrada em 09/09/2026, a pedido de Matheus: a cliente poderá
-informar um e-mail (opcional) e um telefone no formulário de agendamento,
-com um checkbox de consentimento separado para receber lembretes de
-cuidado. 14 dias após Isadora marcar o procedimento como realizado no
-painel administrativo, o sistema envia automaticamente um e-mail
-perguntando como ficou o resultado e convidando a cliente a retornar.
+A cliente informa um e-mail (opcional) e um WhatsApp no formulário de
+agendamento, com um checkbox de consentimento separado para receber
+lembretes de cuidado. 14 dias após Isadora marcar o procedimento como
+realizado no painel administrativo, o sistema envia automaticamente um
+e-mail perguntando como ficou o resultado.
 
-- **Canal na primeira versão: só e-mail.** WhatsApp/SMS automáticos ficam
-  para depois — exigem aprovação da API oficial do WhatsApp Business (Meta)
-  ou um provedor de SMS (Twilio), com custo por mensagem. Avaliar quando o
-  volume de clientes justificar.
-- **Serviço de e-mail sugerido:** [Resend](https://resend.com/) — boa
-  integração com Next.js, plano gratuito cobre o volume inicial.
-- **Gatilho:** campo `procedimento_realizado_em` no agendamento (Etapa 8),
-  preenchido pela Isadora no painel (Etapa 12) — não a data agendada, pois
-  pode haver remarcação. Um job agendado (cron) roda diariamente,
-  identifica agendamentos que completaram 14 dias e ainda não têm
-  `lembrete_enviado_em`, envia o e-mail e marca o envio (evita duplicidade).
-- **Consentimento:** separado do consentimento de agendamento (LGPD),
-  com opção clara de descadastro em todo e-mail enviado.
-- Depende das Etapas 7 (captar e-mail/consentimento), 8 (campos no banco)
-  e 12 (Isadora marcar o procedimento como realizado).
+- **Canal: só e-mail**, de propósito — WhatsApp/SMS automáticos exigem
+  aprovação da API oficial do WhatsApp Business (Meta) ou um provedor de
+  SMS (Twilio), com custo por mensagem. Avaliar quando o volume de
+  clientes justificar.
+- **Serviço de e-mail:** [Resend](https://resend.com/) (mesma
+  configuração da Etapa 7 — `RESEND_API_KEY` e `RESEND_FROM_EMAIL`).
+- **Gatilho:** campo `procedimento_realizado_em`, preenchido pela Isadora
+  no painel (`/painel`) ao marcar um agendamento como "realizado" — não a
+  data agendada, pois pode haver remarcação.
+- **Job:** `src/app/api/cron/lembretes/route.ts`, chamado 1x por dia pelo
+  Vercel Cron (`vercel.json`, `0 12 * * *` — roda entre meio-dia e 13h
+  UTC, grátis no plano Hobby). Busca agendamentos com `status: realizado`,
+  `procedimento_realizado_em` = hoje menos 14 dias e
+  `lembrete_enviado_em` nulo; envia só para quem tem e-mail **e** aceitou
+  lembretes; marca `lembrete_enviado_em` logo depois, pra nunca duplicar
+  o envio mesmo se o job rodar mais de uma vez no mesmo dia.
+- **Proteção:** a rota exige o header
+  `Authorization: Bearer <CRON_SECRET>`. Defina `CRON_SECRET` (uma string
+  aleatória qualquer) nas variáveis de ambiente do projeto na Vercel — ela
+  manda esse valor automaticamente em toda chamada de cron job, então
+  ninguém de fora consegue disparar a rota manualmente.
+- **Consentimento:** separado do consentimento de agendamento (LGPD, ver
+  `/politica-de-privacidade`), com o e-mail deixando claro que veio por
+  causa desse aceite e que a cliente pode pedir para não receber mais.
+
+Validação: `node scripts/test-lembretes.cjs` (Supabase e Resend mockados,
+nenhuma chamada real).

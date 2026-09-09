@@ -55,3 +55,21 @@ Biomedicina Estética — Contagem/MG
 Você recebeu este e-mail porque solicitou lembretes de cuidado ao preencher o formulário de agendamento.`;
   return { assunto, texto };
 }
+
+/** Disparado pelo job da Etapa 17, 14 dias após o procedimento marcado como realizado. */
+export function emailAcompanhamento14Dias(nome: string) {
+  const assunto = "Como você está, depois do seu botox? — Isadora França Silva";
+  const texto = `Olá, ${nome}!
+
+Já se passaram 14 dias desde o seu atendimento, e eu gostaria de saber como você está se sentindo com o resultado.
+
+Se surgiu alguma dúvida, algo te incomodou ou você simplesmente quer conversar sobre o que achou, me chame no WhatsApp — fico feliz em ouvir.
+
+Com carinho,
+Isadora França Silva
+Biomedicina Estética — Contagem/MG
+
+—
+Você recebeu este e-mail porque aceitou receber lembretes de cuidado ao agendar. Se não quiser mais recebê-los, é só me avisar pelo WhatsApp.`;
+  return { assunto, texto };
+}

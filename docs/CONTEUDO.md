@@ -488,3 +488,15 @@ sido construídas.
 Linkadas no rodapé (todas as páginas), no formulário de agendamento e na
 tela de login/cadastro, perto de onde os dados são efetivamente
 coletados.
+
+## Etapa 17 — lembrete de 14 dias concluído
+
+`src/app/api/cron/lembretes/route.ts` + `vercel.json` (Vercel Cron, 1x
+por dia, grátis no plano Hobby). Busca quem completou 14 dias desde
+`procedimento_realizado_em` (marcado pela Isadora no painel), com e-mail
+e consentimento, envia `emailAcompanhamento14Dias` e marca
+`lembrete_enviado_em` — nunca duplica. Protegida por `CRON_SECRET`
+(header que a própria Vercel envia automaticamente nas chamadas de cron,
+configurado só nas variáveis de ambiente do projeto). Testado com
+Supabase e Resend mockados em `scripts/test-lembretes.cjs`; ativação real
+depende só das variáveis de ambiente existirem na Vercel.
