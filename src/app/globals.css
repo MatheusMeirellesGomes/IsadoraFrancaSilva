@@ -68,3 +68,7 @@
 .helena-input-row button:disabled { opacity: .45; cursor: not-allowed; }
 .helena-widget button:focus-visible, .helena-widget a:focus-visible, .helena-widget input:focus-visible { outline: 2px solid #8e485d; outline-offset: 3px; }
 @media (max-width: 420px) { .helena-widget { right: 14px; bottom: max(12px, env(safe-area-inset-bottom)); } .helena-launch img { width: 64px; height: 64px; } .helena-panel { max-height: calc(100dvh - 105px); } }
+
+.helena-panel, .helena-scroll, .helena-form { overscroll-behavior: none; }
+.helena-scroll, .helena-form { touch-action: pan-y; }
+.helena-scroll:focus-visible { outline: 2px solid #8e485d; outline-offset: -3px; }

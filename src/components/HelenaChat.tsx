@@ -15,12 +15,30 @@ export function HelenaChat() {
   const [error, setError] = useState("");
   const closeRef = useRef<HTMLButtonElement>(null);
   const launchRef = useRef<HTMLButtonElement>(null);
-  const endRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLElement>(null);
   const pending = useRef<AbortController | null>(null);
   const lock = useRef(false);
   useEffect(() => () => pending.current?.abort(), []);
   useEffect(() => { if (open) closeRef.current?.focus(); }, [open]);
-  useEffect(() => { if (open) endRef.current?.scrollIntoView({ block: "nearest" }); }, [messages, busy, open]);
+  useEffect(() => {
+    if (open && scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [messages, busy, open]);
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!open || !panel) return;
+    const wheel = (event: WheelEvent) => {
+      if (event.ctrlKey) return; // Preserve zoom do navegador/trackpad.
+      const form = (event.target as HTMLElement).closest<HTMLElement>(".helena-form");
+      const target = form && form.scrollHeight > form.clientHeight ? form : scrollRef.current;
+      if (!target) return;
+      event.preventDefault();
+      const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? target.clientHeight : 1;
+      target.scrollTop += event.deltaY * unit;
+    };
+    panel.addEventListener("wheel", wheel, { passive: false });
+    return () => panel.removeEventListener("wheel", wheel);
+  }, [open]);
   function close() { setOpen(false); launchRef.current?.focus(); }
   async function send(event: React.FormEvent) {
     event.preventDefault();
@@ -43,17 +61,16 @@ export function HelenaChat() {
   }
   return (
     <div className="helena-widget">
-      {open && <section id="helena-chat" role="dialog" aria-modal="false" aria-labelledby="helena-title" className="helena-panel" onKeyDown={e => { if (e.key === "Escape") close(); }}>
+      {open && <section ref={panelRef} id="helena-chat" role="dialog" aria-modal="false" aria-labelledby="helena-title" className="helena-panel" onKeyDown={e => { if (e.key === "Escape") close(); }}>
         <header className="helena-header">
           <Image src="/images/helena.png" alt="" width={52} height={52} className="rounded-full" />
           <div><h2 id="helena-title">Helena</h2><p>Assistente virtual · IA</p></div>
           <button ref={closeRef} onClick={close} aria-label="Fechar conversa com Helena" className="helena-close">×</button>
         </header>
-        <div className="helena-scroll" role="log" aria-label="Conversa com Helena" aria-live="polite">
+        <div ref={scrollRef} tabIndex={0} className="helena-scroll" role="log" aria-label="Conversa com Helena" aria-live="polite">
           <p className="helena-bubble">Olá! Sou a Helena, assistente virtual da Isadora. Como posso te ajudar? Posso explicar as informações do site e mostrar onde encontrar o que você procura.</p>
           {messages.map((message, index) => <p key={index} className={`helena-bubble ${message.role === "user" ? "helena-user" : ""}`}><span className="sr-only">{message.role === "user" ? "Você" : "Helena"}: </span>{message.content}</p>)}
           {busy && <p className="text-sm text-wine" role="status">Helena está preparando uma resposta…</p>}
-          <div ref={endRef} />
         </div>
         <nav aria-label="Atalhos da Helena" className="helena-shortcuts">
           <Link href="/botox" onClick={close}>Sobre o botox</Link>
