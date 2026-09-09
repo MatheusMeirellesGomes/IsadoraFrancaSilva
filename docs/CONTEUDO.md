@@ -80,13 +80,8 @@ acompanhamento em ambiente clínico durante a experiência na clínica.
 
 ## Botox — produto e abordagem
 
-- **Produto utilizado:** Dysport (toxina botulínica tipo A). Apresentar como
-  um produto de alta qualidade e reconhecido no mercado — **evitar
-  superlativos absolutos** como "o melhor botox do mercado", pois
-  profissionais de biomedicina estão sujeitos ao código de ética do CFBio,
-  que restringe publicidade comparativa/superlativa. A mensagem real por
-  trás do pedido (produto de confiança, escolha técnica consciente) é
-  comunicada sem a alegação absoluta.
+- **Produto utilizado:** Dysport (toxina botulínica tipo A). Usar descrição
+  informativa, sem superioridade ou garantia de resultado.
 - **Filosofia de atendimento:** prioriza a naturalidade do resultado da
   cliente, zela pela segurança acima de tudo e evita o exagero — o
   objetivo é devolver autoestima, não alterar a aparência de forma
@@ -169,3 +164,18 @@ A página inicial usa o retrato real como destaque, com moldura blush e
 monograma IF estático em relevo. A cena WebGL anterior não é mais carregada
 na inicial. Seus componentes e dependências foram preservados para evitar
 remoções fora do escopo. A página Sobre continua reservada para a Etapa 4.
+
+## Complemento da página Botox e contatos — 09/09/2026
+
+- Conteúdo educativo: ação temporária da toxina, variação dos resultados,
+  importância da avaliação, dúvidas sobre efeito, duração e precauções.
+- Fonte: https://www.ipsen.com/brazil/wp-content/uploads/sites/22/2025/06/Dysport_Bula-Paciente-Patient.pdf
+- Os prazos da bula são referências gerais, não garantias individuais.
+- Não foram definidos locais de aplicação, doses ou protocolos próprios.
+- Valor público: R$ 750, inicial e sujeito a alteração, sem “a partir de”.
+- Rodapé global com WhatsApp, Instagram e copyright de ano automático.
+- Links de contato abrem o canal; não confirmam nem enviam agendamentos.
+- Antes da publicação, validar com Isadora o conteúdo clínico e o local de
+  atendimento: a bula informa uso hospitalar ou clínica médica sob prescrição,
+  enquanto a modalidade domiciliar consta do briefing. A página educativa
+  não atesta adequação dessa modalidade. Registro e habilitação seguem pendentes.

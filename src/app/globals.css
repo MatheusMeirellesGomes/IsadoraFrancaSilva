@@ -36,3 +36,8 @@
   .portrait-seal { width: 70px; height: 70px; left: -4px; top: 32px; }
   .portrait-seal span { font-size: 1.7rem; }
 }
+
+.contact-link { color: #5b1a2b; text-decoration: underline; text-underline-offset: 5px; font-size: .875rem; line-height: 1.8; }
+.contact-link:hover { color: #8e485d; }
+.contact-link:focus-visible, .botox-faq summary:focus-visible { outline: 2px solid #5b1a2b; outline-offset: 4px; }
+.botox-faq[open] summary { font-weight: 600; }

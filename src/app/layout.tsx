@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Poppins } from "next/font/google";
 import "./globals.css";
+import { Footer } from "@/components/Footer";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({
         className={`${playfairDisplay.variable} ${poppins.variable} font-body bg-white text-graphite`}
       >
         {children}
+        <Footer />
       </body>
     </html>
   );
