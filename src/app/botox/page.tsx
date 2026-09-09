@@ -14,8 +14,8 @@ export default function BotoxPage() {
             Botox
           </h1>
           <p className="mx-auto mt-4 max-w-xl font-body text-base text-graphite/80">
-            Aplicação de toxina botulínica com técnica, segurança e respeito
-            ao que já é bonito em você.
+            Aplico toxina botulínica com técnica, segurança e respeito ao
+            que já é bonito em você.
           </p>
         </section>
 
@@ -25,9 +25,9 @@ export default function BotoxPage() {
               Produto utilizado
             </h2>
             <p className="mt-3 font-body text-sm text-graphite/80">
-              Isadora trabalha com Dysport, uma toxina botulínica tipo A
-              consolidada e reconhecida no mercado, escolhida por sua
-              qualidade e precisão de resultado.
+              Trabalho com Dysport, uma toxina botulínica tipo A consolidada
+              e reconhecida no mercado, que escolhi pela qualidade e
+              precisão de resultado.
             </p>
           </div>
 
@@ -36,10 +36,9 @@ export default function BotoxPage() {
               Filosofia de atendimento
             </h2>
             <p className="mt-3 font-body text-sm text-graphite/80">
-              A prioridade é sempre a naturalidade da cliente. Isadora zela
-              pela segurança em cada etapa do procedimento e evita o
-              exagero — o objetivo é realçar sua autoestima, nunca alterar
-              quem você é.
+              A prioridade é sempre a sua naturalidade. Zelo pela segurança
+              em cada etapa do procedimento e evito o exagero — o objetivo
+              é realçar sua autoestima, nunca alterar quem você é.
             </p>
           </div>
         </section>

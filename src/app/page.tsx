@@ -24,8 +24,8 @@ export default function Home() {
                 Isadora França Silva
               </h1>
               <p className="mx-auto mt-4 max-w-md font-body text-base text-graphite/80 md:mx-0">
-                Botox aplicado com técnica, segurança e cuidado — no
-                conforto da sua casa, em Contagem/MG.
+                Aplico botox com técnica, segurança e cuidado — no conforto
+                da sua casa, em Contagem/MG.
               </p>
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row md:justify-start">
                 <Link
@@ -51,7 +51,7 @@ export default function Home() {
 
         <section className="mx-auto max-w-5xl px-6 py-16">
           <h2 className="mb-8 text-center font-display text-2xl font-semibold text-wine">
-            Por que escolher a Isadora
+            Por que me escolher
           </h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {DIFERENCIAIS.map((item) => (
@@ -89,8 +89,8 @@ export default function Home() {
                 Atendimento domiciliar
               </h3>
               <p className="mt-2 font-body text-sm text-graphite/80">
-                Isadora vai até você, com todo o cuidado e praticidade que
-                sua rotina merece.
+                Vou até você, com todo o cuidado e praticidade que sua
+                rotina merece.
               </p>
               <span className="mt-4 inline-block font-body text-sm font-medium text-rosegold-600 group-hover:underline">
                 Saiba mais →

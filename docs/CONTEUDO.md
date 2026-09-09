@@ -43,6 +43,19 @@ Legenda dos marcadores usados neste arquivo:
   cervicoplastia, bichectomia e rinomodelação (**apenas acompanhamento**,
   nunca execução — ela não realiza procedimentos cirúrgicos).
 
+## Tom de voz
+
+Todo texto narrativo do site é escrito **em primeira pessoa**, como se a
+própria Isadora estivesse falando diretamente com a cliente — "Trabalho
+com...", "Zelo pela...", "Vou até você...". Nunca em terceira pessoa
+("Isadora trabalha...", "Isadora zela...").
+
+Exceções (permanecem em terceira pessoa/neutras, por convenção):
+- Nome/assinatura da marca (logo, `<title>`, meta description) — funciona
+  como um cartão de visita, não como uma frase falada.
+- `aria-label` e textos técnicos/acessibilidade que descrevem um elemento
+  visual (ex: "Monograma Isadora França").
+
 ## Diferenciais
 
 - Atendimento humanizado e acolhedor.
