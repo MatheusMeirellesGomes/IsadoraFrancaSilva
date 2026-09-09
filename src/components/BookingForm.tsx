@@ -6,17 +6,21 @@ import { CONTACTS } from "@/lib/contacts";
 type FormState = {
   nome: string;
   whatsapp: string;
+  email: string;
   data: string;
   horario: string;
   observacoes: string;
+  aceitaLembretes: boolean;
 };
 
 const EMPTY_FORM: FormState = {
   nome: "",
   whatsapp: "",
+  email: "",
   data: "",
   horario: "",
   observacoes: "",
+  aceitaLembretes: false,
 };
 
 function formatDataParaMensagem(valor: string) {
@@ -45,9 +49,16 @@ function montarMensagem(form: FormState) {
     `Data desejada: ${formatDataParaMensagem(form.data)}`,
     `Horário: ${form.horario}`,
     `Observações: ${form.observacoes.trim() || "—"}`,
-    "",
-    "Aguardo a confirmação, obrigada!",
   ];
+  if (form.email.trim()) {
+    linhas.push(`E-mail: ${form.email.trim()}`);
+    linhas.push(
+      form.aceitaLembretes
+        ? "Aceito receber lembretes de cuidado por e-mail."
+        : "Não quero lembretes de cuidado por e-mail."
+    );
+  }
+  linhas.push("", "Aguardo a confirmação, obrigada!");
   return linhas.join("\n");
 }
 
@@ -94,6 +105,40 @@ export function BookingForm() {
           className="w-full rounded-xl border border-blush-300 px-4 py-3 text-base outline-rosegold-500"
           placeholder="(31) 9XXXX-XXXX"
         />
+      </div>
+
+      <div>
+        <label htmlFor="email" className="mb-1 block text-sm font-medium text-wine">
+          E-mail <span className="font-normal text-graphite/60">(opcional)</span>
+        </label>
+        <input
+          id="email"
+          type="email"
+          value={form.email}
+          onChange={(event) => {
+            const email = event.target.value;
+            setForm((atual) => ({
+              ...atual,
+              email,
+              aceitaLembretes: email.trim() ? atual.aceitaLembretes : false,
+            }));
+          }}
+          className="w-full rounded-xl border border-blush-300 px-4 py-3 text-base outline-rosegold-500"
+          placeholder="seuemail@exemplo.com"
+        />
+        <label className="mt-2 flex items-start gap-2 text-sm text-graphite/80">
+          <input
+            type="checkbox"
+            checked={form.aceitaLembretes}
+            disabled={!form.email.trim()}
+            onChange={(event) => atualizar("aceitaLembretes", event.target.checked)}
+            className="mt-0.5"
+          />
+          <span>
+            Quero receber lembretes de cuidado por e-mail depois do
+            atendimento. (Precisa de um e-mail preenchido acima.)
+          </span>
+        </label>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">

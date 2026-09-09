@@ -251,3 +251,21 @@ página deixa explícito que isso é combinado diretamente pelo WhatsApp, sem
 listar cidades/bairros/valores. Nenhuma menção a ambiente hospitalar ou
 clínico, conforme decisão registrada acima. Helena atualizada para
 reconhecer a página como publicada e oferecer o atalho.
+
+## Etapa 7 — Formulário de agendamento (em andamento)
+
+Publicado em duas partes, cada uma com seu commit:
+
+1. Formulário (nome, WhatsApp, data, horário, observações) que monta uma
+   mensagem formatada e abre o WhatsApp de Isadora — sem exigir conta,
+   sem persistência em banco (Etapa 8 ainda não existe).
+2. Campo de e-mail opcional + checkbox de consentimento para lembretes de
+   cuidado (groundwork da Etapa 17). **Solução interina:** como ainda não
+   há banco de dados, o e-mail e a resposta ao consentimento são incluídos
+   no próprio texto da mensagem de WhatsApp, para não se perderem — viram
+   registro real assim que a Etapa 8 existir. O checkbox fica desabilitado
+   até um e-mail ser preenchido, e é limpo automaticamente se o e-mail for
+   apagado.
+
+Faltam ainda: persistência real (Etapa 8), status "aguardando confirmação"
+e o painel para Isadora gerenciar (Etapa 12).
