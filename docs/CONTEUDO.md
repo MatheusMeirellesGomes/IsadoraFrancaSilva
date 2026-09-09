@@ -548,3 +548,17 @@ exata de variáveis de ambiente a configurar lá) e de conectar o domínio
 `.com.br` via Registro.br. Isso é a última peça de código da Etapa 15 —
 o deploy em si e a compra/apontamento do domínio são ações de
 Matheus/Isadora, não algo que eu possa fazer.
+
+## Revisão integrada — agenda, marca e comunicação
+
+Marca IF refinada em vetor e aplicada aos títulos de Botox e atendimento
+domiciliar, sem adicionar fotos fictícias ou cena 3D pesada.
+Painel personalizado para Isadora com busca, filtros, resumo diário,
+remarcação e data efetiva do procedimento. Login admin segue para /painel.
+Cadastro permite telefone e consentimentos separados por e-mail/telefone.
+Preferências são salvas no Auth; e-mail e telefone preenchem agendamento.
+O agendamento continua pedindo confirmação do consentimento por e-mail.
+Lembretes por telefone ainda precisam de provedor e integração; preferência
+registrada não significa envio ativo.
+Job por e-mail recupera acompanhamentos atrasados, verifica erros do provedor
+e utiliza chave de idempotência. Não foi realizado envio a clientes no teste.

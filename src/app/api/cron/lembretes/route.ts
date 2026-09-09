@@ -15,7 +15,8 @@ function autorizado(request: NextRequest): boolean {
 
 // Data de 14 dias atrás, em YYYY-MM-DD (fuso local do servidor).
 function dataAlvoISO(): string {
-  const data = new Date();
+  const hoje = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+  const data = new Date(`${hoje}T12:00:00Z`);
   data.setDate(data.getDate() - 14);
   const ano = data.getFullYear();
   const mes = String(data.getMonth() + 1).padStart(2, "0");
@@ -46,7 +47,7 @@ export async function GET(request: NextRequest) {
     .from("agendamentos")
     .select("id, clientes(nome, email, aceita_lembretes)")
     .eq("status", "realizado")
-    .eq("procedimento_realizado_em", dataAlvoISO())
+    .lte("procedimento_realizado_em", dataAlvoISO())
     .is("lembrete_enviado_em", null);
 
   if (error) {
@@ -63,11 +64,13 @@ export async function GET(request: NextRequest) {
 
     try {
       const { assunto, texto } = emailAcompanhamento14Dias(cliente.nome);
-      await resend.emails.send({ from, to: cliente.email, subject: assunto, text: texto });
-      await supabase
+      const envio = await resend.emails.send({ from, to: cliente.email, subject: assunto, text: texto }, { idempotencyKey: `retorno-${agendamento.id}` });
+      if (envio.error || !envio.data) continue;
+      const { error: erroMarcacao } = await supabase
         .from("agendamentos")
         .update({ lembrete_enviado_em: new Date().toISOString() })
         .eq("id", agendamento.id);
+      if (erroMarcacao) continue;
       enviados++;
     } catch {
       // Uma falha de envio não deve travar os demais agendamentos do dia.

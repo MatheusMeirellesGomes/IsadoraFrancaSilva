@@ -35,13 +35,13 @@ async function enviarEmails(dados: DadosAgendamento): Promise<string[]> {
   try {
     if (process.env.ISADORA_NOTIFICATION_EMAIL) {
       const { assunto, texto } = emailNotificacaoIsadora(dados);
-      await resend.emails.send({ from, to: process.env.ISADORA_NOTIFICATION_EMAIL, subject: assunto, text: texto });
-      enviados.push("isadora");
+      const result = await resend.emails.send({ from, to: process.env.ISADORA_NOTIFICATION_EMAIL, subject: assunto, text: texto });
+      if (!result.error && result.data) enviados.push("isadora");
     }
     if (dados.aceitaLembretes && dados.email?.trim()) {
       const { assunto, texto } = emailCuidadosCliente(dados);
-      await resend.emails.send({ from, to: dados.email.trim(), subject: assunto, text: texto });
-      enviados.push("cliente");
+      const result = await resend.emails.send({ from, to: dados.email.trim(), subject: assunto, text: texto });
+      if (!result.error && result.data) enviados.push("cliente");
     }
   } catch {
     // Falha no e-mail nunca deve travar o agendamento — o WhatsApp é o canal garantido.

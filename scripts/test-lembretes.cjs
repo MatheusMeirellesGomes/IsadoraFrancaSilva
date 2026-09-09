@@ -11,10 +11,11 @@ const emails = load('src/lib/agendamentoEmails.ts', {});
 
 const env = {};
 const sent = [];
+let failSend = false;
 class ResendMock {
   constructor(key) { this.key = key; }
   get emails() {
-    return { send: async (payload) => { sent.push(payload); return { data: { id: 'test' } }; } };
+    return { send: async (payload) => { if (failSend) return {data:null,error:{message:"falha"}}; sent.push(payload); return { data: { id: 'test' } }; } };
   }
 }
 
@@ -28,7 +29,7 @@ function supabaseMock(agendamentosFixture) {
         select() {
           return {
             eq: () => ({
-              eq: () => ({
+              lte: () => ({
                 is: async () => ({ data: agendamentosFixture, error: null }),
               }),
             }),
@@ -104,6 +105,11 @@ function req(headers = {}) {
   assert.equal(supabaseState.client.atualizacoes.length, 1);
   assert.equal(supabaseState.client.atualizacoes[0].id, 'ag-1');
   assert.ok(supabaseState.client.atualizacoes[0].payload.lembrete_enviado_em, 'deveria marcar lembrete_enviado_em');
+
+  failSend = true;
+  supabaseState.client = supabaseMock([{id:'falha',clientes:{nome:'Teste',email:'teste@example.com',aceita_lembretes:true}}]);
+  assert.equal((await (await route.GET(req(auth))).json()).enviados,0);
+  assert.equal(supabaseState.client.atualizacoes.length,0);
 
   console.log('Lembretes: autorização (sem segredo, ausente, errado), Supabase/Resend independentes, e envio seletivo (só quem tem e-mail e aceitou) com marcação de lembrete_enviado_em aprovados. Nenhuma chamada real ao Resend/Supabase.');
 })().catch(e => { console.error(e); process.exitCode = 1; });

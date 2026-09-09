@@ -402,3 +402,21 @@ nenhuma chamada real).
    `src/app/robots.ts` **só se o domínio final for diferente** do que já
    está configurado (`https://isadorafrancasilva.com.br`) — se for esse
    mesmo, não precisa mudar nada.
+
+## Revisão da agenda e notificações
+
+- Administradora autenticada é direcionada para /painel. Busca, filtros por
+  data/situação, resumo, remarcação e data real de realização estão disponíveis.
+- Bloqueio de horário duplicado no painel é uma verificação na interface,
+  não uma restrição transacional de disponibilidade no banco. Duração de
+  atendimento e deslocamento ainda precisam ser definidas para agenda completa.
+- Cadastro coleta telefone opcional e consentimentos em user_metadata. Não
+  concede privilégios: administração continua baseada apenas em app_metadata.
+- Lembrete busca procedimentos realizados há pelo menos 14 dias e não enviados.
+  Resend precisa estar configurado e o cron ativo. A chave de idempotência
+  reduz duplicações em retentativas dentro da janela do provedor; não é
+  garantia permanente em caso de falha prolongada na gravação do banco.
+- Notificações automáticas WhatsApp/SMS não estão implementadas: exigem
+  provedor e consentimento específico. Nenhum disparo real foi feito na revisão.
+- Antes de publicar, validar login/admin com conta autorizada, políticas RLS,
+  recuperação de senha, dados de contato e entrega de e-mail em ambiente de teste.

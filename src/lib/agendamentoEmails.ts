@@ -61,9 +61,9 @@ export function emailAcompanhamento14Dias(nome: string) {
   const assunto = "Como você está, depois do seu botox? — Isadora França Silva";
   const texto = `Olá, ${nome}!
 
-Já se passaram 14 dias desde o seu atendimento, e eu gostaria de saber como você está se sentindo com o resultado.
+Já se passaram pelo menos 14 dias desde o seu atendimento. Gostaria de saber como você está e combinar seu retorno para acompanhar o resultado.
 
-Se surgiu alguma dúvida, algo te incomodou ou você simplesmente quer conversar sobre o que achou, me chame no WhatsApp — fico feliz em ouvir.
+Se surgiu alguma dúvida, algo te incomodou ou você simplesmente quer conversar sobre o que achou, me chame no WhatsApp: https://wa.me/5531995262194 — fico feliz em ouvir. O retorno será combinado comigo, sem confirmação automática.
 
 Com carinho,
 Isadora França Silva
