@@ -362,3 +362,19 @@ conta" sempre funciona independente disso.
 
 Falta: página do painel/área da cliente (Etapas 11/12) e policies de RLS
 para a cliente logada acessar os próprios dados.
+
+## Etapa 11 — Área da cliente ("Meus atendimentos") (em andamento)
+
+Pedido de Matheus em 09/09/2026: quem cria conta deve ter uma aba própria
+mostrando as informações dos atendimentos dela.
+
+Parte 1: `supabase/migrations/0003_area_cliente_rls.sql` — policies de
+**leitura** (só SELECT) para a cliente autenticada ver o próprio registro
+em `clientes` e os próprios `agendamentos` (via `auth.uid() = user_id`).
+Nenhuma policy de escrita é criada — toda gravação continua passando
+pelo servidor com a chave de serviço, nunca direto do navegador.
+
+Ainda faltam (próximos commits): ligar o agendamento à conta quando a
+cliente estiver logada (hoje toda submissão cria uma linha nova e solta
+em `clientes`, sem `user_id`) e a página `/meus-atendimentos` que lista
+os dados usando essas policies.
