@@ -1,18 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Logo } from "@/components/Logo";
+import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 
 const NAV_LINKS = [
   { href: "/sobre", label: "Sobre" },
   { href: "/botox", label: "Botox" },
   { href: "/atendimento-domiciliar", label: "Atendimento domiciliar" },
-  { href: "/", label: "Entrar" },
 ];
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [logada, setLogada] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+
+    supabase.auth.getSession().then(({ data }) => setLogada(Boolean(data.session)));
+    const { data: assinatura } = supabase.auth.onAuthStateChange((_evento, sessao) => {
+      setLogada(Boolean(sessao));
+    });
+    return () => assinatura.subscription.unsubscribe();
+  }, []);
+
+  async function sair() {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    await supabase.auth.signOut();
+    setOpen(false);
+    router.push("/");
+  }
+
+  const contaLink = logada
+    ? { href: "/meus-atendimentos", label: "Meus atendimentos" }
+    : { href: "/", label: "Entrar" };
 
   return (
     <header className="sticky top-0 z-20 border-b border-blush-200/60 bg-white/80 backdrop-blur">
@@ -31,6 +57,21 @@ export function Header() {
               {link.label}
             </Link>
           ))}
+          <Link
+            href={contaLink.href}
+            className="font-body text-sm font-medium text-graphite transition-colors hover:text-wine"
+          >
+            {contaLink.label}
+          </Link>
+          {logada && (
+            <button
+              type="button"
+              onClick={sair}
+              className="font-body text-sm font-medium text-graphite/70 transition-colors hover:text-wine"
+            >
+              Sair
+            </button>
+          )}
         </nav>
 
         <div className="flex items-center gap-3">
@@ -64,6 +105,22 @@ export function Header() {
               {link.label}
             </Link>
           ))}
+          <Link
+            href={contaLink.href}
+            onClick={() => setOpen(false)}
+            className="rounded-lg px-3 py-2 font-body text-sm font-medium text-graphite hover:bg-blush-100"
+          >
+            {contaLink.label}
+          </Link>
+          {logada && (
+            <button
+              type="button"
+              onClick={sair}
+              className="rounded-lg px-3 py-2 text-left font-body text-sm font-medium text-graphite/70 hover:bg-blush-100"
+            >
+              Sair
+            </button>
+          )}
           <Link
             href="/agendamento"
             onClick={() => setOpen(false)}

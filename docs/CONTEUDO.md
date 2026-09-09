@@ -388,3 +388,15 @@ novo a cada envio — assim "Meus atendimentos" mostra um histórico
 coerente, não clientes duplicados. Token ausente ou inválido é tratado
 como visitante normal, sem quebrar nada. Testes atualizados em
 `scripts/test-agendamento.cjs` cobrem sessão válida, inválida e ausente.
+
+Parte 3 (fecha a Etapa 11): página `/meus-atendimentos`
+(`src/components/MeusAtendimentos.tsx`) — lista os agendamentos da
+cliente logada (data, horário, observações, status), usando as policies
+de RLS da parte 1 direto do navegador (não passa pelo servidor). Estados
+cobertos: carregando, Supabase não configurado, deslogada (com CTA para
+"/"), erro, lista vazia (com CTA para agendar) e lista preenchida.
+
+`Header.tsx` passa a acompanhar a sessão (`onAuthStateChange`): mostra
+"Entrar" (→ "/") para quem não está logada, e "Meus atendimentos" (→
+"/meus-atendimentos") + "Sair" para quem está — em desktop e no menu
+mobile.

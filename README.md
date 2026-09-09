@@ -75,7 +75,12 @@ antes de avançar para a próxima.
       Supabase Auth). A página inicial de conteúdo mudou para `/inicio`.
       Falta a Área da cliente (Etapa 11) para o login ter o que mostrar
       depois de entrar.
-- [ ] 11. Área da cliente
+- [x] **11. Área da cliente** — "/meus-atendimentos" lista os
+      agendamentos de quem está logada (data, horário, status,
+      observações), via policies de RLS só de leitura. O agendamento
+      feito com a conta logada é automaticamente ligado a ela — não
+      precisa preencher nada a mais. Cabeçalho mostra "Meus
+      atendimentos"/"Sair" para quem está logada.
 - [ ] 12. Painel administrativo
 - [ ] 13. Privacidade e consentimento (LGPD)
 - [ ] 14. Responsividade, acessibilidade e testes
