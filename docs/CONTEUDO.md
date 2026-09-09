@@ -87,13 +87,22 @@ acompanhamento em ambiente clínico durante a experiência na clínica.
 - Fotografias profissionais: `PENDENTE` — não usar banco de imagens fingindo
   ser a Isadora; preparar espaços reservados no layout até haver fotos reais.
 
-## Identidade visual (referência rápida — detalhada na Etapa 2)
+## Identidade visual (definida na Etapa 2)
 
-- Paleta: rosa blush claro + branco predominante, detalhes em rosé/dourado
-  discreto, textos em vinho ou grafite.
-- Tom: feminino, moderno, elegante, profissional — nunca infantil ou
+- **Paleta** (tokens em `tailwind.config.ts`):
+  - `blush` (50–900) — rosa blush claro a vinho, base #E27A93 (500).
+  - `rosegold` (300–600) — detalhes em rosé/dourado discreto, base #C9A66B (500).
+  - `wine` — #5B1A2B, textos de destaque.
+  - `graphite` — #33302E, texto padrão.
+  - Branco (#FFFFFF) predominante como fundo.
+- **Tipografia:** Playfair Display (serif, títulos/logo — `font-display`) +
+  Poppins (sans, corpo de texto/UI — `font-body`), carregadas via
+  `next/font/google` em `src/app/layout.tsx`.
+- **Tom:** feminino, moderno, elegante, profissional — nunca infantil ou
   genérico.
-- Logo: monograma "IF" + assinatura "Isadora França | Biomedicina Estética".
+- **Logo:** monograma "IF" em anel rosé-gold sobre fundo blush, com a
+  assinatura "Isadora França | Biomedicina Estética" — componente em
+  `src/components/Logo.tsx`, favicon em `src/app/icon.svg`.
 
 ## Assistente virtual "Helena" (Etapa 16)
 

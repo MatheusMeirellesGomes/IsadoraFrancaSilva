@@ -41,7 +41,8 @@ antes de avançar para a próxima.
 
 - [x] **1. Estrutura inicial e README** — scaffold Next.js + TypeScript +
       Tailwind, documentação base e controle de conteúdo.
-- [ ] 2. Identidade visual e logo
+- [x] **2. Identidade visual e logo** — paleta blush/rosé-gold/vinho,
+      tipografia Playfair Display + Poppins, monograma "IF" e favicon.
 - [ ] 3. Cabeçalho, navegação e página inicial
 - [ ] 4. Página sobre a Isadora
 - [ ] 5. Página de botox
