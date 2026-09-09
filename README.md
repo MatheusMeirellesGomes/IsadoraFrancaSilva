@@ -54,8 +54,12 @@ antes de avançar para a próxima.
       produto (Dysport), filosofia de atendimento (naturalidade, segurança,
       sem exagero) e valor (a partir de R$750, inicial).
 - [ ] 6. Atendimento domiciliar
-- [ ] 7. Formulário de agendamento
-- [ ] 8. Banco de dados (Supabase)
+- [ ] **7. Formulário de agendamento** — agora inclui campo opcional de
+      e-mail e checkbox de consentimento para lembretes de cuidado
+      (ver "Lembretes automáticos" abaixo).
+- [ ] **8. Banco de dados (Supabase)** — o schema de agendamentos precisa
+      de `procedimento_realizado_em` e `lembrete_enviado_em` para
+      sustentar os lembretes de pós-procedimento.
 - [ ] 9. Integração com WhatsApp
 - [ ] 10. Cadastro e login (opcional para a cliente)
 - [ ] 11. Área da cliente
@@ -63,8 +67,13 @@ antes de avançar para a próxima.
 - [ ] 13. Privacidade e consentimento (LGPD)
 - [ ] 14. Responsividade, acessibilidade e testes
 - [ ] 15. Preparação para hospedagem e domínio (IsadoraFrancaSilva.com.br)
-- [ ] 16. Assistente virtual "Helena" (chatbox com tira-dúvidas e
-      redirecionamentos)
+- [x] **16. Assistente virtual "Helena"** — mascote, chat com respostas
+      rápidas e atalhos, integração de IA preparada no servidor
+      (ativação real ainda pendente de chave/modelo configurados).
+- [ ] **17. Lembretes automáticos de pós-procedimento** — e-mail
+      disparado 14 dias após o procedimento realizado, perguntando como
+      ficou o resultado. Depende das Etapas 7, 8 e de um job agendado
+      (cron) + serviço de e-mail transacional.
 
 ## Fluxo de autenticação (detalhamento da Etapa 10)
 
@@ -165,3 +174,28 @@ Para parar o serviço: `brew services stop ollama`; para voltar:
 
 Esta configuração atende o desenvolvimento local. Hospedagem não tem acesso
 ao localhost deste Mac; exige infraestrutura de inferência própria ou provedor.
+
+## Lembretes automáticos de pós-procedimento (Etapa 17 — planejada)
+
+Decisão registrada em 09/09/2026, a pedido de Matheus: a cliente poderá
+informar um e-mail (opcional) e um telefone no formulário de agendamento,
+com um checkbox de consentimento separado para receber lembretes de
+cuidado. 14 dias após Isadora marcar o procedimento como realizado no
+painel administrativo, o sistema envia automaticamente um e-mail
+perguntando como ficou o resultado e convidando a cliente a retornar.
+
+- **Canal na primeira versão: só e-mail.** WhatsApp/SMS automáticos ficam
+  para depois — exigem aprovação da API oficial do WhatsApp Business (Meta)
+  ou um provedor de SMS (Twilio), com custo por mensagem. Avaliar quando o
+  volume de clientes justificar.
+- **Serviço de e-mail sugerido:** [Resend](https://resend.com/) — boa
+  integração com Next.js, plano gratuito cobre o volume inicial.
+- **Gatilho:** campo `procedimento_realizado_em` no agendamento (Etapa 8),
+  preenchido pela Isadora no painel (Etapa 12) — não a data agendada, pois
+  pode haver remarcação. Um job agendado (cron) roda diariamente,
+  identifica agendamentos que completaram 14 dias e ainda não têm
+  `lembrete_enviado_em`, envia o e-mail e marca o envio (evita duplicidade).
+- **Consentimento:** separado do consentimento de agendamento (LGPD),
+  com opção clara de descadastro em todo e-mail enviado.
+- Depende das Etapas 7 (captar e-mail/consentimento), 8 (campos no banco)
+  e 12 (Isadora marcar o procedimento como realizado).

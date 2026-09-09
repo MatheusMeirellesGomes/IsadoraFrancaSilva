@@ -211,3 +211,29 @@ public/images/isadora-sobre.jpeg. Aparência preservada, enquadramento por CSS.
 Integração alternativa com Ollama preparada para desenvolvimento no Mac.
 O consentimento distingue IA local de OpenAI. Nenhuma mensagem do modo
 local é enviada à OpenAI. Uso hospedado exige infraestrutura separada.
+
+## Lembretes automáticos de pós-procedimento — decisão de escopo
+
+Pedido de Matheus em 09/09/2026: capturar e-mail e telefone da cliente
+para notificações, e enviar uma mensagem automática 14 dias após o botox
+perguntando como ficou o resultado.
+
+Decisão (com aprovação de Matheus): primeira versão usa **apenas e-mail**
+automático — WhatsApp automático de verdade exige aprovação da API oficial
+do WhatsApp Business pelo Meta (número comercial verificado, template de
+mensagem pré-aprovado, custo por mensagem) e SMS via Twilio/similar tem
+custo por envio; ambos ficam como evolução futura, quando o volume de
+clientes justificar o investimento. O telefone continua sendo capturado
+desde já no agendamento (já é necessário para o WhatsApp da Etapa 9), só o
+disparo automático do lembrete é que começa só por e-mail.
+
+Detalhamento técnico completo em README.md, seção "Lembretes automáticos
+de pós-procedimento (Etapa 17 — planejada)". Resumo: e-mail opcional +
+checkbox de consentimento específico no formulário de agendamento (Etapa
+7); campo `procedimento_realizado_em` marcado pela Isadora no painel
+(Etapa 12) dispara a contagem dos 14 dias — não a data agendada, por causa
+de remarcações; um job diário (cron) identifica quem completou 14 dias e
+ainda não recebeu o lembrete, envia via Resend e registra
+`lembrete_enviado_em` para nunca duplicar o envio.
+
+Ainda não implementado — depende das Etapas 7, 8 e 12 existirem primeiro.
