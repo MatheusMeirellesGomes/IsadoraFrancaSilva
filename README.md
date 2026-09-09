@@ -56,9 +56,10 @@ antes de avançar para a próxima.
 - [x] **6. Atendimento domiciliar** — como funciona, privacidade do
       endereço, CTA pelo WhatsApp (região/taxa combinadas diretamente,
       ainda `PENDENTE` para publicação).
-- [ ] **7. Formulário de agendamento** — agora inclui campo opcional de
-      e-mail e checkbox de consentimento para lembretes de cuidado
-      (ver "Lembretes automáticos" abaixo).
+- [x] **7. Formulário de agendamento** — nome, WhatsApp, data, horário e
+      observações, com e-mail opcional e consentimento para lembretes de
+      cuidado (ver "Lembretes automáticos" abaixo). Envio abre o WhatsApp
+      com tudo preenchido; sem persistência em banco ainda (Etapa 8).
 - [ ] **8. Banco de dados (Supabase)** — o schema de agendamentos precisa
       de `procedimento_realizado_em` e `lembrete_enviado_em` para
       sustentar os lembretes de pós-procedimento.
