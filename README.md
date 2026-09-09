@@ -55,6 +55,8 @@ antes de avançar para a próxima.
 - [ ] 13. Privacidade e consentimento (LGPD)
 - [ ] 14. Responsividade, acessibilidade e testes
 - [ ] 15. Preparação para hospedagem e domínio (IsadoraFrancaSilva.com.br)
+- [ ] 16. Assistente virtual "Helena" (chatbox com tira-dúvidas e
+      redirecionamentos)
 
 ## Segurança e privacidade
 

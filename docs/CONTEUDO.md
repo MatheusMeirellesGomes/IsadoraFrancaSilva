@@ -83,6 +83,18 @@ acompanhamento em ambiente clínico durante a experiência na clínica.
   genérico.
 - Logo: monograma "IF" + assinatura "Isadora França | Biomedicina Estética".
 
+## Assistente virtual "Helena" (Etapa 16)
+
+- **Nome:** Helena.
+- **Persona:** robozinha rosa, fofa, elegante — combina com a identidade
+  visual do site.
+- **Mensagem de saudação:** "Sou a assistente virtual Helena, como posso
+  ajudar?"
+- **Função:** tirar dúvidas frequentes (usando só o conteúdo confirmado
+  neste arquivo) e redirecionar a cliente para as páginas de botox,
+  agendamento ou WhatsApp — não substitui o formulário de agendamento nem
+  toma decisões clínicas.
+
 ## Como manter este arquivo
 
 Sempre que uma informação `PENDENTE` for confirmada, atualizar este arquivo
