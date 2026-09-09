@@ -60,13 +60,11 @@ antes de avançar para a próxima.
       observações, com e-mail opcional e consentimento para lembretes de
       cuidado (ver "Lembretes automáticos" abaixo). Envio abre o WhatsApp
       com tudo preenchido; sem persistência em banco ainda (Etapa 8).
-- [ ] **8. Banco de dados (Supabase)** — schema pronto
-      (`supabase/migrations/0001_init.sql`) com `clientes` e
-      `agendamentos` (inclui `procedimento_realizado_em` e
-      `lembrete_enviado_em` para os lembretes da Etapa 17), RLS habilitada
-      sem policy pública, e o formulário de agendamento já persiste nele.
-      Falta criar o projeto Supabase de verdade e rodar a migração — só
-      então esta etapa fica de fato concluída.
+- [x] **8. Banco de dados (Supabase)** — projeto real criado em
+      09/09/2026, as 4 migrações rodadas e verificadas
+      (`node scripts/check-supabase.mjs`): tabelas, coluna `user_id` e
+      RLS todas confirmadas funcionando. O formulário de agendamento já
+      persiste de verdade.
 - [x] **9. Integração com WhatsApp** — entregue como parte da Etapa 7: o
       agendamento redireciona para o WhatsApp da Isadora com a mensagem
       já preenchida (nome, data, horário, observações, e-mail).
@@ -244,6 +242,16 @@ o prefixo `NEXT_PUBLIC_`) nem commitada.
 
 Validação: `node scripts/test-agendamento.cjs` (Supabase mockado, nenhuma
 chamada real).
+
+### Diagnóstico de um projeto real
+
+`node scripts/check-supabase.mjs` conecta no projeto configurado em
+`.env.local` (chave de serviço) e confere, nessa ordem: se as tabelas
+`clientes`/`agendamentos` existem, se a leitura anônima está corretamente
+bloqueada por RLS (deve retornar vazio, nunca erro nem dado), e se a
+coluna `user_id` existe. Útil para descobrir rapidamente qual migração
+ainda falta rodar num projeto novo, sem precisar adivinhar pelo erro do
+SQL Editor.
 
 ## Painel administrativo (Etapa 12)
 

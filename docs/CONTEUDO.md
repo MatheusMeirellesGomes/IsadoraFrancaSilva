@@ -452,3 +452,16 @@ decide o que mostrar, o banco decide o que realmente é permitido.
 
 `Header.tsx` mostra o link "Painel" só para quem tem o claim de admin na
 sessão.
+
+## Etapa 8 — projeto Supabase real conectado (09/09/2026)
+
+Matheus criou o projeto real no Supabase e rodou as 4 migrações no SQL
+Editor. Verificado com `node scripts/check-supabase.mjs`: tabelas
+existem, RLS bloqueia leitura anônima corretamente, coluna `user_id`
+existe. `.env.local` configurado com as 3 variáveis (nunca commitado).
+
+**Pendente para sexta-feira (11/09/2026):** Isadora ainda não criou a
+própria conta pelo site — combinado que Matheus faz isso pessoalmente
+com ela. Depois disso, falta rodar o comando SQL de uma linha (já
+documentado no README, seção "Painel administrativo") para promover a
+conta dela a admin.
