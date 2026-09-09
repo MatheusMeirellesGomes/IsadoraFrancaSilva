@@ -433,3 +433,22 @@ decidir o que mostrar na interface — a proteção de verdade dos dados é a
 policy de RLS, que faz a mesma checagem no banco.
 
 Ainda falta: a própria página do painel (`/painel`, próximo commit).
+
+Parte 2 (fecha a Etapa 12): página `/painel`
+(`src/components/PainelAdministrativo.tsx`) — duas abas:
+
+- **Agendamentos:** todos, de todas as clientes (nome, WhatsApp, e-mail,
+  data, horário, observações), com um seletor de status
+  (aguardando_confirmacao/confirmado/realizado/cancelado). Ao marcar
+  "realizado", `procedimento_realizado_em` é preenchido com a data de
+  hoje automaticamente — é esse campo que vai disparar o lembrete de 14
+  dias da Etapa 17, quando o cron existir.
+- **Pacientes:** lista de todas as clientes cadastradas (nome, WhatsApp,
+  e-mail, se aceitam lembretes por e-mail).
+
+Lê e escreve direto do navegador via as policies de RLS da parte 1 (sem
+rota de API nova) — a mesma proteção dupla das outras áreas: a interface
+decide o que mostrar, o banco decide o que realmente é permitido.
+
+`Header.tsx` mostra o link "Painel" só para quem tem o claim de admin na
+sessão.

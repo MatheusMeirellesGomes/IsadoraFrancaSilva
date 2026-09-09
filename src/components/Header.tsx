@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Logo } from "@/components/Logo";
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
+import { isAdminSession } from "@/lib/isAdminSession";
 
 const NAV_LINKS = [
   { href: "/sobre", label: "Sobre" },
@@ -15,15 +16,20 @@ const NAV_LINKS = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const [logada, setLogada] = useState(false);
+  const [admin, setAdmin] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) return;
 
-    supabase.auth.getSession().then(({ data }) => setLogada(Boolean(data.session)));
+    supabase.auth.getSession().then(({ data }) => {
+      setLogada(Boolean(data.session));
+      setAdmin(isAdminSession(data.session));
+    });
     const { data: assinatura } = supabase.auth.onAuthStateChange((_evento, sessao) => {
       setLogada(Boolean(sessao));
+      setAdmin(isAdminSession(sessao));
     });
     return () => assinatura.subscription.unsubscribe();
   }, []);
@@ -63,6 +69,14 @@ export function Header() {
           >
             {contaLink.label}
           </Link>
+          {admin && (
+            <Link
+              href="/painel"
+              className="font-body text-sm font-medium text-rosegold-600 transition-colors hover:text-wine"
+            >
+              Painel
+            </Link>
+          )}
           {logada && (
             <button
               type="button"
@@ -112,6 +126,15 @@ export function Header() {
           >
             {contaLink.label}
           </Link>
+          {admin && (
+            <Link
+              href="/painel"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-3 py-2 font-body text-sm font-medium text-rosegold-600 hover:bg-blush-100"
+            >
+              Painel
+            </Link>
+          )}
           {logada && (
             <button
               type="button"

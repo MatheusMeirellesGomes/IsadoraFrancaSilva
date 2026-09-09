@@ -81,7 +81,11 @@ antes de avançar para a próxima.
       feito com a conta logada é automaticamente ligado a ela — não
       precisa preencher nada a mais. Cabeçalho mostra "Meus
       atendimentos"/"Sair" para quem está logada.
-- [ ] 12. Painel administrativo
+- [x] **12. Painel administrativo** — "/painel", exclusivo pra conta com
+      claim de admin (ver "Painel administrativo" abaixo). Abas
+      Agendamentos (todas as clientes, muda status, marca "realizado" —
+      isso preenche `procedimento_realizado_em` automaticamente) e
+      Pacientes (lista completa).
 - [ ] 13. Privacidade e consentimento (LGPD)
 - [ ] 14. Responsividade, acessibilidade e testes
 - [ ] 15. Preparação para hospedagem e domínio (IsadoraFrancaSilva.com.br)
@@ -219,13 +223,15 @@ redirecionamento ao WhatsApp, que continua sendo o canal garantido.
 ### Como ativar
 
 1. Crie um projeto gratuito em [supabase.com](https://supabase.com/).
-2. No SQL Editor do projeto, rode `supabase/migrations/0001_init.sql`.
-3. Copie a URL do projeto e a **chave de serviço** (não a `anon`, que não
-   tem permissão nenhuma nas tabelas — de propósito, ver o comentário na
-   migração) para `.env.local`:
+2. No SQL Editor do projeto, rode as migrações em `supabase/migrations/`
+   **em ordem** (`0001_init.sql`, `0002_...`, `0003_...`, `0004_...`).
+3. Copie a URL do projeto, a **chave de serviço** e a **chave anônima**
+   para `.env.local` (a anônima é segura para expor no navegador —
+   é sujeita a RLS; a de serviço não, ela ignora RLS):
 
 ```dotenv
 NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sua_chave_anonima
 SUPABASE_SERVICE_ROLE_KEY=sua_chave_de_servico
 ```
 
@@ -238,6 +244,32 @@ o prefixo `NEXT_PUBLIC_`) nem commitada.
 
 Validação: `node scripts/test-agendamento.cjs` (Supabase mockado, nenhuma
 chamada real).
+
+## Painel administrativo (Etapa 12)
+
+`/painel` — exclusivo para a conta da Isadora, com duas abas:
+
+- **Agendamentos:** todas as clientes, com um seletor de status
+  (aguardando confirmação / confirmado / realizado / cancelado). Marcar
+  como "realizado" preenche `procedimento_realizado_em` com a data de
+  hoje automaticamente — é o gatilho dos lembretes de 14 dias (Etapa 17).
+- **Pacientes:** lista completa de clientes cadastradas.
+
+### Como promover a conta da Isadora a administradora
+
+Depois que ela criar a conta normalmente pelo site ("/"), rode **uma
+única vez** no SQL Editor do Supabase (troque o e-mail):
+
+```sql
+update auth.users
+set raw_app_meta_data = raw_app_meta_data || '{"role":"admin"}'::jsonb
+where email = 'email-da-isadora@exemplo.com';
+```
+
+Ela precisa sair e entrar de novo depois disso — o claim novo só aparece
+numa sessão nova. Sem esse passo, a conta funciona normalmente como
+cliente comum (vê só os próprios agendamentos em "Meus atendimentos",
+não o painel).
 
 ## E-mails automáticos do agendamento (parte da Etapa 17, já implementada)
 
