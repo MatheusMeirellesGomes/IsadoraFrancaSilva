@@ -73,10 +73,11 @@ antes de avançar para a próxima.
 - [x] **16. Assistente virtual "Helena"** — mascote, chat com respostas
       rápidas e atalhos, integração de IA preparada no servidor
       (ativação real ainda pendente de chave/modelo configurados).
-- [ ] **17. Lembretes automáticos de pós-procedimento** — e-mail
-      disparado 14 dias após o procedimento realizado, perguntando como
-      ficou o resultado. Depende das Etapas 7, 8 e de um job agendado
-      (cron) + serviço de e-mail transacional.
+- [ ] **17. Lembretes de pós-procedimento** — *parcialmente adiantada*:
+      notificação para Isadora e e-mail de cuidados para a cliente já
+      disparam no envio do agendamento (ver seção abaixo). Falta o
+      lembrete de 14 dias em si, que depende das Etapas 8 e 12 e de um
+      job agendado (cron).
 
 ## Fluxo de autenticação (detalhamento da Etapa 10)
 
@@ -178,7 +179,41 @@ Para parar o serviço: `brew services stop ollama`; para voltar:
 Esta configuração atende o desenvolvimento local. Hospedagem não tem acesso
 ao localhost deste Mac; exige infraestrutura de inferência própria ou provedor.
 
-## Lembretes automáticos de pós-procedimento (Etapa 17 — planejada)
+## E-mails automáticos do agendamento (parte da Etapa 17, já implementada)
+
+Ao enviar o formulário de /agendamento, além do redirecionamento ao
+WhatsApp (canal garantido, não depende de configuração nenhuma), o site
+tenta enviar até dois e-mails via [Resend](https://resend.com/):
+
+- Para Isadora (`ISADORA_NOTIFICATION_EMAIL`): aviso de novo pedido, com
+  os dados preenchidos — reforço caso a cliente feche o WhatsApp antes de
+  enviar a mensagem.
+- Para a cliente, só se ela informou e-mail **e** aceitou o checkbox de
+  lembretes: um e-mail de cuidados assinado por Isadora França Silva, com
+  as mesmas informações já usadas na página /botox (fonte: bula do Dysport).
+
+### Como ativar
+
+```dotenv
+RESEND_API_KEY=sua_chave_privada
+RESEND_FROM_EMAIL=remetente_verificado_no_resend
+ISADORA_NOTIFICATION_EMAIL=email_da_isadora
+```
+
+Crie uma conta gratuita em [resend.com](https://resend.com/), verifique um
+domínio (ou use o remetente de testes deles) e gere a API key. Reinicie
+`npm run dev`/o deploy depois de configurar. Sem essas variáveis, a rota
+`/api/agendamento` responde `202` sem enviar nada — o formulário e o
+WhatsApp continuam funcionando normalmente.
+
+Validação: `node scripts/test-agendamento.cjs` (Resend mockado, nenhuma
+chamada real).
+
+WhatsApp automático de verdade (a máquina mandar mensagem sozinha, sem a
+cliente clicar) continua fora do escopo por enquanto — exige a API oficial
+do WhatsApp Business (Meta), com aprovação e custo por mensagem.
+
+## Lembretes automáticos de pós-procedimento (Etapa 17 — restante planejado)
 
 Decisão registrada em 09/09/2026, a pedido de Matheus: a cliente poderá
 informar um e-mail (opcional) e um telefone no formulário de agendamento,

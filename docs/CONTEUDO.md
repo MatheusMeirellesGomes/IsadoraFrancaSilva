@@ -269,3 +269,45 @@ Publicado em duas partes, cada uma com seu commit:
 
 Faltam ainda: persistência real (Etapa 8), status "aguardando confirmação"
 e o painel para Isadora gerenciar (Etapa 12).
+
+## E-mails automáticos de agendamento (parte da Etapa 17, adiantada)
+
+Pedido de Matheus em 09/09/2026: quando alguém agenda, ele quer que Isadora
+seja avisada automaticamente (não só depender da cliente enviar a
+mensagem do WhatsApp), e que a cliente receba um e-mail com cuidados,
+assinado por Isadora França Silva.
+
+Implementado: `src/app/api/agendamento/route.ts`, chamado pelo formulário
+de agendamento em paralelo ao redirecionamento ao WhatsApp (que continua
+sendo o canal garantido — o e-mail é um reforço, nunca bloqueia nem afeta
+o WhatsApp se falhar). Usa Resend. Envia até dois e-mails:
+
+1. **Notificação para Isadora** (`ISADORA_NOTIFICATION_EMAIL`): dados do
+   pedido — nome, WhatsApp, data, horário, observações, e-mail informado
+   e se a cliente aceitou lembretes. Só é enviada se esse e-mail estiver
+   configurado.
+2. **Cuidados para a cliente**: enviado só se ela informou e-mail **e**
+   marcou o consentimento de lembretes no formulário. Conteúdo baseado nos
+   mesmos fatos já usados na página /botox (fonte: bula do paciente
+   Dysport — Ipsen): efeito gradual (7–14 dias, máximo em ~1 mês), duração
+   aproximada de 3–4 meses (não é garantia individual), aviso de
+   contraindicações a informar antes do atendimento, e o alerta de
+   segurança (dificuldade para respirar/engolir/falar exige assistência
+   médica imediata). Nenhuma instrução clínica nova foi inventada — é o
+   mesmo conteúdo já vetado, reaproveitado.
+
+**Ainda não implementado (depende de infraestrutura externa):** o envio
+real só funciona quando `RESEND_API_KEY` e `RESEND_FROM_EMAIL` estiverem
+configurados em `.env.local` — isso exige criar uma conta gratuita no
+Resend e verificar um domínio/remetente, o que só a Isadora/Matheus podem
+fazer (não é algo que eu consiga criar por vocês). Até lá, a rota responde
+`202` sem enviar nada, sem quebrar o formulário. `ISADORA_NOTIFICATION_EMAIL`
+também está `PENDENTE` — ainda não temos um e-mail dela confirmado.
+
+**Sobre WhatsApp automático de verdade** (a máquina mandar mensagem pelo
+WhatsApp sozinha, sem o clique da cliente): continua exigindo a API oficial
+do WhatsApp Business, decisão já registrada acima como evolução futura —
+não foi implementado agora.
+
+Testes automatizados: `node scripts/test-agendamento.cjs` (origem,
+validação, envio simulado com Resend mockado — nenhuma chamada real).

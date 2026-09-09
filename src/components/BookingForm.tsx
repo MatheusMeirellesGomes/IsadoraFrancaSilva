@@ -74,6 +74,23 @@ export function BookingForm() {
     const mensagem = montarMensagem(form);
     const url = `${CONTACTS.whatsapp}?text=${encodeURIComponent(mensagem)}`;
     window.open(url, "_blank", "noopener,noreferrer");
+
+    // Canal auxiliar por e-mail — nunca bloqueia nem afeta o WhatsApp, que
+    // é o canal garantido. Sem RESEND_API_KEY configurada, a rota apenas
+    // responde 202 sem enviar nada.
+    fetch("/api/agendamento", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nome: form.nome,
+        whatsapp: form.whatsapp,
+        email: form.email || undefined,
+        dataFormatada: formatDataParaMensagem(form.data),
+        horario: form.horario,
+        observacoes: form.observacoes || undefined,
+        aceitaLembretes: form.aceitaLembretes,
+      }),
+    }).catch(() => {});
   }
 
   return (
