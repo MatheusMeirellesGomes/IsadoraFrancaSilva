@@ -500,3 +500,27 @@ e consentimento, envia `emailAcompanhamento14Dias` e marca
 configurado só nas variáveis de ambiente do projeto). Testado com
 Supabase e Resend mockados em `scripts/test-lembretes.cjs`; ativação real
 depende só das variáveis de ambiente existirem na Vercel.
+
+## Etapa 14 — limpeza, 404 e responsividade
+
+Removidos (dead code, sem nenhuma referência restante):
+`src/components/Hero3D.tsx`, `Hero3DLoader.tsx`, `HeroScene.tsx`,
+`ErrorBoundaryToFallback.tsx`, `src/lib/isWebglAvailable.ts` — a cena 3D
+foi substituída pelo retrato real desde `cdc964b`, mas os arquivos
+tinham ficado no repositório. Removidas também as dependências
+`@react-three/drei`, `@react-three/fiber` e `three` do `package.json`
+(-55 pacotes) e `src/components/PlaceholderPage.tsx` (todas as páginas
+que a usavam já têm conteúdo real).
+
+`src/app/not-found.tsx`: página 404 com a identidade do site em vez do
+padrão genérico do Next.js.
+
+`Header.tsx`: nav de desktop ganhou `flex-wrap` — com a conta admin
+logada, o cabeçalho tem bem mais itens (Sobre, Botox, Atendimento
+domiciliar, Meus atendimentos/Painel, Sair, Agendar) do que o visitante
+comum via até aqui; isso evita que estourem a largura em telas menores
+sem quebrar o layout normal.
+
+Conferido no navegador em 375px (mobile): política de privacidade, meus
+atendimentos (estado deslogada) e a 404 — todas renderizando
+corretamente, rodapé com os links legais visível.

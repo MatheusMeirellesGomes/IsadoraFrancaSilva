@@ -90,7 +90,11 @@ antes de avançar para a próxima.
       direitos da titular) e "/politica-de-cancelamento" (honesta sobre
       não haver prazo/taxa formal ainda definidos). Linkadas no rodapé,
       no formulário de agendamento e na tela de login/cadastro.
-- [ ] 14. Responsividade, acessibilidade e testes
+- [x] **14. Responsividade, acessibilidade e testes** — página 404 com a
+      identidade do site; removido código morto do hero 3D antigo (5
+      arquivos + dependências @react-three/three, -55 pacotes); nav do
+      cabeçalho preparada para não estourar com todos os itens da conta
+      admin; conferido em mobile (375px) nas páginas novas.
 - [ ] 15. Preparação para hospedagem e domínio (IsadoraFrancaSilva.com.br)
 - [x] **16. Assistente virtual "Helena"** — mascote, chat com respostas
       rápidas e atalhos, integração de IA preparada no servidor
