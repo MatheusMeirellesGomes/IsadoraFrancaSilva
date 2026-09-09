@@ -56,6 +56,10 @@ export function PainelAdministrativo() {
   const [estado, setEstado] = useState<Estado>(() =>
     getSupabaseBrowserClient() ? { tipo: "carregando" } : { tipo: "sem_supabase" }
   );
+  const [busca, setBusca] = useState("");
+  const [filtroData, setFiltroData] = useState("");
+  const [filtroStatus, setFiltroStatus] = useState("");
+  const [aviso, setAviso] = useState("");
   const [aba, setAba] = useState<"agendamentos" | "pacientes">("agendamentos");
   const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
@@ -105,19 +109,24 @@ export function PainelAdministrativo() {
     };
   }, []);
 
-  async function alterarStatus(agendamento: Agendamento, novoStatus: string) {
+  async function salvar(event: React.FormEvent<HTMLFormElement>, agendamento: Agendamento) {
+    event.preventDefault();
     const supabase = getSupabaseBrowserClient();
-    if (!supabase) return;
-    setSalvandoId(agendamento.id);
-    await supabase
-      .from("agendamentos")
-      .update({
-        status: novoStatus,
-        procedimento_realizado_em: novoStatus === "realizado" ? hojeISO() : null,
-      })
-      .eq("id", agendamento.id);
-    await carregar();
-    setSalvandoId(null);
+    if (!supabase || salvandoId) return;
+    const fields = new FormData(event.currentTarget);
+    const status = String(fields.get("status"));
+    const realizado = String(fields.get("realizado") || "");
+    if (status === "realizado" && (!realizado || realizado > hojeISO())) { setAviso("Informe a data real do procedimento, até hoje."); return; }
+    const data = String(fields.get("data"));
+    const horario = String(fields.get("horario"));
+    if (status === "confirmado" && agendamentos.some(a => a.id !== agendamento.id && a.status === "confirmado" && a.data === data && a.horario.slice(0,5) === horario.slice(0,5))) { setAviso("Já existe atendimento confirmado nesse horário. Escolha outro horário."); return; }
+    setSalvandoId(agendamento.id); setAviso("");
+    try {
+      const { data: atualizado, error } = await supabase.from("agendamentos").update({status, data, horario, procedimento_realizado_em: status === "realizado" ? realizado : null}).eq("id", agendamento.id).select("id").single();
+      if (error || !atualizado) throw new Error();
+      await carregar(); setAviso("Atendimento atualizado. Combine qualquer mudança também com a paciente.");
+    } catch { setAviso("Não consegui salvar. Nenhuma confirmação de alteração foi recebida; tente novamente."); }
+    finally { setSalvandoId(null); }
   }
 
   if (estado.tipo === "carregando") {
@@ -158,7 +167,21 @@ export function PainelAdministrativo() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto max-w-5xl">
+      <section className="mb-8 rounded-3xl bg-white p-7 shadow-sm">
+        <p className="text-sm text-[#794354]">Seu espaço de organização</p>
+        <h2 className="mt-2 font-display text-3xl text-wine">Olá, Isadora.</h2>
+        <p className="mt-3 text-base leading-7">Vamos cuidar da sua agenda? Veja seus atendimentos, acompanhe solicitações e encontre suas pacientes.</p>
+        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {[['Hoje', agendamentos.filter(a=>a.data===hojeISO() && a.status!=="cancelado").length], ['Aguardando',agendamentos.filter(a=>a.status==="aguardando_confirmacao").length], ['Confirmados',agendamentos.filter(a=>a.status==="confirmado").length], ['Pacientes',pacientes.length]].map(([label,count])=><div key={label} className="rounded-xl bg-blush-50 p-4"><p className="font-display text-3xl text-wine">{count}</p><p className="text-sm">{label}</p></div>)}
+        </div>
+      </section>
+      <div className="mb-6 grid gap-3 sm:grid-cols-3">
+        <label className="text-sm">Buscar paciente<input value={busca} onChange={e=>setBusca(e.target.value)} placeholder="Nome, telefone ou e-mail" className="mt-1 w-full rounded-xl border p-3" /></label>
+        {aba === "agendamentos" && <><label className="text-sm">Dia<input type="date" value={filtroData} onChange={e=>setFiltroData(e.target.value)} className="mt-1 w-full rounded-xl border p-3" /></label><label className="text-sm">Situação<select value={filtroStatus} onChange={e=>setFiltroStatus(e.target.value)} className="mt-1 w-full rounded-xl border p-3"><option value="">Todas</option>{STATUS_OPCOES.map(o=><option key={o.valor} value={o.valor}>{o.rotulo}</option>)}</select></label></>}
+      </div>
+      <div className="mb-5 flex gap-4 text-sm text-wine"><button onClick={()=>{setFiltroData(hojeISO());setAba("agendamentos");}}>Ver hoje</button><button onClick={()=>{setBusca("");setFiltroData("");setFiltroStatus("");}}>Limpar filtros</button><button onClick={()=>carregar()}>Atualizar agenda</button></div>
+      {aviso && <p role="status" className="mb-5 rounded-xl bg-white p-4 text-wine">{aviso}</p>}
       <div className="mb-8 flex justify-center gap-3">
         <button
           type="button"
@@ -185,7 +208,7 @@ export function PainelAdministrativo() {
           {agendamentos.length === 0 && (
             <p className="text-center text-sm text-graphite/60">Nenhum agendamento ainda.</p>
           )}
-          {agendamentos.map((agendamento) => (
+          {agendamentos.filter(a => (!filtroData || a.data === filtroData) && (!filtroStatus || a.status === filtroStatus) && [a.clientes?.nome,a.clientes?.whatsapp,a.clientes?.email].join(" ").toLowerCase().includes(busca.toLowerCase())).sort((a,b)=> (a.data+a.horario).localeCompare(b.data+b.horario)).map((agendamento) => (
             <div key={agendamento.id} className="rounded-2xl border border-blush-200 bg-white p-6 shadow-sm">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
@@ -207,18 +230,14 @@ export function PainelAdministrativo() {
                     </p>
                   )}
                 </div>
-                <select
-                  value={agendamento.status}
-                  disabled={salvandoId === agendamento.id}
-                  onChange={(event) => alterarStatus(agendamento, event.target.value)}
-                  className="rounded-xl border border-blush-300 px-3 py-2 text-sm outline-rosegold-500"
-                >
-                  {STATUS_OPCOES.map((opcao) => (
-                    <option key={opcao.valor} value={opcao.valor}>
-                      {opcao.rotulo}
-                    </option>
-                  ))}
-                </select>
+                <form onSubmit={e=>salvar(e,agendamento)} className="grid w-full gap-3 border-t border-blush-200 pt-4 sm:grid-cols-2">
+                  <label className="text-sm">Data do atendimento<input name="data" type="date" required defaultValue={agendamento.data} className="mt-1 w-full rounded-xl border p-2" /></label>
+                  <label className="text-sm">Horário<input name="horario" type="time" required defaultValue={agendamento.horario.slice(0,5)} className="mt-1 w-full rounded-xl border p-2" /></label>
+                  <label className="text-sm">Situação<select name="status" defaultValue={agendamento.status} className="mt-1 w-full rounded-xl border p-2">{STATUS_OPCOES.map(o=><option key={o.valor} value={o.valor}>{o.rotulo}</option>)}</select></label>
+                  <label className="text-sm">Data em que realizou o procedimento<input name="realizado" type="date" max={hojeISO()} defaultValue={agendamento.procedimento_realizado_em || ""} className="mt-1 w-full rounded-xl border p-2" /></label>
+                  <p className="text-xs leading-6 text-[#794354]">Ao marcar como realizado, informe a data efetiva. O lembrete de acompanhamento conta 14 dias a partir dela.</p>
+                  <button disabled={salvandoId!==null} className="rounded-full bg-wine px-5 py-3 text-sm text-white disabled:opacity-50">{salvandoId===agendamento.id ? "Salvando…" : "Salvar atendimento"}</button>
+                </form>
               </div>
             </div>
           ))}
@@ -230,7 +249,7 @@ export function PainelAdministrativo() {
           {pacientes.length === 0 && (
             <p className="text-center text-sm text-graphite/60">Nenhuma paciente ainda.</p>
           )}
-          {pacientes.map((paciente) => (
+          {pacientes.filter(p=>[p.nome,p.whatsapp,p.email].join(" ").toLowerCase().includes(busca.toLowerCase())).map((paciente) => (
             <div key={paciente.id} className="rounded-2xl border border-blush-200 bg-white p-6 shadow-sm">
               <p className="font-display text-lg font-semibold text-wine">{paciente.nome}</p>
               <p className="text-sm text-graphite/70">{paciente.whatsapp}</p>
