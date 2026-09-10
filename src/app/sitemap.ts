@@ -1,11 +1,11 @@
 import type { MetadataRoute } from "next";
 
-const BASE_URL = "https://isadorafrancasilva.com.br";
+const BASE_URL = "https://isadorafrancasilva.com";
 
 // Só páginas públicas, pensadas para busca — área da cliente, painel e
 // a tela de login/boas-vindas ficam de fora de propósito (ver robots.ts).
 const PAGINAS_PUBLICAS = [
-  "/inicio",
+  "/",
   "/sobre",
   "/botox",
   "/atendimento-domiciliar",

@@ -8,7 +8,7 @@ import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 import { isAdminSession } from "@/lib/isAdminSession";
 
 const NAV_LINKS = [
-  { href: "/inicio", label: "Início" },
+  { href: "/", label: "Início" },
   { href: "/sobre", label: "Sobre" },
   { href: "/botox", label: "Botox" },
   { href: "/atendimento-domiciliar", label: "Atendimento domiciliar" },
@@ -45,12 +45,12 @@ export function Header() {
 
   const contaLink = logada
     ? { href: "/meus-atendimentos", label: "Meus atendimentos" }
-    : { href: "/", label: "Entrar" };
+    : { href: "/entrar", label: "Entrar" };
 
   return (
     <header className="sticky top-0 z-20 border-b border-blush-200/60 bg-white/80 backdrop-blur">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-        <Link href="/inicio" aria-label="Página inicial" onClick={() => setOpen(false)}>
+        <Link href="/" aria-label="Página inicial" onClick={() => setOpen(false)}>
           <Logo />
         </Link>
 

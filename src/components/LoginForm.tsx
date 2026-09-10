@@ -46,12 +46,12 @@ export function LoginForm() {
       if (modo === "entrar") {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
         if (error) throw error;
-        router.push(isAdminSession(data.session) ? "/painel" : "/inicio");
+        router.push(isAdminSession(data.session) ? "/painel" : "/");
         return;
       }
 
       if (modo === "criar") {
-        const { error } = await supabase.auth.signUp({ email, password: senha, options: { data: { telefone, aceita_lembretes_email: lembretesEmail, aceita_lembretes_telefone: Boolean(telefone.trim()) && lembretesTelefone } } });
+        const { error } = await supabase.auth.signUp({ email, password: senha, options: { emailRedirectTo: `${window.location.origin}/entrar`, data: { telefone, aceita_lembretes_email: lembretesEmail, aceita_lembretes_telefone: Boolean(telefone.trim()) && lembretesTelefone } } });
         if (error) throw error;
         setMensagem("Conta criada! Verifique seu e-mail para confirmar o cadastro.");
         return;
@@ -75,6 +75,16 @@ export function LoginForm() {
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-md flex-col items-center justify-center px-6 py-16">
       <Logo className="mb-8" />
+      {modo !== "esqueci" && <section aria-labelledby="beneficios-conta" className="mb-7 w-full">
+        <p className="text-sm uppercase tracking-widest text-[#794354]">Seu cuidado, mais organizado</p>
+        <h2 id="beneficios-conta" className="mt-3 font-display text-2xl text-wine">Uma conta para acompanhar seus atendimentos</h2>
+        <ul className="mt-4 space-y-3 text-sm leading-7 text-graphite">
+          <li>• Consulte a situação dos pedidos feitos enquanto estiver conectada à sua conta.</li>
+          <li>• Reaproveite seu e-mail e telefone no formulário de agendamento.</li>
+          <li>• Escolha se deseja receber informações de cuidado e lembretes de acompanhamento por e-mail, quando disponíveis.</li>
+        </ul>
+        <p className="mt-4 text-sm leading-6 text-[#794354]">Você decide: conhecer o site e solicitar atendimento continuam disponíveis sem conta. Os lembretes são opcionais e também podem ser solicitados no agendamento.</p>
+      </section>}
 
       <div className="w-full rounded-3xl border border-blush-200 bg-white p-8 shadow-lg shadow-blush-300/30">
         <h1 className="mb-6 text-center font-display text-2xl font-semibold text-wine">
@@ -174,7 +184,7 @@ export function LoginForm() {
       </div>
 
       <Link
-        href="/inicio"
+        href="/"
         className="mt-6 w-full rounded-full border-2 border-wine px-8 py-3 text-center font-body text-sm font-semibold text-wine transition-colors hover:bg-blush-100"
       >
         Continuar sem conta

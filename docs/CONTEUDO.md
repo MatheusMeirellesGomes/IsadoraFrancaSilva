@@ -562,3 +562,10 @@ Lembretes por telefone ainda precisam de provedor e integração; preferência
 registrada não significa envio ativo.
 Job por e-mail recupera acompanhamentos atrasados, verifica erros do provedor
 e utiliza chave de idempotência. Não foi realizado envio a clientes no teste.
+
+## Entrada pública — 10/09/2026
+
+A raiz / apresenta o site; /inicio redireciona para /. Login e cadastro
+ficam em /entrar. Conta opcional para acompanhar pedidos vinculados e
+reutilizar contatos. Lembretes por e-mail são opt-in, quando disponíveis,
+e também podem ser solicitados sem conta pelo agendamento.

@@ -100,7 +100,7 @@ export function MeusAtendimentos() {
           Você precisa entrar na sua conta para ver seus atendimentos.
         </p>
         <Link
-          href="/"
+          href="/entrar"
           className="mt-4 inline-block rounded-full bg-wine px-8 py-3 font-body text-sm font-semibold text-white shadow-lg shadow-wine/30 transition-transform hover:scale-105"
         >
           Entrar

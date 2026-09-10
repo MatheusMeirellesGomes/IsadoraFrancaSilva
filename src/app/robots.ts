@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       // devem aparecer em buscadores.
       disallow: ["/meus-atendimentos", "/painel", "/api/"],
     },
-    sitemap: "https://isadorafrancasilva.com.br/sitemap.xml",
+    sitemap: "https://isadorafrancasilva.com/sitemap.xml",
   };
 }
