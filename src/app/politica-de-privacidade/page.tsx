@@ -50,7 +50,7 @@ export default function PoliticaDePrivacidadePage() {
                 <li>Confirmar e organizar o seu atendimento.</li>
                 <li>Entrar em contato sobre o agendamento, quando necessário.</li>
                 <li>Enviar lembretes de cuidado por e-mail — só se você marcar essa opção explicitamente no formulário de agendamento.</li>
-                <li>Se você tiver conta, mostrar seus próprios agendamentos em &quot;Meus atendimentos&quot;.</li>
+                <li>Se você tiver conta, mostrar seus próprios agendamentos em &quot;Meus agendamentos&quot;.</li>
               </ul>
               <p className="mt-3">
                 Não uso seus dados para publicidade, não vendo nem

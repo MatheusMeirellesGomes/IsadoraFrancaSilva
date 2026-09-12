@@ -97,7 +97,7 @@ export function MeusAtendimentos() {
     return (
       <div className="mx-auto max-w-md text-center">
         <p className="text-sm text-graphite/70">
-          Você precisa entrar na sua conta para ver seus atendimentos.
+          Você precisa entrar na sua conta para ver seus agendamentos.
         </p>
         <Link
           href="/entrar"
@@ -112,7 +112,7 @@ export function MeusAtendimentos() {
   if (estado.tipo === "erro") {
     return (
       <p className="mx-auto max-w-md text-center text-sm text-graphite/70">
-        Não consegui carregar seus atendimentos agora. Tente novamente em
+        Não consegui carregar seus agendamentos agora. Tente novamente em
         instantes.
       </p>
     );
@@ -122,7 +122,7 @@ export function MeusAtendimentos() {
     return (
       <div className="mx-auto max-w-md text-center">
         <p className="text-sm text-graphite/70">
-          Você ainda não tem nenhum atendimento agendado.
+          Você ainda não tem nenhum agendamento.
         </p>
         <Link
           href="/agendamento"

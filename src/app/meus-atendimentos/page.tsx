@@ -3,8 +3,8 @@ import { Header } from "@/components/Header";
 import { MeusAtendimentos } from "@/components/MeusAtendimentos";
 
 export const metadata: Metadata = {
-  title: "Meus atendimentos | Isadora França Silva",
-  description: "Acompanhe seus atendimentos agendados com Isadora França Silva.",
+  title: "Meus agendamentos | Isadora França Silva",
+  description: "Acompanhe seus agendamentos com Isadora França Silva.",
 };
 
 export default function MeusAtendimentosPage() {
@@ -15,7 +15,7 @@ export default function MeusAtendimentosPage() {
         <div className="mx-auto mb-10 max-w-2xl text-center">
           <p className="text-sm uppercase tracking-[.18em] text-[#794354]">Minha conta</p>
           <h1 className="mt-4 font-display text-4xl leading-tight text-wine">
-            Meus atendimentos
+            Meus agendamentos
           </h1>
         </div>
         <MeusAtendimentos />

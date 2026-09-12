@@ -44,7 +44,7 @@ export function Header() {
   }
 
   const contaLink = logada
-    ? { href: "/meus-atendimentos", label: "Meus atendimentos" }
+    ? { href: "/meus-atendimentos", label: "Meus agendamentos" }
     : { href: "/entrar", label: "Entrar" };
 
   return (
