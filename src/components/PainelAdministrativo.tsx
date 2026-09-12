@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { CalendarioAgenda } from "@/components/CalendarioAgenda";
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 import { isAdminSession } from "@/lib/isAdminSession";
 
@@ -41,8 +42,7 @@ function formatarData(iso: string) {
 }
 
 function hojeISO() {
-  const hoje = new Date();
-  return `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, "0")}-${String(hoje.getDate()).padStart(2, "0")}`;
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
 }
 
 type Estado =
@@ -60,7 +60,7 @@ export function PainelAdministrativo() {
   const [filtroData, setFiltroData] = useState(hojeISO);
   const [filtroStatus, setFiltroStatus] = useState("");
   const [aviso, setAviso] = useState("");
-  const [aba, setAba] = useState<"agendamentos" | "pacientes">("agendamentos");
+  const [aba, setAba] = useState<"agendamentos" | "pacientes" | "calendario">("agendamentos");
   const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
   const [salvandoId, setSalvandoId] = useState<string | null>(null);
@@ -73,7 +73,7 @@ export function PainelAdministrativo() {
   }
 
   const agendamentosVisiveis = agendamentos.filter(a =>
-    (!filtroData || a.data === filtroData) && (!filtroStatus || a.status === filtroStatus) &&
+    ((aba === "calendario" ? a.data === filtroData : !filtroData || a.data === filtroData)) && (!filtroStatus || a.status === filtroStatus) &&
     [a.clientes?.nome, a.clientes?.whatsapp, a.clientes?.email].join(" ").toLowerCase().includes(busca.toLowerCase())
   ).sort((a,b) => (a.data+a.horario).localeCompare(b.data+b.horario));
   const pacientesVisiveis = pacientes.filter(p => [p.nome,p.whatsapp,p.email].join(" ").toLowerCase().includes(busca.toLowerCase()));
@@ -198,9 +198,10 @@ export function PainelAdministrativo() {
         <label className="text-sm">Buscar paciente<input value={busca} onChange={e=>setBusca(e.target.value)} placeholder="Nome, telefone ou e-mail" className="mt-1 w-full rounded-xl border p-3" /></label>
         {aba === "agendamentos" && <><label className="text-sm">Dia<input type="date" value={filtroData} onChange={e=>setFiltroData(e.target.value)} className="mt-1 w-full rounded-xl border p-3" /></label><label className="text-sm">Situação<select value={filtroStatus} onChange={e=>setFiltroStatus(e.target.value)} className="mt-1 w-full rounded-xl border p-3"><option value="">Todas</option>{STATUS_OPCOES.map(o=><option key={o.valor} value={o.valor}>{o.rotulo}</option>)}</select></label></>}
       </div>
-      <div className="mb-5 flex flex-wrap gap-4 text-sm text-wine"><button onClick={()=>{abrirResumo("hoje");}}>Ver hoje</button><button onClick={()=>{setBusca("");setFiltroData("");setFiltroStatus("");}}>Limpar filtros</button><button onClick={()=>carregar()}>Atualizar agenda</button></div>
+      <div className="mb-5 flex flex-wrap gap-4 text-sm text-wine"><button onClick={()=>{abrirResumo("hoje");}}>Ver hoje</button><button onClick={()=>{setBusca("");setFiltroData(aba === "calendario" ? filtroData : "");setFiltroStatus("");}}>Limpar filtros</button><button onClick={()=>carregar()}>Atualizar agenda</button></div>
       {aviso && <p role="status" className="mb-5 rounded-xl bg-white p-4 text-wine">{aviso}</p>}
-      <div className="mb-8 flex justify-center gap-3">
+      <div className="mb-8 flex flex-wrap justify-center gap-3">
+        <button type="button" aria-pressed={aba === "calendario"} onClick={() => { setAba("calendario"); setFiltroData(hojeISO()); setFiltroStatus(""); setBusca(""); }} className={`rounded-full px-5 py-2 text-sm font-medium ${aba === "calendario" ? "bg-wine text-white" : "border border-blush-300 bg-white text-graphite"}`}>Calendário</button>
         <button
           type="button"
           onClick={() => setAba("agendamentos")}
@@ -221,9 +222,11 @@ export function PainelAdministrativo() {
         </button>
       </div>
 
-      {aba === "agendamentos" && (
+      {aba === "calendario" && <CalendarioAgenda agendamentos={agendamentos} selecionado={filtroData} onSelecionar={dia => { setFiltroData(dia); setBusca(""); setFiltroStatus(""); }} />}
+
+      {(aba === "agendamentos" || aba === "calendario") && (
         <div className="space-y-4">
-          <h2 className="font-display text-2xl text-wine">{filtroData === hojeISO() ? "Sua agenda de hoje" : filtroStatus === "aguardando_confirmacao" ? "Solicitações para avaliar" : "Sua agenda"}</h2>
+          <h2 className="font-display text-2xl text-wine">{aba === "calendario" ? `Agendamentos de ${formatarData(filtroData)}` : filtroData === hojeISO() ? "Sua agenda de hoje" : filtroStatus === "aguardando_confirmacao" ? "Solicitações para avaliar" : "Sua agenda"}</h2>
           <p className="text-sm text-graphite/70">{agendamentosVisiveis.length} agendamento(s). Para aprovar, escolha Confirmado; para recusar, Cancelado / recusado. Ajuste a data e o horário para remarcar e salve.</p>
           {agendamentosVisiveis.length === 0 && (
             <p className="text-center text-sm text-graphite/60">Nenhum agendamento para os filtros selecionados. Consulte as solicitações pendentes ou limpe os filtros para ver toda a agenda.</p>
