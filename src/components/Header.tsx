@@ -43,6 +43,8 @@ export function Header() {
     router.push("/");
   }
 
+  const links = admin ? [{ href: "/painel", label: "Meu painel" }, { href: "/", label: "Ver site" }] : NAV_LINKS;
+
   const contaLink = logada
     ? { href: "/meus-atendimentos", label: "Meus agendamentos" }
     : { href: "/entrar", label: "Entrar" };
@@ -50,12 +52,12 @@ export function Header() {
   return (
     <header className="sticky top-0 z-20 border-b border-blush-200/60 bg-white/80 backdrop-blur">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-        <Link href="/" aria-label="Página inicial" onClick={() => setOpen(false)}>
+        <Link href={admin ? "/painel" : "/"} aria-label={admin ? "Meu painel" : "Página inicial"} onClick={() => setOpen(false)}>
           <Logo />
         </Link>
 
         <nav className="hidden flex-wrap items-center justify-end gap-x-6 gap-y-1 md:flex">
-          {NAV_LINKS.map((link) => (
+          {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -64,20 +66,13 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          <Link
+          {!admin && <Link
             href={contaLink.href}
             className="font-body text-sm font-medium text-graphite transition-colors hover:text-wine"
           >
             {contaLink.label}
-          </Link>
-          {admin && (
-            <Link
-              href="/painel"
-              className="font-body text-sm font-medium text-rosegold-600 transition-colors hover:text-wine"
-            >
-              Painel
-            </Link>
-          )}
+          </Link>}
+
           {logada && (
             <button
               type="button"
@@ -90,12 +85,12 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link
+          {!admin && <Link
             href="/agendamento"
             className="hidden rounded-full bg-wine px-5 py-2 font-body text-sm font-medium text-white shadow-md shadow-wine/20 transition-transform hover:scale-105 sm:inline-block"
           >
             Agendar
-          </Link>
+          </Link>}
           <button
             type="button"
             aria-label={open ? "Fechar menu" : "Abrir menu"}
@@ -110,7 +105,7 @@ export function Header() {
 
       {open && (
         <nav className="flex flex-col gap-1 border-t border-blush-200/60 bg-white px-6 py-4 md:hidden">
-          {NAV_LINKS.map((link) => (
+          {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -120,22 +115,14 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          <Link
+          {!admin && <Link
             href={contaLink.href}
             onClick={() => setOpen(false)}
             className="rounded-lg px-3 py-2 font-body text-sm font-medium text-graphite hover:bg-blush-100"
           >
             {contaLink.label}
-          </Link>
-          {admin && (
-            <Link
-              href="/painel"
-              onClick={() => setOpen(false)}
-              className="rounded-lg px-3 py-2 font-body text-sm font-medium text-rosegold-600 hover:bg-blush-100"
-            >
-              Painel
-            </Link>
-          )}
+          </Link>}
+
           {logada && (
             <button
               type="button"
@@ -145,13 +132,13 @@ export function Header() {
               Sair
             </button>
           )}
-          <Link
+          {!admin && <Link
             href="/agendamento"
             onClick={() => setOpen(false)}
             className="mt-2 rounded-full bg-wine px-4 py-2 text-center font-body text-sm font-medium text-white"
           >
             Agendar
-          </Link>
+          </Link>}
         </nav>
       )}
     </header>
