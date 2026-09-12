@@ -33,9 +33,9 @@ async function enviarEmails(dados: DadosAgendamento): Promise<string[]> {
   const from = process.env.RESEND_FROM_EMAIL!;
   const enviados: string[] = [];
   try {
-    if (process.env.ISADORA_NOTIFICATION_EMAIL) {
-      const { assunto, texto } = emailNotificacaoIsadora(dados);
-      const result = await resend.emails.send({ from, to: process.env.ISADORA_NOTIFICATION_EMAIL, subject: assunto, text: texto });
+    {
+      const { assunto, texto, html } = emailNotificacaoIsadora(dados);
+      const result = await resend.emails.send({ from, to: process.env.ISADORA_NOTIFICATION_EMAIL?.trim() || "isadorafrancasilva@gmail.com", subject: assunto, text: texto, html });
       if (!result.error && result.data) enviados.push("isadora");
     }
     if (dados.aceitaLembretes && dados.email?.trim()) {
@@ -136,10 +136,8 @@ export async function POST(request: NextRequest) {
 
   const dados = body;
   const userId = await getUserIdDoToken(request);
-  const [destinatariosEmail, salvoNoBanco] = await Promise.all([
-    enviarEmails(dados),
-    salvarNoBanco(dados, userId),
-  ]);
+  const salvoNoBanco = await salvarNoBanco(dados, userId);
+  const destinatariosEmail = salvoNoBanco ? await enviarEmails(dados) : [];
 
   return NextResponse.json({ destinatariosEmail, salvoNoBanco });
 }

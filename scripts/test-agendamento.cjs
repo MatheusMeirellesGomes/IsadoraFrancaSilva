@@ -112,17 +112,18 @@ const dadosValidos = {
   env.ISADORA_NOTIFICATION_EMAIL = 'isadora@exemplo.com';
   const soEmail = await route.POST(req(dadosValidos));
   const bodySoEmail = await soEmail.json();
-  assert.deepEqual(bodySoEmail.destinatariosEmail.sort(), ['cliente', 'isadora']);
+  assert.deepEqual(bodySoEmail.destinatariosEmail, []);
   assert.equal(bodySoEmail.salvoNoBanco, false);
-  assert.equal(sent.length, 2);
-  assert.match(sent[1].text, /Isadora França Silva/);
-  assert.match(sent[1].text, /dificuldade para respirar/i);
+  assert.equal(sent.length, 0, 'não notificar pedidos que não foram salvos');
 
   // Também com banco configurado, sem login: cria cliente solto (sem user_id)
   supabaseState.client = supabaseMock();
   const semLogin = await route.POST(req(dadosValidos));
   const bodySemLogin = await semLogin.json();
   assert.equal(bodySemLogin.salvoNoBanco, true);
+  assert.equal(sent.length, 2);
+  assert.match(sent[0].html, /https:\/\/isadorafrancasilva.com\/painel/);
+  assert.match(sent[1].text, /Isadora França Silva/);
   assert.equal(store.clientes.length, 1);
   assert.equal(store.clientes[0].user_id, undefined);
   assert.equal(store.agendamentos.length, 1);
@@ -149,11 +150,14 @@ const dadosValidos = {
   assert.equal(store.clientes.length, 3);
 
   // Sem consentimento: só notifica Isadora por e-mail, mas ainda salva no banco
+  delete env.ISADORA_NOTIFICATION_EMAIL;
   sent.length = 0;
   const semConsentimento = await route.POST(req({ ...dadosValidos, aceitaLembretes: false }));
   const bodySemConsentimento = await semConsentimento.json();
   assert.deepEqual(bodySemConsentimento.destinatariosEmail, ['isadora']);
   assert.equal(bodySemConsentimento.salvoNoBanco, true);
+  assert.equal(sent[0].to, 'isadorafrancasilva@gmail.com');
+  assert.ok(!emails.emailNotificacaoIsadora({...dadosValidos, nome: '<script>bad</script>'}).html.includes('<script>'));
 
-  console.log('Agendamento: origem, validação de data, e-mail e banco independentes, vínculo de conta (sessão válida/inválida/ausente, sem duplicar cliente) e consentimento aprovados. Nenhuma chamada real ao Resend/Supabase.');
+  console.log('Agendamento: origem, validação de data, envio condicionado ao pedido salvo, destinatário padrão e escape de HTML, vínculo de conta (sessão válida/inválida/ausente, sem duplicar cliente) e consentimento aprovados. Nenhuma chamada real ao Resend/Supabase.');
 })().catch(e => { console.error(e); process.exitCode = 1; });

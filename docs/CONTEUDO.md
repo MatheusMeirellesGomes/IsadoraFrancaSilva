@@ -569,3 +569,9 @@ A raiz / apresenta o site; /inicio redireciona para /. Login e cadastro
 ficam em /entrar. Conta opcional para acompanhar pedidos vinculados e
 reutilizar contatos. Lembretes por e-mail são opt-in, quando disponíveis,
 e também podem ser solicitados sem conta pelo agendamento.
+
+### Avisos de novos agendamentos
+
+- Confirmado pelo responsável: enviar os avisos administrativos para isadorafrancasilva@gmail.com.
+- O envio ocorre após salvar o pedido, com link para o painel e situação aguardando confirmação.
+- Ativação depende de RESEND_API_KEY e RESEND_FROM_EMAIL na Vercel, com remetente autorizado no Resend. WhatsApp automático ainda não integrado.

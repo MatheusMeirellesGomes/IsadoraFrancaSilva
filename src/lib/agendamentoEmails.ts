@@ -17,17 +17,22 @@ export type DadosAgendamento = {
 export function emailNotificacaoIsadora(dados: DadosAgendamento) {
   const assunto = `Novo pedido de agendamento — ${dados.nome}`;
   const linhas = [
+    "Olá, Isadora! Há um novo pedido aguardando sua avaliação.",
+    "",
     `Nome: ${dados.nome}`,
     `WhatsApp: ${dados.whatsapp}`,
     `Data desejada: ${dados.dataFormatada}`,
     `Horário: ${dados.horario}`,
-    `Observações: ${dados.observacoes?.trim() || "—"}`,
     `E-mail informado: ${dados.email?.trim() || "não informado"}`,
     `Aceitou lembretes de cuidado: ${dados.aceitaLembretes ? "sim" : "não"}`,
     "",
-    "Este pedido ainda depende da confirmação diretamente pelo WhatsApp — não há agenda automática.",
+    "Acesse seu painel para confirmar, recusar ou remarcar este pedido:",
+    "https://isadorafrancasilva.com/painel",
+    "Combine qualquer alteração também com a cliente. O horário ainda não está confirmado.",
   ];
-  return { assunto, texto: linhas.join("\n") };
+  const escapeHtml = (value: string) => value.replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]!));
+  const html = `<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:28px;color:#542333;background:#fff7f9"><h1 style="font-size:24px">Novo pedido de agendamento</h1><p>Olá, Isadora! Uma cliente está aguardando sua avaliação.</p><p><strong>${escapeHtml(dados.nome)}</strong></p><p>Data desejada: ${escapeHtml(dados.dataFormatada)}<br>Horário: ${escapeHtml(dados.horario)}</p><p><a href="https://isadorafrancasilva.com/painel" style="display:inline-block;background:#601a31;color:white;padding:14px 22px;border-radius:24px;text-decoration:none">Ver no meu painel</a></p><p>Entre com sua conta para confirmar, recusar ou remarcar. Este pedido ainda não está confirmado.</p></div>`;
+  return { assunto, texto: linhas.join("\n"), html };
 }
 
 export function emailCuidadosCliente(dados: DadosAgendamento) {
